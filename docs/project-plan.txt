@@ -1,0 +1,305 @@
+# LeaseQA Project Implementation Plan
+
+## Project Overview
+
+**LeaseQA** is an AI-powered lease contract review and legal Q&A platform designed specifically for Boston renters.
+
+**Core Flow**: Tenant uploads contract → AI auto-review → Generate risk report → Optionally post to community for advice → Lawyers/other tenants respond
+
+---
+
+## User Roles
+
+| Role | Permissions |
+| ---- | ----------- |
+| **Tenant** | AI contract review, create posts, share experiences, edit/delete own content |
+| **Certified Lawyer** | All tenant permissions + provide official legal opinions (with ⚖️ badge) + edit/delete all posts |
+| **Admin** | Manage question categories, delete inappropriate content, view platform statistics (**cannot answer legal questions**) |
+
+> **Important**: Lawyer and Admin are separate roles with different permissions!
+
+---
+
+## Tech Stack
+
+| Category | Technology |
+| -------- | ---------- |
+| **Frontend Framework** | Next.js 14 (React 18) + Tailwind CSS |
+| **Backend** | Next.js API Routes + Node.js |
+| **Database** | MongoDB Atlas + Mongoose ODM |
+| **AI Integration** | Anthropic Claude API (`@anthropic-ai/sdk`) |
+| **Rich Text Editor** | React-Quill (requires dynamic import to avoid SSR issues) |
+| **Authentication** | NextAuth.js + bcryptjs |
+| **Deployment** | Vercel (frontend) + MongoDB Atlas (database) |
+
+---
+
+## Main Feature Modules
+
+### 1. AI Contract Review (New Core Feature)
+
+| Feature | Description |
+| ------- | ----------- |
+| Input | Upload PDF or paste text |
+| Analysis | Claude API analyzes contract |
+| Risk Levels | 🔴 High Risk (illegal/unfair clauses), 🟡 Medium Risk (ambiguous/noteworthy clauses), 🟢 Standard (legal and normal) |
+| Output | Generate downloadable review report |
+| Follow-up | "Not satisfied? Ask the community" button redirects to create post |
+
+### 2. Community Q&A (Based on Rubric Requirements)
+
+**Question Categories** (replacing original hw1/hw2):
+
+| Category ID | Display Name |
+| ----------- | ------------ |
+| `lease_review` | Contract Review |
+| `security_deposit` | Security Deposit |
+| `maintenance` | Maintenance Responsibility |
+| `eviction` | Eviction/Termination |
+| `utilities` | Utilities |
+| `roommate_disputes` | Roommate Disputes |
+| `lease_termination` | Early Termination |
+| `rent_increase` | Rent Increase |
+| `other` | Other |
+
+**Answer Types**:
+
+| Type | Description |
+| ---- | ----------- |
+| Lawyer Opinion Section | Certified lawyers only, with ⚖️ badge |
+| Community Answer Section | Tenant experience sharing, with 🏠 badge |
+| Case Discussion Section | Nested comments, open to everyone |
+
+### 3. Admin Features (Admin Only)
+
+| Feature | Description |
+| ------- | ----------- |
+| Category Management | Add, edit, delete question categories |
+| Platform Statistics | View usage metrics |
+| Content Moderation | Remove inappropriate content |
+
+---
+
+## Database Design
+
+```javascript
+// 6 Main Collections
+
+Users {
+  username: String,           // Display name
+  email: String,              // Login email
+  password: String,           // Hashed password
+  role: "tenant" | "lawyer" | "admin",
+  lawyerVerification: {       // Only for lawyers
+    barNumber: String,
+    state: String
+  }
+}
+
+AIReviews {
+  userId: ObjectId,           // Reference to user
+  contractText: String,       // Extracted or pasted text
+  contractType: String,       // Category of contract
+  aiResponse: {
+    highRiskIssues: Array,    // Critical issues
+    mediumRiskIssues: Array,  // Moderate concerns
+    summary: String           // Overview
+  },
+  relatedQuestionId: ObjectId // Link to Q&A post if created
+}
+
+Posts {
+  authorId: ObjectId,         // Reference to user
+  postType: String,           // Question, Note, Poll
+  visibility: String,         // class or private
+  folders: Array,             // Category tags
+  summary: String,            // Brief title (max 100 chars)
+  details: String,            // Full content (HTML)
+  urgency: String,            // Priority level
+  fromAIReview: ObjectId,     // Link to AI review if applicable
+  viewCount: Number           // View counter
+}
+
+Answers {
+  postId: ObjectId,           // Reference to post
+  authorId: ObjectId,         // Reference to user
+  answerType: "lawyer_opinion" | "community_answer",
+  content: String             // Answer content (HTML)
+}
+
+Discussions {
+  postId: ObjectId,           // Reference to post
+  parentId: ObjectId,         // Null for top-level, or parent discussion ID
+  authorId: ObjectId,         // Reference to user
+  content: String,            // Discussion content
+  isResolved: Boolean         // Resolution status
+}
+
+Folders {
+  name: String,               // URL-friendly identifier
+  displayName: String,        // User-facing name
+  description: String         // Category description
+}
+```
+
+---
+
+## Task Assignment
+
+### Your Responsibility: Frontend UI + User Experience
+
+**Week 1-2 (October 19 - November 2)**
+
+| Status | Task |
+| ------ | ---- |
+| ⬜ | Write requirements document (user scenarios, category descriptions) |
+| ⬜ | Landing Page (project intro, team info, GitHub link) |
+| ⬜ | AI Review page UI (file upload, loading animation, results display) |
+| ⬜ | Prepare 5 test cases |
+
+**Week 3-4 (November 3 - November 16)**
+
+| Status | Task |
+| ------ | ---- |
+| ⬜ | Question list page (left sidebar + right statistics panel) |
+| ⬜ | Create post page (type selection, category selection, rich text editor, form validation) |
+| ⬜ | Question details page (lawyer opinion section, community answer section, discussion section) |
+
+**Week 5-6 (November 17 - November 30)**
+
+| Status | Task |
+| ------ | ---- |
+| ⬜ | Admin page (category management) |
+| ⬜ | UI polish (loading states, prompts, highlights) |
+| ⬜ | Prepare 10 test cases |
+| ⬜ | Write user documentation |
+
+---
+
+### Teammate Responsibility: Backend API + Database + Deployment
+
+**Week 1-2 (October 19 - November 2)**
+
+| Status | Task |
+| ------ | ---- |
+| ⬜ | Initialize Next.js project |
+| ⬜ | Install dependencies |
+| ⬜ | Configure MongoDB Atlas + create 6 collections |
+| ⬜ | Write Mongoose models |
+| ⬜ | User authentication system (register/login API + permission middleware) |
+| ⬜ | AI Review API (`POST /api/ai-review`, calls Claude API) |
+
+**Week 3-4 (November 3 - November 16)**
+
+| Status | Task |
+| ------ | ---- |
+| ⬜ | Posts CRUD API (GET/POST/PUT/DELETE `/api/posts`) |
+| ⬜ | Answers API (submit/edit/delete answers) |
+| ⬜ | Discussions API (create discussion, reply, mark resolved) |
+| ⬜ | Folders management API (CRUD, admin only) |
+
+**Week 5-6 (November 17 - November 30)**
+
+| Status | Task |
+| ------ | ---- |
+| ⬜ | Deploy to Vercel |
+| ⬜ | Configure production environment variables |
+| ⬜ | Database index optimization |
+| ⬜ | API testing (Postman) |
+| ⬜ | Technical documentation |
+
+---
+
+## Weekly Checkpoints
+
+| Date | Goal |
+| ---- | ---- |
+| **October 26** | MongoDB connected, register/login working, Landing Page complete, AI API functional |
+| **November 2** | Complete AI review flow working, can create and view questions |
+| **November 9** | Lawyers can answer questions, answer types differentiated, discussion feature complete |
+| **November 16** | All CRUD complete, category management done, data persistence working |
+| **November 23** | All rubric features pass, UI polished, 10 test cases pass |
+| **November 30** | Vercel deployment successful, documentation complete, demo video recorded |
+
+---
+
+## Collaboration Workflow
+
+### Git Branching Strategy
+
+| Branch | Purpose |
+| ------ | ------- |
+| `main` | Production version |
+| `dev-frontend` | Your branch |
+| `dev-backend` | Teammate's branch |
+
+### Weekly Meetings
+
+| Day | Duration | Purpose |
+| --- | -------- | ------- |
+| Monday | 30 min | Define weekly tasks |
+| Friday | 1 hour | Check progress + merge code |
+
+### Shared Documents
+
+Google Doc for tracking: todo list, issues, meeting notes
+
+---
+
+## Rubric Alignment (Total 162 points)
+
+| Module | Feature | Points |
+| ------ | ------- | ------ |
+| Q&A Screen | Question list page | 33 |
+| Posts Sidebar | Left post list | 15 |
+| Posting Questions | Create post page | 27 |
+| Viewing/Replying | Question details page | 33 |
+| Class at a Glance | Platform statistics | 3 |
+| Manage Class | Admin entry point | 6 |
+| Manage Folders | Category management | 18 |
+| General Requirements | UI, validation, persistence | 12 |
+| Deployment | Vercel + MongoDB | 15 |
+
+**Additional**: AI Contract Review (core differentiator)
+
+---
+
+## Next Steps
+
+### This Weekend (October 20-21)
+
+**You:**
+
+| Priority | Task |
+| -------- | ---- |
+| 1 | Write 5 real Boston rental problem cases |
+| 2 | Design Landing Page mockup |
+| 3 | List detailed descriptions for 9 question categories |
+
+**Teammate:**
+
+| Priority | Task |
+| -------- | ---- |
+| 1 | Initialize Next.js project and push to GitHub |
+| 2 | Register MongoDB Atlas account |
+| 3 | Apply for Claude API key (https://console.anthropic.com) |
+
+### Monday (October 21) Meeting
+
+Review this plan, confirm task assignments, start Week 1 tasks
+
+---
+
+## Important Reminders
+
+### Legal Disclaimer (Required on All Pages)
+
+> "LeaseQA provides legal information, not legal advice. For specific legal consultation, please contact a licensed attorney."
+
+### Technical Notes
+
+| Item | Note |
+| ---- | ---- |
+| Claude API | Response takes ~30-60 seconds; frontend needs loading animation |
+| React-Quill | Must use dynamic import: `const Editor = dynamic(() => import('react-quill'), { ssr: false });` |
+| Admin Routes | All admin features require permission middleware to protect routes |

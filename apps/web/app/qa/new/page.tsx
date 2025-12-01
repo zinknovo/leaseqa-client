@@ -7,7 +7,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import Link from "next/link";
 
-const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+import "react-quill-new/dist/quill.snow.css";
+
+const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
 const folders = [
   { value: "lease_review", label: "Lease Review" },

@@ -1,6 +1,16 @@
 "use client";
 
 import { useState } from "react";
+import {
+  Badge,
+  Button,
+  Card,
+  Col,
+  Form,
+  ListGroup,
+  Row,
+  Stack,
+} from "react-bootstrap";
 
 type Folder = {
   id: string;
@@ -58,116 +68,125 @@ export default function AdminPage() {
   };
 
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 py-10 text-slate-100">
-      <header className="space-y-2">
-        <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Operations</p>
-        <h1 className="text-3xl font-semibold text-white">Admin console</h1>
-        <p className="text-sm text-slate-400">
-          Admin-only view for maintaining the housing topics and keeping the community tidy.
-        </p>
-      </header>
+    <div className="mb-4">
+      <Card className="mb-3">
+        <Card.Body>
+          <div className="pill mb-2">Operations</div>
+          <h1 className="h4 fw-bold">Admin console</h1>
+          <p className="text-secondary mb-0">
+            Maintain folders/topics to keep the Piazza-style board tidy.
+          </p>
+        </Card.Body>
+      </Card>
 
-      <section className="grid gap-4 md:grid-cols-3">
-        <AdminStat label="Posts pending review" value="6" />
-        <AdminStat label="Reports to triage" value="2" />
-        <AdminStat label="New users (7d)" value="38" />
-      </section>
+      <Row className="g-3 mb-3">
+        <Col md={4}>
+          <AdminStat label="Posts pending review" value="6" />
+        </Col>
+        <Col md={4}>
+          <AdminStat label="Reports to triage" value="2" />
+        </Col>
+        <Col md={4}>
+          <AdminStat label="New users (7d)" value="38" />
+        </Col>
+      </Row>
 
-      <section className="rounded-2xl border border-white/5 bg-[var(--app-panel)] p-6 shadow-2xl shadow-black/30">
-        <header className="flex items-center justify-between">
-          <div>
-            <h2 className="text-xl font-semibold text-white">Manage Folders</h2>
-            <p className="text-xs text-slate-500">
-              Nine default folders cover the rent topics. Add, rename, or remove as needed.
-            </p>
-          </div>
-          <button className="rounded-xl border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-slate-100 hover:bg-white/10">
-            Sync to database
-          </button>
-        </header>
-
-        <div className="mt-6 flex gap-3">
-          <input
-            className="flex-1 rounded-xl border border-white/10 bg-black/20 px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:border-[var(--accent-blue)] focus:outline-none focus:ring-2 focus:ring-[color:var(--accent-blue)] focus:ring-opacity-40"
-            placeholder="New folder name, e.g., Lease Extension"
-            value={newFolder}
-            onChange={(event) => setNewFolder(event.target.value)}
-          />
-          <button
-            className="rounded-xl bg-[var(--accent-blue)] px-4 py-2 text-sm font-medium text-white hover:bg-[var(--accent-blue-hover)]"
-            onClick={handleAddFolder}
+      <Card>
+        <Card.Body>
+          <Stack
+            direction="horizontal"
+            className="justify-content-between flex-wrap gap-2"
           >
-            Add
-          </button>
-        </div>
+            <div>
+              <div className="pill mb-1">Manage Folders</div>
+              <div className="text-secondary small">
+                Nine defaults cover rental topics. Add, rename, remove as needed.
+              </div>
+            </div>
+            <Button size="sm" variant="outline-secondary">
+              Sync to database
+            </Button>
+          </Stack>
 
-        <ul className="mt-6 divide-y divide-white/10 text-sm text-slate-200">
-          {folders.map((folder) => {
-            const editing = editingId === folder.id;
-            return (
-              <li key={folder.id} className="flex items-center gap-3 py-3">
-                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-[var(--pill-bg)] text-xs font-semibold text-slate-200">
-                  {folder.displayName.slice(0, 2)}
-                </span>
-                <div className="flex-1">
-                  {editing ? (
-                    <input
-                      className="w-full rounded border border-white/10 bg-black/20 px-2 py-1 text-sm text-white focus:border-[var(--accent-blue)] focus:outline-none focus:ring-2 focus:ring-[color:var(--accent-blue)] focus:ring-opacity-40"
-                      value={editingValue}
-                      onChange={(event) => setEditingValue(event.target.value)}
-                    />
-                  ) : (
-                    <p className="font-medium text-white">{folder.displayName}</p>
-                  )}
-                  <p className="text-xs text-slate-500">{folder.name}</p>
-                </div>
-                <div className="flex gap-2">
-                  {editing ? (
-                    <>
-                      <button
-                        className="rounded bg-[var(--badge-bg)] px-3 py-1 text-xs font-medium text-slate-100 hover:opacity-90"
-                        onClick={handleSaveEdit}
-                      >
-                        Save
-                      </button>
-                      <button
-                        className="rounded border border-white/10 px-3 py-1 text-xs text-slate-300 hover:bg-white/5"
-                        onClick={() => setEditingId(null)}
-                      >
-                        Cancel
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      <button
-                        className="rounded border border-white/10 px-3 py-1 text-xs text-slate-300 hover:border-[var(--accent-blue)] hover:text-white"
-                        onClick={() => handleStartEdit(folder)}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        className="rounded border border-red-400/30 px-3 py-1 text-xs text-red-300 hover:bg-red-500/10"
-                        onClick={() => handleDelete(folder.id)}
-                      >
-                        Delete
-                      </button>
-                    </>
-                  )}
-                </div>
-              </li>
-            );
-          })}
-        </ul>
-      </section>
+          <Stack direction="horizontal" gap={2} className="mt-3 flex-wrap">
+            <Form.Control
+              placeholder="New folder name, e.g., Lease Extension"
+              value={newFolder}
+              onChange={(event) => setNewFolder(event.target.value)}
+            />
+            <Button onClick={handleAddFolder} variant="danger">
+              Add
+            </Button>
+          </Stack>
+
+          <ListGroup className="mt-3" variant="flush">
+            {folders.map((folder) => {
+              const editing = editingId === folder.id;
+              return (
+                <ListGroup.Item key={folder.id} className="d-flex gap-3 align-items-center">
+                  <Badge bg="secondary">{folder.displayName.slice(0, 2)}</Badge>
+                  <div className="flex-grow-1">
+                    {editing ? (
+                      <Form.Control
+                        value={editingValue}
+                        onChange={(event) => setEditingValue(event.target.value)}
+                        size="sm"
+                      />
+                    ) : (
+                      <div className="fw-semibold">{folder.displayName}</div>
+                    )}
+                    <div className="text-secondary small">{folder.name}</div>
+                  </div>
+                  <Stack direction="horizontal" gap={2}>
+                    {editing ? (
+                      <>
+                        <Button size="sm" variant="primary" onClick={handleSaveEdit}>
+                          Save
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline-secondary"
+                          onClick={() => setEditingId(null)}
+                        >
+                          Cancel
+                        </Button>
+                      </>
+                    ) : (
+                      <>
+                        <Button
+                          size="sm"
+                          variant="outline-secondary"
+                          onClick={() => handleStartEdit(folder)}
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline-danger"
+                          onClick={() => handleDelete(folder.id)}
+                        >
+                          Delete
+                        </Button>
+                      </>
+                    )}
+                  </Stack>
+                </ListGroup.Item>
+              );
+            })}
+          </ListGroup>
+        </Card.Body>
+      </Card>
     </div>
   );
 }
 
 function AdminStat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-2xl border border-white/5 bg-[var(--app-panel)] p-6 text-sm shadow-lg shadow-black/20">
-      <p className="text-xs uppercase tracking-[0.3em] text-slate-500">{label}</p>
-      <p className="mt-3 text-3xl font-semibold text-white">{value}</p>
-    </div>
+    <Card>
+      <Card.Body>
+        <div className="text-secondary small text-uppercase">{label}</div>
+        <div className="fs-3 fw-bold">{value}</div>
+      </Card.Body>
+    </Card>
   );
 }

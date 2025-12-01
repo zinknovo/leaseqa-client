@@ -1,191 +1,47 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 :root {
-  color-scheme: light;
-  --app-bg: #040b1f;
-  --app-panel: #0b162f;
-  --app-panel-muted: #111c36;
-  --app-border: rgba(255, 255, 255, 0.08);
-  --app-accent: #4f83ff;
-  --pill-bg: #14254a;
-  --pill-bg-strong: #16254b;
-  --pill-counter: #1f2f52;
-  --badge-bg: #15264d;
-  --text-highlight: #8ab4ff;
-  --accent-blue: #4f83ff;
-  --accent-blue-hover: #6a9dff;
-  --accent-blue-muted: #3b4e7e;
-  --accent-cyan: #67e8f9;
-  --accent-cyan-soft: #93c5fd;
-  --accent-green: #4ade80;
-  --accent-gradient-from: #132852;
-  --accent-gradient-via: #0c1b36;
-  --accent-gradient-to: #09122a;
-  --header-bg: #0c1f48;
-  --nav-bg: #102658;
-  --avatar-start: #6da5ff;
-  --avatar-end: #4ade80;
+  --nav-width: 120px;
+  --accent: #d00000;
+  --ink: #0f172a;
+  --panel: #ffffff;
+  --panel-muted: #f4f6fb;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
-  font-feature-settings: "tnum";
-  background: radial-gradient(circle at top, #0f1b3d 0%, #030918 45%, #01030c 100%);
-  color: #e2e8f0;
-  min-height: 100vh;
+  margin: 0;
+  background: #eef1f5;
+  color: var(--ink);
+  font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
 }
 
-body,
-button,
-input,
-textarea {
-  font-family: var(--font-inter), "Inter", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont,
-    "Helvetica Neue", sans-serif;
+.app-shell .content-shell {
+  margin-left: 0;
 }
 
-::selection {
-  background-color: rgba(79, 131, 255, 0.35);
-  color: #f8fafc;
+@media (min-width: 768px) {
+  .app-shell .content-shell {
+    margin-left: var(--nav-width);
+  }
 }
 
-.theme-light {
-  --app-bg: #edf1ff;
-  --app-panel: #ffffff;
-  --app-panel-muted: #eef2ff;
-  --app-border: rgba(15, 23, 42, 0.08);
-  --app-accent: #3050ff;
-  --pill-bg: #dbe4ff;
-  --pill-bg-strong: #cbd5ff;
-  --pill-counter: #c7d2fe;
-  --badge-bg: #c7d2fe;
-  --text-highlight: #3b82f6;
-  --accent-blue: #3050ff;
-  --accent-blue-hover: #5e7bff;
-  --accent-blue-muted: #253278;
-  --accent-cyan: #2563eb;
-  --accent-cyan-soft: #0ea5e9;
-  --accent-green: #22c55e;
-  --accent-gradient-from: #dbeafe;
-  --accent-gradient-via: #c7d2fe;
-  --accent-gradient-to: #bfdbfe;
-  --header-bg: #ffffff;
-  --nav-bg: #eef2ff;
-  --avatar-start: #3050ff;
-  --avatar-end: #22c55e;
-  color: #0f172a;
-  background: radial-gradient(circle at top, #ffffff 0%, #eef2ff 50%, #dbe4ff 100%);
+.active-link {
+  background: white !important;
+  border-left: 3px solid var(--accent) !important;
 }
 
-.theme-light body,
-body.theme-light {
-  color: #0f172a;
+.hero-card {
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  color: white;
 }
 
-.theme-light .text-white,
-.theme-light .text-slate-100 {
-  color: #0f172a !important;
-}
-
-.theme-light .text-slate-200 {
-  color: #1e293b !important;
-}
-
-.theme-light .text-slate-300 {
-  color: #334155 !important;
-}
-
-.theme-light .text-slate-400 {
-  color: #475569 !important;
-}
-
-.theme-light .text-slate-500 {
-  color: #64748b !important;
-}
-
-.theme-light .bg-white\/5 {
-  background-color: rgba(15, 23, 42, 0.05) !important;
-}
-
-.theme-light .bg-white\/10 {
-  background-color: rgba(15, 23, 42, 0.08) !important;
-}
-
-.theme-light .bg-white\/20 {
-  background-color: rgba(15, 23, 42, 0.12) !important;
-}
-
-.theme-light .bg-black\/5 {
-  background-color: rgba(255, 255, 255, 0.8) !important;
-}
-
-.theme-light .bg-black\/10,
-.theme-light .bg-black\/15,
-.theme-light .bg-black\/20 {
-  background-color: rgba(241, 245, 249, 0.9) !important;
-}
-
-.theme-light .border-white\/5,
-.theme-light .border-white\/10,
-.theme-light .border-white\/15,
-.theme-light .border-white\/20 {
-  border-color: rgba(15, 23, 42, 0.1) !important;
-}
-
-.theme-light .shadow-black\/20,
-.theme-light .shadow-black\/30 {
-  --tw-shadow-color: rgba(15, 23, 42, 0.15) !important;
-}
-
-.dark-quill .ql-toolbar.ql-snow {
-  background-color: rgba(15, 27, 61, 0.8);
-  border-color: rgba(255, 255, 255, 0.08);
-  color: #e2e8f0;
-}
-
-.dark-quill .ql-container.ql-snow {
-  background-color: rgba(5, 9, 23, 0.8);
-  border: none;
-  color: #e2e8f0;
-  min-height: 220px;
-}
-
-.dark-quill .ql-editor {
-  min-height: 200px;
-  color: #e2e8f0;
-}
-
-.dark-quill .ql-stroke {
-  stroke: #e2e8f0;
-}
-
-.dark-quill .ql-fill {
-  fill: #e2e8f0;
-}
-
-.dark-quill .ql-picker {
-  color: #e2e8f0;
-}
-
-.theme-light .dark-quill .ql-toolbar.ql-snow {
-  background-color: rgba(226, 232, 240, 0.8);
-  border-color: rgba(15, 23, 42, 0.08);
-  color: #0f172a;
-}
-
-.theme-light .dark-quill .ql-container.ql-snow {
-  background-color: #ffffff;
-  color: #0f172a;
-}
-
-.theme-light .dark-quill .ql-stroke {
-  stroke: #0f172a;
-}
-
-.theme-light .dark-quill .ql-fill {
-  fill: #0f172a;
-}
-
-.theme-light .dark-quill .ql-picker {
-  color: #0f172a;
+.pill {
+  background: #f1f5f9;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #334155;
 }

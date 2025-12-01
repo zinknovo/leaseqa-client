@@ -1,144 +1,299 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
+import {
+  Alert,
+  Badge,
+  Button,
+  Card,
+  Col,
+  Form,
+  ListGroup,
+  Row,
+  Spinner,
+  Stack,
+} from "react-bootstrap";
+import Link from "next/link";
+import { submitAiReview } from "../lib/api";
+import { useDispatch, useSelector } from "react-redux";
+import { addReview, RootState } from "../store";
+
+type ChatMessage = {
+  author: "system" | "user" | "assistant";
+  body: string;
+};
 
 type ReviewState =
   | { status: "idle" }
   | { status: "uploading" }
+  | { status: "error"; message: string }
   | {
       status: "success";
       summary: string;
       highRisk: string[];
       mediumRisk: string[];
       lowRisk: string[];
-    }
-  | { status: "error"; message: string };
+      chat: ChatMessage[];
+    };
 
 export default function AIReviewPage() {
   const [state, setState] = useState<ReviewState>({ status: "idle" });
+  const [fileName, setFileName] = useState<string>("");
+  const contractTextRef = useRef<HTMLTextAreaElement>(null);
+  const dispatch = useDispatch();
+  const history = useSelector((s: RootState) => s.aiHistory.items);
+  const user = useSelector((s: RootState) => s.session.user);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setState({ status: "uploading" });
-    // TODO: wire up the real API once backend is ready
-    await new Promise((resolve) => setTimeout(resolve, 1600));
-    setState({
-      status: "success",
-      summary: "Overall the lease follows Boston residential standards. Review the flagged clauses below.",
-      highRisk: [
-        "Clause 12: Early termination fee exceeds the Massachusetts statutory cap.",
-        "Clause 18: Tenant responsible for all repairs with no reasonable exceptions.",
-      ],
-      mediumRisk: ["Clause 6: Security-deposit return timeline is vague—add a concrete date."],
-      lowRisk: ["Clause 3: Installment schedule looks reasonable."],
-    });
+    const formData = new FormData(event.currentTarget);
+    const contractText = contractTextRef.current?.value || "";
+    if (contractText) {
+      formData.set("contractText", contractText);
+    }
+    formData.set("contractType", "residential");
+
+    try {
+      const result = await submitAiReview(formData);
+      const aiResponse = result.data?.aiResponse || result.aiResponse;
+      const summary =
+        aiResponse?.summary ||
+        "Lease reviewed. See below for rubric-aligned risk notes.";
+      const risks = aiResponse?.risks || {
+        high: ["Missing data"],
+        medium: [],
+        low: [],
+      };
+      setState({
+        status: "success",
+        summary,
+        highRisk: risks.high || [],
+        mediumRisk: risks.medium || [],
+        lowRisk: risks.low || [],
+        chat: [
+          {
+            author: "assistant",
+            body:
+              aiResponse?.chatMessage ||
+              "Here is the rubric-scored summary. Ask follow-ups in the chat or post to QA.",
+          },
+        ],
+      });
+      dispatch(
+        addReview({
+          title: fileName || "Lease review",
+          createdAt: new Date().toISOString(),
+          status: "success",
+        })
+      );
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error ? error.message : "Unable to process review";
+      setState({ status: "error", message });
+    }
   };
 
   return (
-    <div className="mx-auto w-full max-w-4xl px-4 py-10">
-      <header className="mb-8 space-y-2">
-        <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Workflow</p>
-        <h1 className="text-3xl font-semibold text-white">AI lease review</h1>
-        <p className="text-sm text-slate-400">
-          Upload a PDF or paste text and Claude will return a graded risk report in ~30–60 seconds.
-        </p>
-      </header>
+    <Row className="g-4">
+      <Col lg={8}>
+        <Card>
+          <Card.Body>
+            <div className="d-flex align-items-center mb-3">
+              <div className="pill">AI Review</div>
+              <div className="ms-2 text-secondary small">
+                Sign in to keep your history
+              </div>
+            </div>
+            <h1 className="h3 fw-bold">AI lease review</h1>
+            <p className="text-secondary">
+              Drag in a PDF or paste text. Express + Mongo will log history and
+              you can push the result to Q&A.
+            </p>
 
-      <form
-        onSubmit={handleSubmit}
-        className="rounded-2xl border border-dashed bg-[var(--app-panel)] p-6 shadow-2xl shadow-black/30"
-        style={{
-          borderColor: "color-mix(in srgb, var(--accent-blue) 40%, transparent)",
-        }}
-      >
-        <label
-          htmlFor="file"
-          className="flex cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border border-white/10 bg-white/5 p-6 text-center text-sm text-slate-100 hover:border-white/20"
-        >
-          <span className="font-medium text-white">Drag & drop or click to upload a PDF</span>
-          <span className="text-xs text-slate-400">Up to 10 MB</span>
-        </label>
-        <input id="file" name="file" type="file" accept="application/pdf" hidden />
+            <Form onSubmit={handleSubmit} className="mt-4">
+              <Form.Group controlId="fileUpload" className="mb-3">
+                <Form.Label className="fw-semibold">
+                  Upload PDF (max 8MB)
+                </Form.Label>
+                <Form.Control
+                  type="file"
+                  name="file"
+                  accept="application/pdf"
+                  onChange={(e) => setFileName(e.target.value.split("\\").pop() || "")}
+                />
+              </Form.Group>
 
-        <div className="mt-4">
-          <label className="text-sm font-medium text-white">
-            Or paste the lease text
-          </label>
-          <textarea
-            className="mt-2 h-40 w-full resize-none rounded-xl border border-white/10 bg-black/20 p-3 text-sm text-white placeholder:text-slate-500 focus:border-[var(--accent-blue)] focus:outline-none focus:ring-2 focus:ring-[color:var(--accent-blue)] focus:ring-opacity-40"
-            placeholder="Paste the clauses you want Claude to review…"
-          />
-        </div>
+              <Form.Group className="mb-3">
+                <Form.Label className="fw-semibold">
+                  Or paste lease text
+                </Form.Label>
+                <Form.Control
+                  as="textarea"
+                  name="contractText"
+                  ref={contractTextRef}
+                  rows={6}
+                  placeholder="Paste clauses for review..."
+                />
+              </Form.Group>
 
-        <div className="mt-6 flex items-center justify-between">
-          <span className="text-xs text-slate-500">
-            By uploading you confirm the lease is only processed for risk analysis and not stored long term.
-          </span>
-          <button
-            type="submit"
-            className="inline-flex items-center rounded-xl bg-[var(--accent-blue)] px-4 py-2 text-sm font-medium text-white shadow-lg hover:bg-[var(--accent-blue-hover)] disabled:cursor-not-allowed disabled:bg-[var(--accent-blue-muted)]"
-            disabled={state.status === "uploading"}
-          >
-            {state.status === "uploading" ? "Analyzing…" : "Start review"}
-          </button>
-        </div>
-      </form>
+              <Stack
+                direction="horizontal"
+                className="justify-content-between align-items-center"
+              >
+                <span className="text-secondary small">
+                  Uploading confirms this is for risk analysis only and not
+                  stored long term.
+                </span>
+                <Button
+                  type="submit"
+                  variant="danger"
+                  disabled={state.status === "uploading"}
+                >
+                  {state.status === "uploading" && (
+                    <Spinner size="sm" className="me-2" />
+                  )}
+                  Start review
+                </Button>
+              </Stack>
+            </Form>
+          </Card.Body>
+        </Card>
 
-      {state.status === "success" && (
-        <section className="mt-10 space-y-6">
-          <div className="rounded-2xl border border-white/5 bg-[var(--app-panel)] p-6 shadow-lg shadow-black/30">
-            <h2 className="text-lg font-semibold text-white">Summary</h2>
-            <p className="mt-2 text-sm text-slate-300">{state.summary}</p>
-          </div>
-          <div className="grid gap-4 md:grid-cols-3">
-            <RiskCard tone="danger" title="High risk" items={state.highRisk} />
-            <RiskCard tone="warning" title="Medium risk" items={state.mediumRisk} />
-            <RiskCard tone="success" title="Standard clauses" items={state.lowRisk} />
-          </div>
-          <div className="flex flex-wrap gap-3">
-            <button className="rounded-xl border border-white/10 px-4 py-2 text-sm font-medium text-slate-200 hover:bg-white/5">
-              Download report
-            </button>
-            <button className="rounded-xl bg-[var(--accent-blue)] px-4 py-2 text-sm font-medium text-white hover:bg-[var(--accent-blue-hover)]">
-              Still unsure? Ask the community →
-            </button>
-          </div>
-        </section>
-      )}
+        {state.status === "error" && (
+          <Alert variant="danger" className="mt-3">
+            {state.message}
+          </Alert>
+        )}
 
-      {state.status === "error" && (
-        <p className="mt-6 rounded-xl border border-red-400/30 bg-red-500/10 px-4 py-3 text-sm text-red-200">
-          {state.message}
-        </p>
-      )}
-    </div>
+        {state.status === "success" && (
+          <Card className="mt-3">
+            <Card.Body>
+              <div className="d-flex align-items-center mb-2">
+                <Badge bg="danger" className="me-2">
+                  Review ready
+                </Badge>
+                <div className="text-secondary small">
+                  Send to Q&A · Mongo/Express synced
+                </div>
+              </div>
+              <h4 className="fw-semibold">Summary</h4>
+              <p className="text-secondary">{state.summary}</p>
+
+              <Row className="g-3 mt-2">
+                <Col md={4}>
+                  <RiskCard tone="danger" title="High risk" items={state.highRisk} />
+                </Col>
+                <Col md={4}>
+                  <RiskCard
+                    tone="warning"
+                    title="Medium risk"
+                    items={state.mediumRisk}
+                  />
+                </Col>
+                <Col md={4}>
+                  <RiskCard tone="success" title="Low risk" items={state.lowRisk} />
+                </Col>
+              </Row>
+
+              <div className="mt-4">
+                <h6 className="fw-semibold">Chat transcript</h6>
+                <div className="border rounded-3 p-3 bg-light">
+                  {state.chat.map((msg, idx) => (
+                    <div key={idx} className="mb-2">
+                      <span className="fw-semibold text-capitalize">
+                        {msg.author}:
+                      </span>{" "}
+                      <span>{msg.body}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <Stack direction="horizontal" gap={2} className="mt-4 flex-wrap">
+                <Button variant="outline-secondary">Download report</Button>
+                <Button as={Link} href="/qa/new" variant="primary">
+                  Bring result to QA · New Post
+                </Button>
+              </Stack>
+            </Card.Body>
+          </Card>
+        )}
+      </Col>
+
+      <Col lg={4}>
+        <Card className="h-100">
+          <Card.Body>
+            <div className="d-flex align-items-center mb-3">
+              <div className="pill">History</div>
+              <div className="ms-auto small text-secondary">
+                {user ? "Signed in" : "Sign in required"}
+              </div>
+            </div>
+            <p className="text-secondary">
+              Signed-in users can revisit and reuse prior reviews; click to
+              reopen the chat.
+            </p>
+            <ListGroup variant="flush">
+              {history.map((item) => (
+                <ListGroup.Item key={item.id} className="border-0 border-bottom">
+                  <div className="d-flex justify-content-between align-items-center">
+                    <div>
+                      <div className="fw-semibold">{item.title}</div>
+                      <div className="text-secondary small">
+                        {new Date(item.createdAt).toLocaleString()}
+                      </div>
+                    </div>
+                    <Badge bg={item.status === "success" ? "success" : "secondary"}>
+                      {item.status}
+                    </Badge>
+                  </div>
+                </ListGroup.Item>
+              ))}
+            </ListGroup>
+            {!history.length && (
+              <div className="text-secondary small mt-3">
+                Uploads will appear here once completed.
+              </div>
+            )}
+          </Card.Body>
+        </Card>
+      </Col>
+    </Row>
   );
 }
 
-type RiskCardProps = {
+function RiskCard({
+  tone,
+  title,
+  items,
+}: {
   tone: "danger" | "warning" | "success";
   title: string;
   items: string[];
-};
-
-function RiskCard({ tone, title, items }: RiskCardProps) {
-  const toneClass =
+}) {
+  const variant =
     tone === "danger"
-      ? "border-red-500/40 bg-red-500/10 text-red-100"
+      ? "bg-danger-subtle border-danger"
       : tone === "warning"
-        ? "border-amber-400/40 bg-amber-500/10 text-amber-50"
-        : "border-emerald-300/40 bg-emerald-500/10 text-emerald-50";
-
+        ? "bg-warning-subtle border-warning"
+        : "bg-success-subtle border-success";
+  const text =
+    tone === "danger"
+      ? "text-danger"
+      : tone === "warning"
+        ? "text-warning"
+        : "text-success";
   return (
-    <article className={`rounded-2xl border p-4 text-sm shadow-lg shadow-black/20 ${toneClass}`}>
-      <h3 className="mb-2 text-base font-semibold text-white">{title}</h3>
-      <ul className="space-y-2 text-slate-100">
+    <div className={`border rounded-3 p-3 ${variant}`}>
+      <div className={`fw-semibold ${text}`}>{title}</div>
+      <ul className="mt-2 ps-3 mb-0">
         {items.map((item) => (
-          <li key={item} className="leading-relaxed">
-            • {item}
+          <li key={item} className="text-secondary">
+            {item}
           </li>
         ))}
       </ul>
-    </article>
+    </div>
   );
 }

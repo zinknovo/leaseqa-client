@@ -7,7 +7,6 @@ const NAV_ITEMS = [
   { label: "Overview", href: "/" },
   { label: "AI Review", href: "/ai-review" },
   { label: "Q&A Board", href: "/qa" },
-  { label: "New Post", href: "/qa/new" },
   { label: "Admin", href: "/admin" },
 ];
 

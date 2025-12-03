@@ -9,7 +9,7 @@ yarn.lock
 out
 
 # env
-.env
+apps/web/.env.development
 .env.local
 .env.*.local
 

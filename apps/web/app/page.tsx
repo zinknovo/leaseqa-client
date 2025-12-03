@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Button, Card, CardBody, Col, Row, Stack } from "react-bootstrap";
-import { Stat } from "./qa/types";
+import {useEffect, useState} from "react";
+import {Button, Card, CardBody, Col, Row, Stack} from "react-bootstrap";
+import {Stat} from "./qa/types";
 import * as client from "./qa/client";
 
 export default function LandingPage() {
@@ -17,10 +17,10 @@ export default function LandingPage() {
             const response = await client.fetchStats();
             if (response.data) {
                 setStats([
-                    { label: "Unread items", value: response.data.unreadPosts || 0 },
-                    { label: "Open questions", value: response.data.unansweredPosts || 0 },
-                    { label: "Attorney replies", value: response.data.lawyerResponses || 0 },
-                    { label: "AI reviews this week", value: response.data.totalPosts || 0 },
+                    {label: "Unread items", value: response.data.unreadPosts || 0},
+                    {label: "Open questions", value: response.data.unansweredPosts || 0},
+                    {label: "Attorney replies", value: response.data.lawyerResponses || 0},
+                    {label: "AI reviews this week", value: response.data.totalPosts || 0},
                 ]);
             }
         } catch (error) {
@@ -52,8 +52,8 @@ export default function LandingPage() {
                                 🏠 Boston Renter Protection
                             </div>
                             <h1 className="display-4 fw-bold mb-3">
-                                Where laws can&apos;t reach,<br />
-                                <span style={{ color: "#e94560" }}>we help you understand</span>
+                                Where laws can&apos;t reach,<br/>
+                                <span style={{color: "#e94560"}}>we help you understand</span>
                             </h1>
                             <p className="lead mb-4 opacity-75">
                                 LeaseQA pairs AI lease review with a Piazza-style community so
@@ -64,7 +64,7 @@ export default function LandingPage() {
                                     variant="danger"
                                     size="lg"
                                     href="/ai-review"
-                                    style={{ borderRadius: "2rem", padding: "0.75rem 2rem" }}
+                                    style={{borderRadius: "2rem", padding: "0.75rem 2rem"}}
                                 >
                                     🤖 Start AI Review
                                 </Button>
@@ -72,7 +72,7 @@ export default function LandingPage() {
                                     variant="outline-light"
                                     size="lg"
                                     href="/qa"
-                                    style={{ borderRadius: "2rem", padding: "0.75rem 2rem" }}
+                                    style={{borderRadius: "2rem", padding: "0.75rem 2rem"}}
                                 >
                                     💬 Explore Q&A
                                 </Button>
@@ -90,7 +90,7 @@ export default function LandingPage() {
                                 <div className="display-1 mb-3">⚖️</div>
                                 <div className="h4 fw-bold mb-2">NEU · LeaseQA</div>
                                 <div className="small opacity-75">
-                                    Piazza-inspired | React-Bootstrap<br />
+                                    Piazza-inspired | React-Bootstrap<br/>
                                     MongoDB + Express + Next.js
                                 </div>
                             </div>
@@ -119,7 +119,7 @@ export default function LandingPage() {
                                         background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
                                     }}
                                 >
-                                    <span style={{ fontSize: "1.5rem" }}>🤖</span>
+                                    <span style={{fontSize: "1.5rem"}}>🤖</span>
                                 </div>
                                 <div>
                                     <div className="fw-bold">AI Review</div>
@@ -133,9 +133,9 @@ export default function LandingPage() {
                             </p>
                             <div
                                 className="p-4 rounded-3 mb-4 text-center"
-                                style={{ background: "#f8f9fa", border: "2px dashed #dee2e6" }}
+                                style={{background: "#f8f9fa", border: "2px dashed #dee2e6"}}
                             >
-                                <div style={{ fontSize: "2rem" }}>📄</div>
+                                <div style={{fontSize: "2rem"}}>📄</div>
                                 <div className="text-secondary small mt-2">
                                     Drop your lease PDF here
                                 </div>
@@ -144,14 +144,14 @@ export default function LandingPage() {
                                 <Button
                                     href="/ai-review"
                                     variant="dark"
-                                    style={{ borderRadius: "2rem" }}
+                                    style={{borderRadius: "2rem"}}
                                 >
                                     Go to AI Review →
                                 </Button>
                                 <Button
                                     href="/qa/new"
                                     variant="outline-secondary"
-                                    style={{ borderRadius: "2rem" }}
+                                    style={{borderRadius: "2rem"}}
                                 >
                                     Post to Q&A
                                 </Button>
@@ -179,7 +179,7 @@ export default function LandingPage() {
                                         background: "linear-gradient(135deg, #11998e 0%, #38ef7d 100%)"
                                     }}
                                 >
-                                    <span style={{ fontSize: "1.5rem" }}>💬</span>
+                                    <span style={{fontSize: "1.5rem"}}>💬</span>
                                 </div>
                                 <div>
                                     <div className="fw-bold">QA Community</div>
@@ -214,14 +214,14 @@ export default function LandingPage() {
                                 <Button
                                     href="/qa"
                                     variant="primary"
-                                    style={{ borderRadius: "2rem" }}
+                                    style={{borderRadius: "2rem"}}
                                 >
                                     Open Q&A →
                                 </Button>
                                 <Button
                                     href="/qa/resources"
                                     variant="outline-primary"
-                                    style={{ borderRadius: "2rem" }}
+                                    style={{borderRadius: "2rem"}}
                                 >
                                     View Resources
                                 </Button>
@@ -231,7 +231,6 @@ export default function LandingPage() {
                 </Col>
             </Row>
 
-            {/* Stats Section */}
             <Card
                 className="border-0 shadow"
                 style={{
@@ -259,10 +258,10 @@ export default function LandingPage() {
                                 <Col key={stat.label} md={3} sm={6} xs={12}>
                                     <div
                                         className="p-4 rounded-4 text-white h-100"
-                                        style={{ background: colors[index % colors.length] }}
+                                        style={{background: colors[index % colors.length]}}
                                     >
                                         <div className="d-flex justify-content-between align-items-start mb-2">
-                                            <span style={{ fontSize: "1.5rem" }}>{icons[index]}</span>
+                                            <span style={{fontSize: "1.5rem"}}>{icons[index]}</span>
                                         </div>
                                         <div className="display-5 fw-bold mb-1">{stat.value}</div>
                                         <div className="small opacity-75 text-uppercase">

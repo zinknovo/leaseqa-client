@@ -28,3 +28,10 @@ export type Stat = {
     label: string;
     value: number;
 };
+
+export type FeedHeaderProps = {
+    folders: Folder[];
+    posts: Post[];
+    activeFolder: string | null;
+    onSelectFolder: (folderName: string) => void;
+};

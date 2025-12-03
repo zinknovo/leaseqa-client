@@ -33,10 +33,14 @@ export type FeedHeaderProps = {
     folders: Folder[];
     posts: Post[];
     activeFolder: string | null;
-    onSelectFolder: (folderName: string) => void;
+    onSelectFolderAction: (folderName: string) => void;
 };
 
 export type PostDetailProps = {
     post: Post | null;
     folders: Folder[];
+};
+
+export type NavTabsProps = {
+    active?: "qa" | "resources" | "stats";
 };

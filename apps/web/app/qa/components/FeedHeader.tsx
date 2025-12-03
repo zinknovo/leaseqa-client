@@ -4,7 +4,7 @@ import {Button, Card, CardBody, Col, ListGroup, ListGroupItem, Row, Stack} from 
 import {FeedHeaderProps} from "../types";
 import {getFolderDisplayName} from "../utils";
 
-export default function FeedHeader({folders, posts, activeFolder, onSelectFolder}: FeedHeaderProps) {
+export default function FeedHeader({folders, posts, activeFolder, onSelectFolderAction}: FeedHeaderProps) {
     return (
         <Card className="mb-3">
             <CardBody>
@@ -35,7 +35,7 @@ export default function FeedHeader({folders, posts, activeFolder, onSelectFolder
                                     key={folder.name}
                                     action
                                     active={folder.name === activeFolder}
-                                    onClick={() => onSelectFolder(folder.name)}
+                                    onClick={() => onSelectFolderAction(folder.name)}
                                 >
                                     {folder.displayName}
                                 </ListGroupItem>

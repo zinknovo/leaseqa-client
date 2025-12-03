@@ -136,16 +136,17 @@ export default function QAPage() {
                         </ListGroup>
                     </CardBody>
                 </Card>
+                {/*TODO: change to admin only*/}
                 <StatsCard/>
             </Col>
 
             <Col lg={8}>
-                <NavTabs/>
+                <NavTabs active="qa" />
                 <FeedHeader
                     folders={folders}
                     posts={posts}
                     activeFolder={activeFolder}
-                    onSelectFolder={setActiveFolder}
+                    onSelectFolderAction={setActiveFolder}
                 />
                 <PostDetail
                     post={selectedPost}

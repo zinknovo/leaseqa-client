@@ -5,7 +5,6 @@ import {Badge, Button, Card, CardBody, Col, FormControl, ListGroup, ListGroupIte
 import {Folder, Post} from "./types";
 import * as client from "./client";
 import {getFolderDisplayName, getPostCount} from "./utils";
-import StatsCard from "./components/StatsCard";
 import NavTabs from "./components/NavTabs";
 import FeedHeader from "./components/FeedHeader";
 import PostDetail from "./components/PostDetail";
@@ -67,7 +66,14 @@ export default function QAPage() {
     const selectedPost = posts.find(p => p._id === selectedId) || null;
 
     if (loading) {
-        return <div>Loading...</div>;
+        return (
+            <div className="d-flex justify-content-center align-items-center" style={{ minHeight: "50vh" }}>
+                <div className="text-center">
+                    <div className="spinner-border text-primary mb-3" role="status" />
+                    <div className="text-secondary">Loading stats...</div>
+                </div>
+            </div>
+        );
     }
 
     return (
@@ -113,7 +119,7 @@ export default function QAPage() {
                         <div className="small text-secondary mb-2">Recent</div>
                         <ListGroup>
                             {filteredPosts.length > 0 ? (
-                                filteredPosts.slice(0, 3).map(post => (
+                                filteredPosts.slice(0, 2).map(post => (
                                     <ListGroupItem
                                         key={post._id}
                                         action
@@ -136,8 +142,6 @@ export default function QAPage() {
                         </ListGroup>
                     </CardBody>
                 </Card>
-                {/*TODO: change to admin only*/}
-                <StatsCard/>
             </Col>
 
             <Col lg={8}>

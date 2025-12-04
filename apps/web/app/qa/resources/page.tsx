@@ -1,9 +1,11 @@
 "use client";
 
-import Link from "next/link";
-import {Card, CardBody, Col, ListGroup, ListGroupItem, Row} from "react-bootstrap";
-import {FaBalanceScale, FaBook, FaExternalLinkAlt, FaFileAlt, FaGavel, FaHandsHelping, FaHome} from "react-icons/fa";
+import { Card, CardBody, Col, Row } from "react-bootstrap";
+import { FaBalanceScale, FaBook, FaFileAlt, FaGavel, FaHandsHelping, FaHome } from "react-icons/fa";
 import NavTabs from "@/app/qa/components/NavTabs";
+import CardHeader from "@/components/ui/CardHeader";
+import ResourceItem from "@/components/ui/ResourceItem";
+import TemplateItem from "@/components/ui/TemplateItem";
 
 const resources = [
     {
@@ -50,127 +52,51 @@ const templates = [
 export default function ResourcesPage() {
     return (
         <div className="mb-4">
-            <NavTabs active="resources"/>
+            <NavTabs active="resources" />
 
             <Row className="g-4">
                 <Col lg={8}>
-                    <Card
-                        className="border-0 shadow-sm"
-                        style={{
-                            borderRadius: "1rem",
-                            overflow: "hidden",
-                            borderTop: "4px solid #11998e"
-                        }}
-                    >
+                    <Card className="card-base card-accent-green">
                         <CardBody className="p-4">
-                            <div className="d-flex align-items-center gap-3 mb-4">
-                                <div
-                                    className="d-flex align-items-center justify-content-center rounded-circle"
-                                    style={{
-                                        width: 48,
-                                        height: 48,
-                                        background: "linear-gradient(135deg, #11998e 0%, #38ef7d 100%)"
-                                    }}
-                                >
-                                    <FaBook className="text-white" size={20}/>
-                                </div>
-                                <div>
-                                    <h1 className="h4 fw-bold mb-0">Legal Guides & Assistance</h1>
-                                    <div className="text-secondary small">Official resources for MA renters</div>
-                                </div>
-                            </div>
+                            <CardHeader
+                                icon={<FaBook className="text-white" size={20} />}
+                                iconVariant="green"
+                                title="Legal Guides & Assistance"
+                                subtitle="Official resources for MA renters"
+                            />
 
-                            <ListGroup className="border-0">
-                                {resources.map((item, index) => (
-                                    <ListGroupItem
+                            <div className="d-grid gap-2">
+                                {resources.map((item) => (
+                                    <ResourceItem
                                         key={item.title}
-                                        className="border-0 rounded-3 mb-2 p-0"
-                                        style={{background: "transparent"}}
-                                    >
-                                        <div
-                                            className="p-3 rounded-3"
-                                            style={{background: "#f8f9fa"}}
-                                        >
-                                            <div className="d-flex justify-content-between align-items-start gap-3">
-                                                <div className="d-flex gap-3">
-                                                    <div
-                                                        className="d-flex align-items-center justify-content-center rounded-circle flex-shrink-0"
-                                                        style={{
-                                                            width: 40,
-                                                            height: 40,
-                                                            background: "#e9ecef"
-                                                        }}
-                                                    >
-                                                        <item.icon className="text-secondary" size={16}/>
-                                                    </div>
-                                                    <div>
-                                                        <div className="fw-semibold mb-1">{item.title}</div>
-                                                        <div className="text-secondary small">{item.summary}</div>
-                                                    </div>
-                                                </div>
-                                                <Link
-                                                    href={item.link}
-                                                    target="_blank"
-                                                    className="text-decoration-none d-flex align-items-center gap-2 flex-shrink-0"
-                                                    style={{color: "#11998e"}}
-                                                >
-                                                    <span>Open</span>
-                                                    <FaExternalLinkAlt size={12}/>
-                                                </Link>
-                                            </div>
-                                        </div>
-                                    </ListGroupItem>
+                                        icon={item.icon}
+                                        title={item.title}
+                                        summary={item.summary}
+                                        link={item.link}
+                                    />
                                 ))}
-                            </ListGroup>
+                            </div>
                         </CardBody>
                     </Card>
                 </Col>
 
                 <Col lg={4}>
-                    <Card
-                        className="border-0 shadow-sm"
-                        style={{
-                            borderRadius: "1rem",
-                            overflow: "hidden",
-                            borderTop: "4px solid #764ba2"
-                        }}
-                    >
+                    <Card className="card-base card-accent-purple">
                         <CardBody className="p-4">
-                            <div className="d-flex align-items-center gap-3 mb-4">
-                                <div
-                                    className="d-flex align-items-center justify-content-center rounded-circle"
-                                    style={{
-                                        width: 40,
-                                        height: 40,
-                                        background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
-                                    }}
-                                >
-                                    <FaFileAlt className="text-white" size={16}/>
-                                </div>
-                                <div>
-                                    <div className="fw-bold">Templates</div>
-                                    <div className="text-secondary small">Ready-to-use documents</div>
-                                </div>
-                            </div>
+                            <CardHeader
+                                icon={<FaFileAlt className="text-white" size={16} />}
+                                iconVariant="purple"
+                                title="Templates"
+                                subtitle="Ready-to-use documents"
+                            />
 
                             <div className="d-grid gap-3">
                                 {templates.map((tpl) => (
-                                    <div
+                                    <TemplateItem
                                         key={tpl.label}
-                                        className="p-3 rounded-3"
-                                        style={{
-                                            background: "#f8f9fa",
-                                            cursor: "pointer",
-                                            transition: "all 0.2s ease"
-                                        }}
-                                    >
-                                        <div className="d-flex align-items-start gap-3">
-                                            <div>
-                                                <div className="fw-semibold">{tpl.label}</div>
-                                                <div className="text-secondary small">{tpl.description}</div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                        label={tpl.label}
+                                        description={tpl.description}
+                                    />
                                 ))}
                             </div>
                         </CardBody>

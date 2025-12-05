@@ -9,7 +9,7 @@ const NAV_ITEMS = [
     {label: "Q&A Board", href: "/qa"},
     {label: "Admin", href: "/admin"},
 ];
-
+//TODO: no usage
 export function MainNav() {
     const pathname = usePathname();
 

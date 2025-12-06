@@ -1,25 +1,24 @@
 "use client";
 
-import { useState } from "react";
-import { Alert, Button, Card, CardBody, Form } from "react-bootstrap";
+import React, {useState} from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { loginUser } from "@/app/lib/api";
-import { useDispatch } from "react-redux";
-import { setSession } from "@/app/store";
+import {useRouter} from "next/navigation";
+import {useDispatch} from "react-redux";
+import {setSession} from "@/app/store";
+import {Alert, Button, Card, CardBody, Form} from "react-bootstrap";
+import * as client from "../client";
 
 export default function LoginPage() {
     const router = useRouter();
     const dispatch = useDispatch();
-    const [formData, setFormData] = useState({
-        email: "",
-        password: ""
-    });
+
+    const [formData, setFormData] = useState({email: "", password: ""});
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        const {name, value} = e.target;
+        setFormData(prev => ({...prev, [name]: value}));
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -28,28 +27,33 @@ export default function LoginPage() {
         setLoading(true);
 
         try {
-            const response = await loginUser({
-                email: formData.email,
-                password: formData.password
-            });
-
-            const user = (response as any)?.data || response;
-            if (!user || typeof user !== "object") {
-                throw new Error("Login response missing user data");
-            }
-
-            dispatch(setSession(user));
+            const user = await client.loginUser(formData);
+            dispatch(setSession(user.data || user));
             router.push("/account");
         } catch (err: any) {
-            setError(err.message || "Invalid email or password");
+            const message = err.response?.data?.error?.message
+                || err.message
+                || "Invalid email or password";
+            setError(message);
         } finally {
             setLoading(false);
         }
     };
 
+    if (loading) {
+        return (
+            <div className="d-flex justify-content-center align-items-center loading-container">
+                <div className="text-center">
+                    <div className="spinner-border text-primary mb-3" role="status"/>
+                    <div className="text-secondary">Loading stats...</div>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="auth-page">
-            <div className="auth-container">
+            <div className="auth-container-narrow">
                 <div className="text-center mb-4">
                     <h1 className="h3 fw-bold">Welcome Back</h1>
                     <p className="text-secondary">Sign in to continue to LeaseQA</p>

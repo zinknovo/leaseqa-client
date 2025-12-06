@@ -2,17 +2,17 @@ import {configureStore, createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 type Role = "tenant" | "lawyer" | "admin";
 
+type User = {
+    id: string;
+    name: string;
+    email: string;
+    role: Role;
+    avatar: string;
+};
+
 type SessionState = {
     status: "authenticated" | "unauthenticated";
-    user:
-        | {
-        id: string;
-        name: string;
-        email: string;
-        role: Role;
-        avatar: string;
-    }
-        | null;
+    user: User | null;
 };
 
 type ReviewHistoryItem = {
@@ -22,17 +22,36 @@ type ReviewHistoryItem = {
     status: "success" | "error";
 };
 
+type AIHistoryState = {
+    items: ReviewHistoryItem[];
+};
+
+const initialSessionState: SessionState = {
+    status: "unauthenticated",
+    user: null,
+};
+
+const initialAIHistoryState: AIHistoryState = {
+    items: [
+        {
+            id: "review-1",
+            title: "Back Bay sublease addendum",
+            createdAt: "2024-11-02T10:00:00Z",
+            status: "success",
+        },
+        {
+            id: "review-2",
+            title: "Security deposit dispute draft",
+            createdAt: "2024-10-30T16:30:00Z",
+            status: "success",
+        },
+    ],
+};
+
 const sessionSlice = createSlice({
     name: "session",
-    initialState: {
-        status: "unauthenticated",
-        user: null,
-    } as SessionState,
+    initialState: initialSessionState,
     reducers: {
-        signOut(state) {
-            state.status = "unauthenticated";
-            state.user = null;
-        },
         setSession(state, action: PayloadAction<any>) {
             state.status = "authenticated";
             state.user = {
@@ -40,13 +59,14 @@ const sessionSlice = createSlice({
                 name: action.payload.username || action.payload.name,
                 email: action.payload.email,
                 role: action.payload.role,
-                avatar: "/images/NEU.png", // Default avatar
+                avatar: "/images/NEU.png",
             };
         },
-        signInAsDemo(
-            state,
-            action: PayloadAction<{ name: string; email: string; role?: Role }>
-        ) {
+        signOut(state) {
+            state.status = "unauthenticated";
+            state.user = null;
+        },
+        signInAsDemo(state, action: PayloadAction<{name: string; email: string; role?: Role}>) {
             state.status = "authenticated";
             state.user = {
                 id: `demo-${Date.now()}`,
@@ -61,22 +81,7 @@ const sessionSlice = createSlice({
 
 const aiHistorySlice = createSlice({
     name: "aiHistory",
-    initialState: {
-        items: [
-            {
-                id: "review-1",
-                title: "Back Bay sublease addendum",
-                createdAt: "2024-11-02T10:00:00Z",
-                status: "success" as const,
-            },
-            {
-                id: "review-2",
-                title: "Security deposit dispute draft",
-                createdAt: "2024-10-30T16:30:00Z",
-                status: "success" as const,
-            },
-        ],
-    } as { items: ReviewHistoryItem[] },
+    initialState: initialAIHistoryState,
     reducers: {
         addReview(state, action: PayloadAction<Omit<ReviewHistoryItem, "id">>) {
             const newEntry: ReviewHistoryItem = {
@@ -99,7 +104,7 @@ export type AppStore = typeof store;
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
-export const {signOut, signInAsDemo, setSession} = sessionSlice.actions;
+export const {setSession, signOut, signInAsDemo} = sessionSlice.actions;
 export const {addReview} = aiHistorySlice.actions;
 
 export default store;

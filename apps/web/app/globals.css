@@ -30,7 +30,8 @@
     --ink-light: #334155;
     --ink-muted: #6c757d;
     --panel: #ffffff;
-    --panel-muted: #f8f9fa;
+    --panel-muted: #f4f4f4;
+    --panel-dark: #dddddd;
     --border: #e9ecef;
     --border-light: #dee2e6;
 
@@ -54,6 +55,10 @@
     --gradient-success: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
     --gradient-danger: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
     --gradient-sidenav: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+
+    /* Glass Effect */
+    --glass-bg: rgba(255, 255, 255, 0.15);
+    --glass-border: rgba(255, 255, 255, 0.2);
 
     /* Shadows */
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
@@ -155,35 +160,37 @@ body {
 .card.card-glass {
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid var(--glass-border);
     border-radius: var(--radius-lg);
 }
 
 /* Activity Card */
-.activity-card {
+.card.activity-card {
     border-radius: var(--radius-lg);
+    border: 0;
     overflow: hidden;
     border-top: 4px solid var(--accent-green);
+    box-shadow: var(--shadow-xl);
 }
 
 /* Risk Cards */
-.risk-card {
+.card.risk-card {
     border-radius: var(--radius-md);
     padding: 1rem;
     height: 100%;
 }
 
-.risk-card-danger {
+.card.risk-card-danger {
     background: #fef2f2;
     border-left: 4px solid var(--accent-danger);
 }
 
-.risk-card-warning {
+.card.risk-card-warning {
     background: #fffbeb;
     border-left: 4px solid var(--accent-warning);
 }
 
-.risk-card-success {
+.card.risk-card-success {
     background: #f0fdf4;
     border-left: 4px solid var(--accent-success);
 }
@@ -191,6 +198,8 @@ body {
 /* ============================================
    5. BUTTONS
    ============================================ */
+
+/* Pill Buttons */
 .btn-pill {
     border-radius: var(--radius-full);
     padding: 0.5rem 1.5rem;
@@ -206,29 +215,24 @@ body {
     padding: 0.75rem 1.5rem;
 }
 
-/* Gradient Buttons */
-.btn-gradient-purple {
-    background: var(--gradient-purple);
+/* Gradient Buttons - Shared Base */
+.btn-gradient-purple,
+.btn-gradient-green,
+.btn-gradient-red {
     border: none;
     color: white;
 }
 
-.btn-gradient-purple:hover {
+.btn-gradient-purple:hover,
+.btn-gradient-green:hover,
+.btn-gradient-red:hover {
     opacity: 0.9;
     color: white;
 }
 
-.btn-gradient-green {
-    background: var(--gradient-green);
-    border: none;
-    color: white;
-}
-
-.btn-gradient-red {
-    background: var(--gradient-red);
-    border: none;
-    color: white;
-}
+.btn-gradient-purple { background: var(--gradient-purple); }
+.btn-gradient-green { background: var(--gradient-green); }
+.btn-gradient-red { background: var(--gradient-red); }
 
 /* ============================================
    6. FORMS & INPUTS
@@ -289,7 +293,8 @@ body {
    ============================================ */
 
 /* Icon Circle Base */
-.icon-circle {
+.icon-circle,
+.resource-icon {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -299,13 +304,22 @@ body {
 
 /* Icon Circle Sizes */
 .icon-circle-sm { width: 32px; height: 32px; }
-.icon-circle-md { width: 40px; height: 40px; }
+.icon-circle-md,
+.resource-icon { width: 40px; height: 40px; }
 .icon-circle-lg { width: 48px; height: 48px; }
 .icon-circle-xl { width: 56px; height: 56px; }
 .icon-circle-2xl { width: 80px; height: 80px; }
-.icon-circle-36 { width: 36px; height: 36px; }
-.icon-circle-44 { width: 44px; height: 44px; }
-.icon-circle-48 { width: 48px; height: 48px; }
+
+/* Profile Avatar (with min-width to prevent shrinking) */
+.profile-avatar-sm {
+    min-width: 36px;
+    height: 36px;
+}
+
+/* Resource Icon Background */
+.resource-icon {
+    background: var(--border);
+}
 
 /* Icon Circle Backgrounds */
 .icon-bg-purple { background: var(--gradient-purple); color: white; }
@@ -315,7 +329,7 @@ body {
 .icon-bg-muted { background: var(--panel-muted); color: var(--ink-muted); }
 .icon-bg-glass {
     background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid var(--glass-border);
 }
 
 /* Emoji Icons */
@@ -337,7 +351,7 @@ body {
    8. BADGES & PILLS
    ============================================ */
 .pill {
-    background: var(--panel-muted);
+    background: var(--panel-dark);
     border-radius: var(--radius-full);
     padding: 6px 14px;
     font-size: 12px;
@@ -346,9 +360,12 @@ body {
     display: inline-block;
 }
 
-.pill-glass {
-    background: rgba(255, 255, 255, 0.15);
+/* Glass Pills (for dark backgrounds) */
+.pill-glass,
+.about-pill {
+    background: var(--glass-bg);
     color: white;
+    display: inline-block;
 }
 
 .badge-pill {
@@ -358,20 +375,14 @@ body {
 }
 
 .role-badge {
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
     border-radius: var(--radius-full);
 }
 
 .role-tag {
-    background: #f8f9fa;
-    color: #6c757d;
-}
-
-.about-pill {
-    background: rgba(255, 255, 255, 0.15);
-    color: #fff;
-    display: inline-block;
+    background: var(--panel-muted);
+    color: var(--ink-muted);
 }
 
 .scenario-chip {
@@ -392,7 +403,7 @@ body {
 .sidenav-divider {
     width: 40px;
     height: 2px;
-    background: rgba(255, 255, 255, 0.2);
+    background: var(--glass-border);
     border-radius: 1px;
 }
 
@@ -400,15 +411,18 @@ body {
     font-size: 1.5rem;
 }
 
-.sidenav-icon-active { color: #fff; }
-.sidenav-icon-inactive { color: rgba(255, 255, 255, 0.7); }
+.sidenav-icon-active,
+.sidenav-label-active { color: #fff; }
+
+.sidenav-icon-inactive,
+.sidenav-label-inactive { color: rgba(255, 255, 255, 0.7); }
 
 .sidenav-label {
     font-size: 0.7rem;
 }
 
-.sidenav-label-active { font-weight: 600; color: #fff; }
-.sidenav-label-inactive { font-weight: 400; color: rgba(255, 255, 255, 0.7); }
+.sidenav-label-active { font-weight: 600; }
+.sidenav-label-inactive { font-weight: 400; }
 
 /* Header Bar */
 .header-shadow {
@@ -436,7 +450,7 @@ body {
     gap: 0.5rem;
     padding: 0.25rem 0.75rem;
     border-radius: var(--radius-full);
-    transition: all 0.2s ease;
+    transition: all var(--transition-fast);
     cursor: pointer;
     color: var(--ink-muted);
     font-weight: 400;
@@ -453,28 +467,36 @@ body {
     min-width: 240px;
 }
 
-.profile-avatar-sm {
-    min-width: 36px;
-    height: 36px;
-}
-
 /* ============================================
    10. LISTS & ITEMS
    ============================================ */
 
-/* List Items */
-.list-item-muted {
+/* Muted Item Base (shared by list-item, resource-item, template-item) */
+.list-item-muted,
+.resource-item,
+.template-item {
     background: var(--panel-muted);
-    border: none;
     border-radius: var(--radius-md);
-    margin-bottom: 0.5rem;
-    padding: 0.75rem 1rem;
+    padding: 1rem;
+}
+
+/* Interactive Items */
+.list-item-muted,
+.template-item {
     cursor: pointer;
     transition: background var(--transition-fast);
 }
 
-.list-item-muted:hover {
+.list-item-muted:hover,
+.template-item:hover {
     background: var(--border);
+}
+
+/* List Item Specific */
+.list-item-muted {
+    border: none;
+    margin-bottom: 0.5rem;
+    padding: 0.75rem 1rem;
 }
 
 .list-item-active {
@@ -482,24 +504,7 @@ body {
     color: white;
 }
 
-/* Resource Items */
-.resource-item {
-    background: var(--panel-muted);
-    border-radius: var(--radius-md);
-    padding: 1rem;
-}
-
-.resource-icon {
-    width: 40px;
-    height: 40px;
-    background: var(--border);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
+/* Resource Link */
 .resource-link {
     color: var(--accent-green);
     text-decoration: none;
@@ -511,19 +516,6 @@ body {
 
 .resource-link:hover {
     opacity: 0.8;
-}
-
-/* Template Items */
-.template-item {
-    background: var(--panel-muted);
-    border-radius: var(--radius-md);
-    padding: 1rem;
-    cursor: pointer;
-    transition: background var(--transition-fast);
-}
-
-.template-item:hover {
-    background: var(--border);
 }
 
 /* Post Items */
@@ -615,13 +607,8 @@ body {
 }
 
 /* Animation Classes */
-.animate-slide-in {
-    animation: slideIn 0.3s ease;
-}
-
-.animate-fade-in {
-    animation: fadeIn 0.3s ease;
-}
+.animate-slide-in { animation: slideIn 0.3s ease; }
+.animate-fade-in { animation: fadeIn 0.3s ease; }
 
 /* Hover Effects */
 .hover-scale {
@@ -654,8 +641,9 @@ body {
 .avatar-text-xs { font-size: 0.8rem; }
 
 /* Backgrounds */
-.bg-muted { background: var(--panel-muted); }
-.bg-light-gray { background: #f8f9fa; }
+.bg-muted,
+.bg-light-gray { background: var(--panel-muted); }
+
 .bg-gradient-purple { background: var(--gradient-purple); }
 .bg-gradient-green { background: var(--gradient-green); }
 .bg-gradient-red { background: var(--gradient-red); }
@@ -664,7 +652,7 @@ body {
 
 /* Borders */
 .border-accent {
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid var(--glass-border);
 }
 
 /* Opacity */
@@ -672,7 +660,7 @@ body {
 .opacity-90 { opacity: 0.9; }
 
 /* Loading States */
-.loading-container { min-height: 50vh; }
+.loading-container,
 .loading-min-height { min-height: 50vh; }
 
 /* ============================================
@@ -685,7 +673,7 @@ body {
     height: 80px;
     background: var(--gradient-purple);
     font-size: 1.5rem;
-    border: 3px solid rgba(255, 255, 255, 0.2);
+    border: 3px solid var(--glass-border);
 }
 
 /* Info Page - Team Avatars */
@@ -701,6 +689,14 @@ body {
 .team-avatar-3 { background: var(--gradient-blue); }
 
 /* Auth Pages */
+.auth-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 75vh;
+    padding: 2rem 0;
+}
+
 .auth-container-narrow {
     max-width: 400px;
     width: 100%;
@@ -708,10 +704,10 @@ body {
 
 /* Toast Notifications */
 .toast-wrapper {
+    position: fixed;
+    top: 80px;
+    right: 20px;
     z-index: 9999;
-}
-
-.toast-container {
-    min-width: 300px;
-    max-width: 400px;
+    max-width: 350px;
+    width: 100%;
 }

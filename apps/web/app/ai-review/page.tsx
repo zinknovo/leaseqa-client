@@ -71,9 +71,8 @@ export default function AIReviewPage() {
     };
 
     return (
-        <>
+        <div>
             <ToastNotification toast={toast} onClose={() => setToast({...toast, show: false})}/>
-
             <Row className="g-4">
                 <Col lg={8}>
                     <AccentCard>
@@ -197,6 +196,6 @@ export default function AIReviewPage() {
                     </AccentCard>
                 </Col>
             </Row>
-        </>
+        </div>
     );
 }

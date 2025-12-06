@@ -1,19 +1,14 @@
 "use client";
-
-type RiskCardProps = {
-    tone: "danger" | "warning" | "success";
-    title: string;
-    items: string[];
-};
+import {RiskCardProps} from "@/app/ai-review/types";
 
 const config = {
-    danger: { icon: "🔴", textClass: "text-danger" },
-    warning: { icon: "🟡", textClass: "text-warning" },
-    success: { icon: "🟢", textClass: "text-success" }
+    danger: {icon: "🔴", textClass: "text-danger"},
+    warning: {icon: "🟡", textClass: "text-warning"},
+    success: {icon: "🟢", textClass: "text-success"}
 };
 
-export default function RiskCard({ tone, title, items }: RiskCardProps) {
-    const { icon, textClass } = config[tone];
+export default function RiskCard({tone, title, items}: RiskCardProps) {
+    const {icon, textClass} = config[tone];
 
     return (
         <div className={`risk-card risk-card-${tone}`}>

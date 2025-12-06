@@ -45,7 +45,7 @@ export default function LandingPage() {
                     <Col lg={12}>
                         <span className="pill pill-glass mb-3">🏠 Boston Renter Protection</span>
                         <h1 className="display-4 fw-bold mb-3">
-                            <span className="text-accent-red">we help you understand</span>
+                            <span className="text-accent-red">We help you understand</span>
                         </h1>
                         <p className="lead mb-4">
                             LeaseQA pairs AI lease review with a Piazza-style community so

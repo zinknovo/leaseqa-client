@@ -4,17 +4,7 @@ import Link from "next/link";
 import {usePathname, useRouter} from "next/navigation";
 import {forwardRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {
-    Badge,
-    Button,
-    Container,
-    Dropdown,
-    Nav,
-    Navbar,
-    NavbarBrand,
-    Offcanvas,
-    Stack,
-} from "react-bootstrap";
+import {Badge, Container, Dropdown, Nav, Navbar, NavbarBrand, Offcanvas, Stack,} from "react-bootstrap";
 import {FaSearch, FaShieldAlt} from "react-icons/fa";
 import {NAV_ITEMS} from "./config";
 import {RootState, signOut} from "@/app/store";
@@ -34,7 +24,7 @@ export default function HeaderBar() {
         user?.email?.slice(0, 2).toUpperCase() ||
         "CA";
 
-    const AvatarToggle = forwardRef<HTMLButtonElement, {onClick?: (e: React.MouseEvent) => void}>(
+    const AvatarToggle = forwardRef<HTMLButtonElement, { onClick?: (e: React.MouseEvent) => void }>(
         ({onClick}, ref) => (
             <button
                 ref={ref}
@@ -46,11 +36,8 @@ export default function HeaderBar() {
                 }}
                 aria-label="Open profile menu"
             >
-                <div
-                    className="icon-circle icon-circle-md icon-bg-purple hover-scale"
-                    style={{cursor: "pointer"}}
-                >
-                    <span className="fw-semibold" style={{fontSize: "0.875rem"}}>{initials}</span>
+                <div className="icon-circle icon-circle-md icon-bg-purple hover-scale post-item-clickable">
+                    <span className="fw-semibold avatar-text-sm">{initials}</span>
                 </div>
             </button>
         )
@@ -70,13 +57,13 @@ export default function HeaderBar() {
     };
 
     return (
-        <Navbar expand={false} className="bg-white border-bottom" style={{boxShadow: "var(--shadow-md)", minHeight: "56px"}}>
+        <Navbar expand={false} className="bg-white border-bottom header-shadow">
             <Container fluid className="px-3">
                 <div className="d-flex align-items-center gap-2">
                     <Navbar.Toggle aria-controls="mobile-navbar-nav" className="d-md-none border-0 p-0 me-2"/>
                     <NavbarBrand className="d-flex align-items-center gap-2 me-0">
                         <span className="fw-bold">LeaseQA</span>
-                        <span className="d-none d-lg-inline text-muted-light" style={{fontSize: "0.9rem"}}>
+                        <span className="d-none d-lg-inline text-muted-light header-tagline">
                         · where statutes can't reach
                     </span>
                     </NavbarBrand>
@@ -110,7 +97,7 @@ export default function HeaderBar() {
                                             }
                                         }}
                                     >
-                                        <item.icon size={18} />
+                                        <item.icon size={18}/>
                                         <span>{item.label}</span>
                                     </Link>
                                 );
@@ -122,7 +109,7 @@ export default function HeaderBar() {
                 <Stack direction="horizontal" gap={2}>
                     <div className="search-box d-none d-md-flex">
                         <FaSearch className="text-muted-light" size={14}/>
-                        <span className="text-muted-light" style={{fontSize: "0.875rem"}}>Search...</span>
+                        <span className="text-muted-light search-text">Search...</span>
                     </div>
 
                     <Dropdown
@@ -130,23 +117,21 @@ export default function HeaderBar() {
                         show={showProfileMenu}
                         onToggle={(next) => setShowProfileMenu(next)}
                     >
-                        <Dropdown.Toggle as={AvatarToggle} />
+                        <Dropdown.Toggle as={AvatarToggle}/>
 
-                        <Dropdown.Menu className="shadow-sm" style={{minWidth: 240}}>
+                        <Dropdown.Menu className="shadow-sm profile-menu">
                             <div className="px-3 py-2">
                                 {isAuthenticated ? (
                                     <div className="d-flex align-items-start gap-2">
-                                        <div
-                                            className="icon-circle icon-circle-sm icon-bg-purple"
-                                            style={{minWidth: 36, height: 36}}
-                                        >
-                                            <span className="fw-semibold" style={{fontSize: "0.8rem"}}>{initials}</span>
+                                        <div className="icon-circle icon-circle-sm icon-bg-purple profile-avatar-sm">
+                                            <span className="fw-semibold avatar-text-xs">{initials}</span>
                                         </div>
                                         <div>
                                             <div className="fw-bold">{user?.name || "Account"}</div>
                                             <div className="text-muted small mb-1">{user?.email}</div>
-                                            <Badge bg="light" text="dark" className="d-inline-flex align-items-center gap-1">
-                                                <FaShieldAlt size={12} />
+                                            <Badge bg="light" text="dark"
+                                                   className="d-inline-flex align-items-center gap-1">
+                                                <FaShieldAlt size={12}/>
                                                 <span className="text-capitalize">{user?.role || "tenant"}</span>
                                             </Badge>
                                         </div>
@@ -154,11 +139,13 @@ export default function HeaderBar() {
                                 ) : (
                                     <div>
                                         <div className="fw-bold mb-1">You are not signed in</div>
-                                        <div className="text-muted small">Sign in to access your account and saved posts.</div>
+                                        <div className="text-muted small">Sign in to access your account and saved
+                                            posts.
+                                        </div>
                                     </div>
                                 )}
                             </div>
-                            <Dropdown.Divider />
+                            <Dropdown.Divider/>
                             {isAuthenticated ? (
                                 <>
                                     <Dropdown.Item

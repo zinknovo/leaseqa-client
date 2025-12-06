@@ -15,7 +15,7 @@ export default function HeroCard({
                                      padding = "p-5"
                                  }: HeroCardProps) {
     return (
-        <Card className={`card-base card-hero border-0 ${className}`}>
+        <Card className={`card-hero border-0 ${className}`}>
             <CardBody className={padding}>
                 {children}
             </CardBody>

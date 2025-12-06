@@ -58,13 +58,7 @@ export default function NavTabs({ active }: NavTabsProps) {
     };
 
     return (
-        <Card
-            className="mb-1 border-0 shadow-sm"
-            style={{
-                borderRadius: "1rem",
-                overflow: "hidden",
-            }}
-        >
+        <Card className="card-nav mb-4">
             <CardBody className="py-1 px-2">
                 <Stack
                     direction="horizontal"
@@ -86,18 +80,7 @@ export default function NavTabs({ active }: NavTabsProps) {
                                     }
                                 }}
                             >
-                                <div
-                                    className="d-flex align-items-center gap-2 px-3 py-1 rounded-pill"
-                                    style={{
-                                        background: isActive
-                                            ? "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
-                                            : "transparent",
-                                        color: isActive ? "#fff" : "#6c757d",
-                                        fontWeight: isActive ? 600 : 400,
-                                        transition: "all 0.2s ease",
-                                        cursor: "pointer"
-                                    }}
-                                >
+                                <div className={`nav-tab-item ${isActive ? "active" : ""}`}>
                                     <tab.icon size={14} />
                                     <span>{tab.label}</span>
                                 </div>
@@ -113,8 +96,7 @@ export default function NavTabs({ active }: NavTabsProps) {
                                 key={chip.key}
                                 size="sm"
                                 variant={scenario === chip.key ? "primary" : "outline-secondary"}
-                                className="rounded-pill"
-                                style={{paddingInline: "10px", paddingBlock: "2px"}}
+                                className="rounded-pill scenario-chip"
                                 data-scenario={chip.key}
                                 onClick={() => setScenarioParam(chip.key)}
                             >

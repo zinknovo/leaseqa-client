@@ -42,9 +42,8 @@ export default function ToastNotification({toast, onClose}: ToastNotificationPro
     const {bgClass, icon, title} = config[toast.type];
 
     return (
-        <div className="position-fixed top-0 end-0 p-3 animate-slide-in" style={{zIndex: 9999}}>
-            <div className={`d-flex align-items-start gap-3 text-white p-3 shadow-lg rounded-3 ${bgClass}`}
-                 style={{minWidth: 300, maxWidth: 400}}>
+        <div className="position-fixed top-0 end-0 p-3 animate-slide-in toast-wrapper">
+            <div className={`d-flex align-items-start gap-3 text-white p-3 shadow-lg rounded-3 toast-container ${bgClass}`}>
                 <div className="flex-shrink-0 mt-1">{icon}</div>
                 <div className="flex-grow-1">
                     <div className="fw-bold mb-1">{title}</div>

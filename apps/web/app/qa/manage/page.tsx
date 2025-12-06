@@ -60,7 +60,7 @@ export default function ManageSectionsPage() {
 
     if (!isAdmin) {
         return (
-            <Card className="border-0 shadow-sm">
+            <Card className="card-base">
                 <CardBody className="p-4">
                     <div className="h5 mb-2">Admin only</div>
                     <div className="text-secondary mb-3">You need admin permissions to manage sections.</div>
@@ -150,7 +150,7 @@ export default function ManageSectionsPage() {
 
     return (
         <div className="d-grid gap-2">
-            <Card className="border-0 shadow-sm">
+            <Card className="card-base">
                 <CardBody className="p-3">
                     <div className="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
                         <div>
@@ -169,7 +169,7 @@ export default function ManageSectionsPage() {
 
                     <Row className="g-2">
                         <Col lg={6}>
-                            <Card className="h-100">
+                            <Card className="h-100 card-base">
                                 <CardBody className="p-3">
                                     <div className="fw-semibold mb-2">Create section</div>
                                     <Stack gap={2}>
@@ -220,7 +220,7 @@ export default function ManageSectionsPage() {
                             </Card>
                         </Col>
                         <Col lg={6}>
-                            <Card className="h-100">
+                            <Card className="h-100 card-base">
                                 <CardBody className="p-3">
                                     <div className="fw-semibold mb-2">Existing sections</div>
                                     {!sortedFolders.length ? (
@@ -232,7 +232,7 @@ export default function ManageSectionsPage() {
                                                 <th>Display name</th>
                                                 <th>Slug</th>
                                                 <th>Description</th>
-                                                <th style={{width: 160}} className="text-end">Actions</th>
+                                                <th className="table-actions-col">Actions</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -261,7 +261,7 @@ export default function ManageSectionsPage() {
                                                         <td>
                                                             <Badge bg="light" text="dark">{folder.name}</Badge>
                                                         </td>
-                                                        <td style={{minWidth: 160}}>
+                                                        <td className="table-description-col">
                                                             {editing ? (
                                                                 <Form.Control
                                                                     size="sm"

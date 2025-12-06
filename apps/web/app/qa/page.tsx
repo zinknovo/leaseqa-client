@@ -193,7 +193,7 @@ export default function QAPage() {
 
     if (loading) {
         return (
-            <div className="d-flex justify-content-center align-items-center" style={{ minHeight: "50vh" }}>
+            <div className="d-flex justify-content-center align-items-center loading-min-height">
                 <div className="text-center">
                     <div className="spinner-border text-primary mb-3" role="status" />
                     <div className="text-secondary">Loading stats...</div>
@@ -226,14 +226,14 @@ export default function QAPage() {
                     placeholder="Search posts"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    style={{maxWidth: 320}}
+                    className="search-input-md"
                 />
             </Stack>
 
             <Row className="g-1 mx-0">
                 {sidebarOpen && (
                     <Col lg={3} className="px-1">
-                        <Card className="mb-1">
+                        <Card className="mb-1 card-base">
                             <CardBody className="py-1 px-2">
                                 <div className="small text-secondary mb-1">By recency</div>
                                 <ListGroup>
@@ -255,8 +255,7 @@ export default function QAPage() {
                                                         {bucket.items.map((post) => (
                                                             <Card
                                                                 key={post._id}
-                                                                className={`p-1 ${selectedId === post._id || currentRouteId === post._id ? "border-primary" : "border-light"}`}
-                                                                style={{cursor: "pointer"}}
+                                                                className={`p-1 post-item-clickable card-nested ${selectedId === post._id || currentRouteId === post._id ? "border-primary" : ""}`}
                                                                 onClick={() => {
                                                                     setSelectedId(post._id);
                                                                     router.push(`/qa/${post._id}`);
@@ -269,7 +268,7 @@ export default function QAPage() {
                                                                             {makeSnippet(post.details)}
                                                                         </div>
                                                                     </div>
-                                                                    <div className="text-muted small" style={{whiteSpace: "nowrap"}}>
+                                                                    <div className="text-muted small post-timestamp">
                                                                         {formatTimestamp(post.createdAt)}
                                                                     </div>
                                                                 </div>
@@ -297,7 +296,7 @@ export default function QAPage() {
                     )}
 
                     {showCompose ? (
-                        <Card className="mb-1">
+                        <Card className="mb-1 card-base">
                             <CardBody className="p-2">
                                 <div className="d-flex align-items-center justify-content-between mb-2">
                                     <div className="fw-semibold">Create a new post</div>
@@ -497,14 +496,6 @@ export default function QAPage() {
                                         </Button>
                                     </div>
                                 </Stack>
-                                <style jsx global>{`
-                                    .rich-editor .ql-container {
-                                        min-height: 320px;
-                                    }
-                                    .rich-editor .ql-editor {
-                                        min-height: 280px;
-                                    }
-                                `}</style>
                             </CardBody>
                         </Card>
                     ) : (

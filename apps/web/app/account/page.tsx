@@ -4,16 +4,16 @@ import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Badge, Button, Card, CardBody, Col, Form, Row, Stack} from "react-bootstrap";
 import {
+    FaBookmark,
+    FaComments,
+    FaEnvelope,
+    FaFileAlt,
+    FaHistory,
+    FaIdBadge,
     FaRobot,
+    FaShieldAlt,
     FaSignInAlt,
     FaUserPlus,
-    FaHistory,
-    FaShieldAlt,
-    FaFileAlt,
-    FaComments,
-    FaBookmark,
-    FaEnvelope,
-    FaIdBadge,
 } from "react-icons/fa";
 import {RootState} from "../store";
 import {logoutUser, updateCurrentUser} from "@/app/lib/api";
@@ -42,52 +42,31 @@ export default function AccountPage() {
     }, [user]);
 
     const recentActions = [
-        { icon: FaFileAlt, text: "Linked AI review to QA post", time: "2 hours ago" },
-        { icon: FaBookmark, text: "Saved draft under Maintenance folder", time: "Yesterday" },
-        { icon: FaComments, text: "Followed 2 attorney answers", time: "3 days ago" },
+        {icon: FaFileAlt, text: "Linked AI review to QA post", time: "2 hours ago"},
+        {icon: FaBookmark, text: "Saved draft under Maintenance folder", time: "Yesterday"},
+        {icon: FaComments, text: "Followed 2 attorney answers", time: "3 days ago"},
     ];
 
     return (
         <div className="mb-4">
             <Card
-                className="mb-4 border-0 text-white"
-                style={{
-                    background: "linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)",
-                    borderRadius: "1.5rem",
-                    overflow: "hidden"
-                }}
+                className="card-hero mb-4"
             >
                 <CardBody className="p-4">
                     <Row className="align-items-center">
                         <Col>
                             <div className="d-flex align-items-center gap-4">
-                                <div
-                                    className="rounded-circle d-flex align-items-center justify-content-center fw-bold"
-                                    style={{
-                                        width: 80,
-                                        height: 80,
-                                        background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-                                        fontSize: "1.5rem",
-                                        border: "3px solid rgba(255,255,255,0.2)"
-                                    }}
-                                >
+                                <div className="rounded-circle d-flex align-items-center justify-content-center fw-bold avatar-circle">
                                     {user?.name?.slice(0, 2).toUpperCase() || "?"}
                                 </div>
                                 <div>
                                     <h2 className="fw-bold mb-1">{user?.name || "Guest User"}</h2>
                                     <div className="opacity-75 mb-2">{user?.email || "Not signed in"}</div>
                                     {user && (
-                                        <Badge
-                                            className="px-3 py-2"
-                                            style={{
-                                                background: "rgba(255,255,255,0.15)",
-                                                border: "1px solid rgba(255,255,255,0.2)",
-                                                borderRadius: "2rem"
-                                    }}
-                                >
-                                    {user.role === "lawyer" ? "⚖️" : user.role === "admin" ? "🛡️" : "🏠"} {user.role}
-                                </Badge>
-                            )}
+                                        <Badge className="px-3 py-2 role-badge">
+                                            {user.role === "lawyer" ? "⚖️" : user.role === "admin" ? "🛡️" : "🏠"} {user.role}
+                                        </Badge>
+                                    )}
                                 </div>
                             </div>
                         </Col>
@@ -96,10 +75,9 @@ export default function AccountPage() {
                                 <Button
                                     href="/ai-review"
                                     variant="danger"
-                                    className="d-flex align-items-center gap-2"
-                                    style={{ borderRadius: "2rem", padding: "0.75rem 1.5rem" }}
+                                    className="d-flex align-items-center gap-2 btn-pill-padded"
                                 >
-                                    <FaRobot />
+                                    <FaRobot/>
                                     Use AI Review
                                 </Button>
                             ) : (
@@ -119,27 +97,13 @@ export default function AccountPage() {
 
             <Row className="g-4">
                 <Col lg={6}>
-                    <Card
-                        className="h-100 border-0 shadow-sm"
-                        style={{
-                            borderRadius: "1rem",
-                            overflow: "hidden",
-                            borderTop: "4px solid #764ba2"
-                        }}
-                    >
+                    <Card className="card-base">
                         <CardBody className="p-4">
                             {isAuthenticated ? (
-                                <>
+                                <div>
                                     <div className="d-flex align-items-center gap-3 mb-4">
-                                        <div
-                                            className="d-flex align-items-center justify-content-center rounded-circle"
-                                            style={{
-                                                width: 48,
-                                                height: 48,
-                                                background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
-                                            }}
-                                        >
-                                            <FaIdBadge className="text-white" size={20} />
+                                        <div className="d-flex align-items-center justify-content-center rounded-circle icon-circle-48 icon-bg-purple">
+                                            <FaIdBadge className="text-white" size={20}/>
                                         </div>
                                         <div>
                                             <div className="fw-bold">Profile overview</div>
@@ -148,14 +112,17 @@ export default function AccountPage() {
                                     </div>
 
                                     <Stack gap={3}>
-                                        <div className="d-flex align-items-center gap-3 p-3 rounded-3" style={{ background: "#f8f9fa" }}>
-                                            <FaIdBadge className="text-secondary" />
+                                        <div className="d-flex align-items-center gap-3 p-3 rounded-3 bg-light-gray">
+                                            <FaIdBadge className="text-secondary"/>
                                             <div className="w-100">
                                                 <div className="fw-semibold mb-1">Name</div>
                                                 {editMode ? (
                                                     <Form.Control
                                                         value={profileForm.name}
-                                                        onChange={(e) => setProfileForm(prev => ({...prev, name: e.target.value}))}
+                                                        onChange={(e) => setProfileForm(prev => ({
+                                                            ...prev,
+                                                            name: e.target.value
+                                                        }))}
                                                         disabled={saving}
                                                     />
                                                 ) : (
@@ -163,15 +130,18 @@ export default function AccountPage() {
                                                 )}
                                             </div>
                                         </div>
-                                        <div className="d-flex align-items-center gap-3 p-3 rounded-3" style={{ background: "#f8f9fa" }}>
-                                            <FaEnvelope className="text-secondary" />
+                                        <div className="d-flex align-items-center gap-3 p-3 rounded-3 bg-light-gray">
+                                            <FaEnvelope className="text-secondary"/>
                                             <div className="w-100">
                                                 <div className="fw-semibold mb-1">Email</div>
                                                 {editMode ? (
                                                     <Form.Control
                                                         type="email"
                                                         value={profileForm.email}
-                                                        onChange={(e) => setProfileForm(prev => ({...prev, email: e.target.value}))}
+                                                        onChange={(e) => setProfileForm(prev => ({
+                                                            ...prev,
+                                                            email: e.target.value
+                                                        }))}
                                                         disabled={saving}
                                                     />
                                                 ) : (
@@ -179,11 +149,12 @@ export default function AccountPage() {
                                                 )}
                                             </div>
                                         </div>
-                                        <div className="d-flex align-items-center gap-3 p-3 rounded-3" style={{ background: "#f8f9fa" }}>
-                                            <FaShieldAlt className="text-secondary" />
+                                        <div className="d-flex align-items-center gap-3 p-3 rounded-3 bg-light-gray">
+                                            <FaShieldAlt className="text-secondary"/>
                                             <div>
                                                 <div className="fw-semibold">Role</div>
-                                                <div className="text-secondary small text-capitalize">{user?.role || "tenant"}</div>
+                                                <div
+                                                    className="text-secondary small text-capitalize">{user?.role || "tenant"}</div>
                                             </div>
                                         </div>
                                         {error && (
@@ -191,7 +162,7 @@ export default function AccountPage() {
                                         )}
                                         <div className="d-flex gap-2">
                                             {!editMode ? (
-                                                <>
+                                                <div>
                                                     <Button
                                                         variant="outline-secondary"
                                                         className="flex-fill"
@@ -209,7 +180,7 @@ export default function AccountPage() {
                                                             try {
                                                                 await logoutUser();
                                                             } catch (err) {
-                                                                // ignore logout error; user state will still be cleared
+
                                                             } finally {
                                                                 dispatch(signOut());
                                                                 router.push("/");
@@ -218,7 +189,7 @@ export default function AccountPage() {
                                                     >
                                                         Sign out
                                                     </Button>
-                                                </>
+                                                </div>
                                             ) : (
                                                 <>
                                                     <Button
@@ -264,19 +235,12 @@ export default function AccountPage() {
                                             )}
                                         </div>
                                     </Stack>
-                                </>
+                                </div>
                             ) : (
-                                <>
+                                <div>
                                     <div className="d-flex align-items-center gap-3 mb-4">
-                                        <div
-                                            className="d-flex align-items-center justify-content-center rounded-circle"
-                                            style={{
-                                                width: 48,
-                                                height: 48,
-                                                background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
-                                            }}
-                                        >
-                                            <FaShieldAlt className="text-white" size={20} />
+                                        <div className="d-flex align-items-center justify-content-center rounded-circle icon-circle-48 icon-bg-purple">
+                                            <FaShieldAlt className="text-white" size={20}/>
                                         </div>
                                         <div>
                                             <div className="fw-bold">Access Control</div>
@@ -285,30 +249,28 @@ export default function AccountPage() {
                                     </div>
 
                                     <p className="text-secondary mb-4">
-        AI review, posting questions, and attorney replies require authentication.
+                                        AI review, posting questions, and attorney replies require authentication.
                                     </p>
 
                                     <Stack gap={3}>
                                         <Button
                                             href="/auth/login"
                                             variant="dark"
-                                            className="d-flex align-items-center justify-content-center gap-2"
-                                            style={{ borderRadius: "2rem" }}
+                                            className="d-flex align-items-center justify-content-center gap-2 btn-pill"
                                         >
-                                            <FaSignInAlt />
+                                            <FaSignInAlt/>
                                             Sign In
                                         </Button>
                                         <Button
                                             href="/auth/register"
                                             variant="outline-secondary"
-                                            className="d-flex align-items-center justify-content-center gap-2"
-                                            style={{ borderRadius: "2rem" }}
+                                            className="d-flex align-items-center justify-content-center gap-2 btn-pill"
                                         >
-                                            <FaUserPlus />
+                                            <FaUserPlus/>
                                             Create Account
                                         </Button>
                                     </Stack>
-                                </>
+                                </div>
                             )}
                         </CardBody>
                     </Card>
@@ -316,25 +278,11 @@ export default function AccountPage() {
 
                 {isAuthenticated && (
                     <Col lg={6}>
-                        <Card
-                            className="h-100 border-0 shadow-sm"
-                            style={{
-                                borderRadius: "1rem",
-                                overflow: "hidden",
-                                borderTop: "4px solid #11998e"
-                            }}
-                        >
+                        <Card className="h-100 border-0 shadow-sm activity-card">
                             <CardBody className="p-4">
                                 <div className="d-flex align-items-center gap-3 mb-4">
-                                    <div
-                                        className="d-flex align-items-center justify-content-center rounded-circle"
-                                        style={{
-                                            width: 48,
-                                            height: 48,
-                                            background: "linear-gradient(135deg, #11998e 0%, #38ef7d 100%)"
-                                        }}
-                                    >
-                                        <FaHistory className="text-white" size={20} />
+                                    <div className="d-flex align-items-center justify-content-center rounded-circle icon-circle-48 icon-bg-green">
+                                        <FaHistory className="text-white" size={20}/>
                                     </div>
                                     <div>
                                         <div className="fw-bold">Recent Activity</div>
@@ -346,17 +294,10 @@ export default function AccountPage() {
                                     {recentActions.map((action, index) => (
                                         <div
                                             key={index}
-                                            className="d-flex align-items-center gap-3 p-3 rounded-3"
-                                            style={{ background: "#f8f9fa" }}
+                                            className="d-flex align-items-center gap-3 p-3 rounded-3 bg-light-gray"
                                         >
-                                            <div className="d-flex align-items-center justify-content-center rounded-circle"
-                                                 style={{
-                                                     width: 36,
-                                                     height: 36,
-                                                     background: "#e9ecef"
-                                                 }}
-                                            >
-                                                <action.icon className="text-secondary" size={14} />
+                                            <div className="d-flex align-items-center justify-content-center rounded-circle icon-circle-36 icon-bg-muted">
+                                                <action.icon className="text-secondary" size={14}/>
                                             </div>
                                             <div className="flex-grow-1">
                                                 <div className="small">{action.text}</div>

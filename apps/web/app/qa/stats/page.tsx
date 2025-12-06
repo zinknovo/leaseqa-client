@@ -56,7 +56,7 @@ export default function StatsPage() {
         <div className="mb-4">
             <Row className="g-4">
                 <Col lg={8}>
-                    <Card className="card-base card-accent-purple-light">
+                    <Card className="card-base card-accent-purple">
                         <CardBody className="p-4">
                             <CardHeader
                                 icon={<FaChartBar className="text-white" size={18}/>}
@@ -77,7 +77,7 @@ export default function StatsPage() {
                 </Col>
 
                 <Col lg={4}>
-                    <Card className="card-base card-accent-purple-light">
+                    <Card className="card-base card-accent-purple">
                         <CardBody className="p-4">
                             <CardHeader
                                 icon={<FaFolder className="text-white" size={18}/>}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Card, CardBody, Container, Form, Alert } from "react-bootstrap";
+import { Alert, Button, Card, CardBody, Form } from "react-bootstrap";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { loginUser } from "@/app/lib/api";
@@ -38,9 +38,7 @@ export default function LoginPage() {
                 throw new Error("Login response missing user data");
             }
 
-            // 更新 Redux 状态
             dispatch(setSession(user));
-            
             router.push("/account");
         } catch (err: any) {
             setError(err.message || "Invalid email or password");
@@ -50,17 +48,17 @@ export default function LoginPage() {
     };
 
     return (
-        <Container className="d-flex align-items-center justify-content-center min-vh-100 py-5">
-            <div style={{ maxWidth: "400px", width: "100%" }}>
+        <div className="auth-page">
+            <div className="auth-container">
                 <div className="text-center mb-4">
                     <h1 className="h3 fw-bold">Welcome Back</h1>
-                    <p className="text-muted">Sign in to continue to LeaseQA</p>
+                    <p className="text-secondary">Sign in to continue to LeaseQA</p>
                 </div>
 
-                <Card className="border-0 shadow-sm">
+                <Card className="card-base">
                     <CardBody className="p-4">
                         {error && <Alert variant="danger">{error}</Alert>}
-                        
+
                         <Form onSubmit={handleSubmit}>
                             <Form.Group className="mb-3">
                                 <Form.Label>Email address</Form.Label>
@@ -69,6 +67,7 @@ export default function LoginPage() {
                                     name="email"
                                     value={formData.email}
                                     onChange={handleChange}
+                                    className="input-rounded"
                                     required
                                 />
                             </Form.Group>
@@ -80,26 +79,30 @@ export default function LoginPage() {
                                     name="password"
                                     value={formData.password}
                                     onChange={handleChange}
+                                    className="input-rounded"
                                     required
                                 />
                             </Form.Group>
 
-                            <Button 
-                                variant="primary" 
-                                type="submit" 
-                                className="w-100 mb-3"
+                            <Button
+                                variant="primary"
+                                type="submit"
+                                className="w-100 mb-3 btn-pill"
                                 disabled={loading}
                             >
                                 {loading ? "Signing In..." : "Sign In"}
                             </Button>
                         </Form>
 
-                        <div className="text-center text-muted small">
-                            Don't have an account? <Link href="/auth/register" className="text-primary text-decoration-none">Create Account</Link>
+                        <div className="text-center text-secondary small">
+                            Don't have an account?{" "}
+                            <Link href="/auth/register" className="text-primary text-decoration-none">
+                                Create Account
+                            </Link>
                         </div>
                     </CardBody>
                 </Card>
             </div>
-        </Container>
+        </div>
     );
 }

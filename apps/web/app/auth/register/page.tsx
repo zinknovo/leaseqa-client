@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import { Button, Card, CardBody, Container, Form, Alert, Modal } from "react-bootstrap";
+import {useState} from "react";
+import {Alert, Button, Card, CardBody, Container, Form, Modal} from "react-bootstrap";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { registerUser } from "@/app/lib/api";
-import { useDispatch } from "react-redux";
-import { setSession } from "@/app/store";
+import {useRouter} from "next/navigation";
+import {registerUser} from "@/app/lib/api";
+import {useDispatch} from "react-redux";
+import {setSession} from "@/app/store";
 
 export default function RegisterPage() {
     const router = useRouter();
@@ -22,7 +22,7 @@ export default function RegisterPage() {
     const [showSuccess, setShowSuccess] = useState(false);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        setFormData({...formData, [e.target.name]: e.target.value});
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -49,8 +49,7 @@ export default function RegisterPage() {
                 throw new Error("Registration response missing user data");
             }
 
-            // 保留已注册用户信息在 Redux，方便后续使用
-            dispatch(setSession(user)); 
+            dispatch(setSession(user));
             setShowSuccess(true);
         } catch (err: any) {
             setError(err.message || "Registration failed");
@@ -62,16 +61,16 @@ export default function RegisterPage() {
     return (
         <>
             <Container className="d-flex align-items-center justify-content-center min-vh-100 py-5">
-                <div style={{ maxWidth: "400px", width: "100%" }}>
+                <div className="auth-container-narrow">
                     <div className="text-center mb-4">
                         <h1 className="h3 fw-bold">Create Account</h1>
                         <p className="text-muted">Join the LeaseQA community</p>
                     </div>
 
-                    <Card className="border-0 shadow-sm">
+                    <Card className="card-base">
                         <CardBody className="p-4">
                             {error && <Alert variant="danger">{error}</Alert>}
-                            
+
                             <Form onSubmit={handleSubmit}>
                                 <Form.Group className="mb-3">
                                     <Form.Label>Username</Form.Label>
@@ -118,9 +117,9 @@ export default function RegisterPage() {
                                     />
                                 </Form.Group>
 
-                                <Button 
-                                    variant="primary" 
-                                    type="submit" 
+                                <Button
+                                    variant="primary"
+                                    type="submit"
                                     className="w-100 mb-3"
                                     disabled={loading}
                                 >
@@ -129,7 +128,9 @@ export default function RegisterPage() {
                             </Form>
 
                             <div className="text-center text-muted small">
-                                Already have an account? <Link href="/auth/login" className="text-primary text-decoration-none">Sign In</Link>
+                                Already have an account? <Link href="/auth/login"
+                                                               className="text-primary text-decoration-none">Sign
+                                In</Link>
                             </div>
                         </CardBody>
                     </Card>

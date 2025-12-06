@@ -45,9 +45,9 @@ export default function LandingPage() {
                     <Col lg={12}>
                         <span className="pill pill-glass mb-3">🏠 Boston Renter Protection</span>
                         <h1 className="display-4 fw-bold mb-3">
-                            <span style={{color: "var(--accent-red)"}}>we help you understand</span>
+                            <span className="text-accent-red">we help you understand</span>
                         </h1>
-                        <p className="lead mb-4 opacity-75">
+                        <p className="lead mb-4">
                             LeaseQA pairs AI lease review with a Piazza-style community so
                             Boston renters get clarity on edge cases and rubric-ready answers.
                         </p>
@@ -68,7 +68,7 @@ export default function LandingPage() {
                     <AccentCard accent="purple" className="h-100 shadow">
                         <div className="d-flex align-items-center mb-3">
                             <IconCircle size="lg" variant="purple" className="me-3">
-                                <span style={{fontSize: "1.5rem"}}>🤖</span>
+                                <span className="emoji-icon-lg">🤖</span>
                             </IconCircle>
                             <div>
                                 <div className="fw-bold">AI Review</div>
@@ -90,7 +90,7 @@ export default function LandingPage() {
                     <AccentCard accent="green" className="h-100 shadow">
                         <div className="d-flex align-items-center mb-3">
                             <IconCircle size="lg" variant="green" className="me-3">
-                                <span style={{fontSize: "1.5rem"}}>💬</span>
+                                <span className="emoji-icon-lg">💬</span>
                             </IconCircle>
                             <div>
                                 <div className="fw-bold">QA Community</div>
@@ -119,7 +119,7 @@ export default function LandingPage() {
                         <Col key={stat.label} md={3} sm={6} xs={12}>
                             <div className={`p-4 rounded-4 text-white h-100 ${statConfig[index].gradient}`}>
                                 <div className="d-flex justify-content-between align-items-start mb-2">
-                                    <span style={{fontSize: "1.5rem"}}>{statConfig[index].icon}</span>
+                                    <span className="emoji-icon-lg">{statConfig[index].icon}</span>
                                 </div>
                                 <div className="display-5 fw-bold mb-1">{stat.value}</div>
                                 <div className="small opacity-75 text-uppercase">{stat.label}</div>

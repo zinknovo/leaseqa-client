@@ -1,4 +1,26 @@
-/* ===== CSS VARIABLES ===== */
+/* ============================================
+   LEASEQA GLOBAL STYLES
+   ============================================
+   Table of Contents:
+   1. CSS Variables
+   2. Base & Reset
+   3. Layout
+   4. Cards
+   5. Buttons
+   6. Forms & Inputs
+   7. Icons
+   8. Badges & Pills
+   9. Navigation
+   10. Lists & Items
+   11. Tables
+   12. Animations & Effects
+   13. Utilities
+   14. Page-Specific Styles
+   ============================================ */
+
+/* ============================================
+   1. CSS VARIABLES
+   ============================================ */
 :root {
     /* Layout */
     --nav-width: 100px;
@@ -45,6 +67,7 @@
     --radius-lg: 1rem;
     --radius-xl: 1.25rem;
     --radius-2xl: 1.5rem;
+    --radius-3xl: 2rem;
     --radius-full: 9999px;
 
     /* Transitions */
@@ -52,7 +75,9 @@
     --transition-normal: 0.3s ease;
 }
 
-/* ===== BASE STYLES ===== */
+/* ============================================
+   2. BASE & RESET
+   ============================================ */
 * {
     box-sizing: border-box;
 }
@@ -64,7 +89,9 @@ body {
     font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
 }
 
-/* ===== LAYOUT ===== */
+/* ============================================
+   3. LAYOUT
+   ============================================ */
 .app-shell .content-shell {
     margin-left: 0;
 }
@@ -75,109 +102,95 @@ body {
     }
 }
 
-/* ===== CARDS ===== */
-.card-base {
+/* ============================================
+   4. CARDS
+   ============================================ */
+
+/* Base Card */
+.card.card-base {
     border: 0;
-    border-radius: var(--radius-2xl);  /* Changed from radius-lg (1rem) to radius-2xl (1.5rem) */
+    border-radius: var(--radius-2xl);
     overflow: hidden;
-    box-shadow: var(--shadow-lg);  /* Changed from shadow-sm to shadow-lg */
+    box-shadow: var(--shadow-xl);
 }
 
-.card-accent-purple {
-    border-top: 4px solid var(--accent-purple);
+/* Nested Card (for inner cards) */
+.card-nested {
+    border: 0;
+    background: var(--panel-muted);
+    border-radius: var(--radius-md);
+    margin-bottom: 0.5rem;
 }
 
-.card-accent-green {
-    border-top: 4px solid var(--accent-green);
+.card-nested-indent-1 { margin-left: 12px; }
+.card-nested-indent-2 { margin-left: 24px; }
+.card-nested-indent-3 { margin-left: 36px; }
+.card-nested-indent-4 { margin-left: 48px; }
+.card-nested-indent-5 { margin-left: 60px; }
+
+/* Nav Card */
+.card.card-nav {
+    border: 0;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-xl);
+    padding: 1rem;
 }
 
-.card-accent-blue {
-    border-top: 4px solid var(--accent-blue);
-}
+/* Accent Cards */
+.card.card-accent-purple { border-top: 4px solid var(--accent-purple); }
+.card.card-accent-green { border-top: 4px solid var(--accent-green); }
+.card.card-accent-blue { border-top: 4px solid var(--accent-blue); }
+.card.card-accent-red { border-top: 4px solid var(--accent-red); }
 
-.card-accent-red {
-    border-top: 4px solid var(--accent-red);
-}
-
-.card-hero {
+/* Hero Card */
+.card.card-hero {
     background: var(--gradient-dark);
     color: white;
     border-radius: var(--radius-2xl);
+    overflow: hidden;
 }
 
-.card-glass {
+/* Glass Card */
+.card.card-glass {
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: var(--radius-lg);
 }
 
-/* ===== ICON CIRCLES ===== */
-.icon-circle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    flex-shrink: 0;
+/* Activity Card */
+.activity-card {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border-top: 4px solid var(--accent-green);
 }
 
-.icon-circle-sm {
-    width: 32px;
-    height: 32px;
+/* Risk Cards */
+.risk-card {
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    height: 100%;
 }
 
-.icon-circle-md {
-    width: 40px;
-    height: 40px;
+.risk-card-danger {
+    background: #fef2f2;
+    border-left: 4px solid var(--accent-danger);
 }
 
-.icon-circle-lg {
-    width: 48px;
-    height: 48px;
+.risk-card-warning {
+    background: #fffbeb;
+    border-left: 4px solid var(--accent-warning);
 }
 
-.icon-circle-xl {
-    width: 56px;
-    height: 56px;
+.risk-card-success {
+    background: #f0fdf4;
+    border-left: 4px solid var(--accent-success);
 }
 
-.icon-circle-2xl {
-    width: 80px;
-    height: 80px;
-}
-
-/* Icon circle backgrounds */
-.icon-bg-purple {
-    background: var(--gradient-purple);
-    color: white;
-}
-
-.icon-bg-green {
-    background: var(--gradient-green);
-    color: white;
-}
-
-.icon-bg-red {
-    background: var(--gradient-red);
-    color: white;
-}
-
-.icon-bg-blue {
-    background: var(--gradient-blue);
-    color: white;
-}
-
-.icon-bg-muted {
-    background: var(--panel-muted);
-    color: var(--ink-muted);
-}
-
-.icon-bg-glass {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-/* ===== BUTTONS ===== */
+/* ============================================
+   5. BUTTONS
+   ============================================ */
 .btn-pill {
     border-radius: var(--radius-full);
     padding: 0.5rem 1.5rem;
@@ -188,6 +201,12 @@ body {
     padding: 0.75rem 2rem;
 }
 
+.btn-pill-padded {
+    border-radius: var(--radius-full);
+    padding: 0.75rem 1.5rem;
+}
+
+/* Gradient Buttons */
 .btn-gradient-purple {
     background: var(--gradient-purple);
     border: none;
@@ -211,7 +230,112 @@ body {
     color: white;
 }
 
-/* ===== PILLS & BADGES ===== */
+/* ============================================
+   6. FORMS & INPUTS
+   ============================================ */
+.input-rounded {
+    border-radius: var(--radius-md);
+}
+
+.input-pill {
+    border-radius: var(--radius-full);
+}
+
+.search-box {
+    background: var(--panel-muted);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-full);
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.search-input-md {
+    max-width: 320px;
+}
+
+.search-text {
+    font-size: 0.875rem;
+}
+
+/* Drop Zone */
+.drop-zone {
+    background: var(--panel-muted);
+    border: 2px dashed var(--border-light);
+    border-radius: var(--radius-md);
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color var(--transition-fast);
+}
+
+.drop-zone:hover {
+    border-color: var(--accent-purple);
+}
+
+/* Rich Text Editor */
+.rich-editor .ql-container {
+    min-height: 320px;
+}
+
+.rich-editor .ql-editor {
+    min-height: 280px;
+}
+
+/* ============================================
+   7. ICONS
+   ============================================ */
+
+/* Icon Circle Base */
+.icon-circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+/* Icon Circle Sizes */
+.icon-circle-sm { width: 32px; height: 32px; }
+.icon-circle-md { width: 40px; height: 40px; }
+.icon-circle-lg { width: 48px; height: 48px; }
+.icon-circle-xl { width: 56px; height: 56px; }
+.icon-circle-2xl { width: 80px; height: 80px; }
+.icon-circle-36 { width: 36px; height: 36px; }
+.icon-circle-44 { width: 44px; height: 44px; }
+.icon-circle-48 { width: 48px; height: 48px; }
+
+/* Icon Circle Backgrounds */
+.icon-bg-purple { background: var(--gradient-purple); color: white; }
+.icon-bg-green { background: var(--gradient-green); color: white; }
+.icon-bg-red { background: var(--gradient-red); color: white; }
+.icon-bg-blue { background: var(--gradient-blue); color: white; }
+.icon-bg-muted { background: var(--panel-muted); color: var(--ink-muted); }
+.icon-bg-glass {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Emoji Icons */
+.emoji-icon-lg {
+    font-size: 1.5rem;
+}
+
+/* Tech Stack Dots */
+.tech-dot {
+    width: 10px;
+    height: 10px;
+}
+
+.tech-dot-dark { background: #000000; }
+.tech-dot-bootstrap { background: #7952b3; }
+.tech-dot-mongo { background: #47a248; }
+
+/* ============================================
+   8. BADGES & PILLS
+   ============================================ */
 .pill {
     background: var(--panel-muted);
     border-radius: var(--radius-full);
@@ -233,84 +357,112 @@ body {
     font-weight: normal;
 }
 
-/* ===== BACKGROUNDS ===== */
-.bg-muted {
-    background: var(--panel-muted);
-}
-
-.bg-gradient-purple {
-    background: var(--gradient-purple);
-}
-
-.bg-gradient-green {
-    background: var(--gradient-green);
-}
-
-.bg-gradient-red {
-    background: var(--gradient-red);
-}
-
-.bg-gradient-blue {
-    background: var(--gradient-blue);
-}
-
-.bg-gradient-dark {
-    background: var(--gradient-dark);
-}
-
-/* ===== INPUTS ===== */
-.input-rounded {
-    border-radius: var(--radius-md);
-}
-
-.input-pill {
+.role-badge {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: var(--radius-full);
 }
 
-.search-box {
-    background: var(--panel-muted);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-full);
-    padding: 0.5rem 1rem;
+.role-tag {
+    background: #f8f9fa;
+    color: #6c757d;
+}
+
+.about-pill {
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    display: inline-block;
+}
+
+.scenario-chip {
+    padding-inline: 10px;
+    padding-block: 2px;
+}
+
+/* ============================================
+   9. NAVIGATION
+   ============================================ */
+
+/* Side Nav */
+.sidenav-container {
+    width: var(--nav-width);
+    background: var(--gradient-sidenav);
+}
+
+.sidenav-divider {
+    width: 40px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 1px;
+}
+
+.sidenav-icon {
+    font-size: 1.5rem;
+}
+
+.sidenav-icon-active { color: #fff; }
+.sidenav-icon-inactive { color: rgba(255, 255, 255, 0.7); }
+
+.sidenav-label {
+    font-size: 0.7rem;
+}
+
+.sidenav-label-active { font-weight: 600; color: #fff; }
+.sidenav-label-inactive { font-weight: 400; color: rgba(255, 255, 255, 0.7); }
+
+/* Header Bar */
+.header-shadow {
+    box-shadow: var(--shadow-lg);
+    min-height: 56px;
+}
+
+.header-tagline {
+    font-size: 0.9rem;
+}
+
+/* Nav Items */
+.nav-item-hover {
+    transition: background var(--transition-fast);
+}
+
+.nav-item-hover:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Nav Tabs */
+.nav-tab-item {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-full);
+    transition: all 0.2s ease;
     cursor: pointer;
-}
-
-/* ===== DROP ZONES ===== */
-.drop-zone {
-    background: var(--panel-muted);
-    border: 2px dashed var(--border-light);
-    border-radius: var(--radius-md);
-    padding: 2rem;
-    text-align: center;
-    cursor: pointer;
-    transition: border-color var(--transition-fast);
-}
-
-.drop-zone:hover {
-    border-color: var(--accent-purple);
-}
-
-/* ===== DIVIDERS ===== */
-.divider-text {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
     color: var(--ink-muted);
-    font-size: 0.875rem;
+    font-weight: 400;
 }
 
-.divider-text::before,
-.divider-text::after {
-    content: "";
-    flex: 1;
-    height: 1px;
-    background: var(--border-light);
+.nav-tab-item.active {
+    background: var(--gradient-purple);
+    color: #fff;
+    font-weight: 600;
 }
 
-/* ===== LIST ITEMS ===== */
+/* Profile Menu */
+.profile-menu {
+    min-width: 240px;
+}
+
+.profile-avatar-sm {
+    min-width: 36px;
+    height: 36px;
+}
+
+/* ============================================
+   10. LISTS & ITEMS
+   ============================================ */
+
+/* List Items */
 .list-item-muted {
     background: var(--panel-muted);
     border: none;
@@ -330,163 +482,7 @@ body {
     color: white;
 }
 
-/* ===== SCROLLABLE ===== */
-.scrollable-sm {
-    max-height: 300px;
-    overflow-y: auto;
-}
-
-.scrollable-md {
-    max-height: 400px;
-    overflow-y: auto;
-}
-
-.scrollable-lg {
-    max-height: 500px;
-    overflow-y: auto;
-}
-
-/* ===== RISK CARDS ===== */
-.risk-card {
-    border-radius: var(--radius-md);
-    padding: 1rem;
-    height: 100%;
-}
-
-.risk-card-danger {
-    background: #fef2f2;
-    border-left: 4px solid var(--accent-danger);
-}
-
-.risk-card-warning {
-    background: #fffbeb;
-    border-left: 4px solid var(--accent-warning);
-}
-
-.risk-card-success {
-    background: #f0fdf4;
-    border-left: 4px solid var(--accent-success);
-}
-
-/* ===== ANIMATIONS ===== */
-@keyframes slideIn {
-    from {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-.animate-slide-in {
-    animation: slideIn 0.3s ease;
-}
-
-.animate-fade-in {
-    animation: fadeIn 0.3s ease;
-}
-
-/* ===== HOVER EFFECTS ===== */
-.hover-scale {
-    transition: transform var(--transition-fast);
-}
-
-.hover-scale:hover {
-    transform: scale(1.05);
-}
-
-.hover-lift {
-    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
-}
-
-.hover-lift:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-}
-
-/* ===== NAV STYLES ===== */
-.nav-item-hover {
-    transition: background var(--transition-fast);
-}
-
-.nav-item-hover:hover {
-    background: rgba(255, 255, 255, 0.1);
-}
-
-/* ===== UTILITIES ===== */
-.text-muted-light {
-    color: var(--ink-muted);
-}
-
-.border-accent {
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.opacity-75 {
-    opacity: 0.75;
-}
-
-.opacity-90 {
-    opacity: 0.9;
-}
-
-/* ===== LOADING STATE ===== */
-.loading-container {
-    min-height: 50vh;
-}
-
-/* ===== STATS PAGE ===== */
-.stat-box {
-    background: rgba(102, 126, 234, 0.08);
-    border-radius: var(--radius-md);
-    padding: 1rem;
-    height: 100%;
-}
-
-.stat-box-value {
-    color: var(--ink);
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: 0;
-}
-
-.progress-bar-container {
-    height: 8px;
-    background: var(--border);
-    border-radius: var(--radius-full);
-    overflow: hidden;
-}
-
-.progress-bar-fill {
-    height: 100%;
-    background: #667eea;
-    border-radius: var(--radius-full);
-    transition: width 0.5s ease;
-}
-
-/* ===== CARD ACCENTS - Additional ===== */
-.card-accent-purple-light {
-    border-top: 4px solid #667eea;
-}
-
-/* ===== ICON CIRCLES - Additional sizes ===== */
-.icon-circle-44 {
-    width: 44px;
-    height: 44px;
-}
-
-/* ===== RESOURCE ITEMS ===== */
+/* Resource Items */
 .resource-item {
     background: var(--panel-muted);
     border-radius: var(--radius-md);
@@ -517,7 +513,7 @@ body {
     opacity: 0.8;
 }
 
-/* ===== TEMPLATE ITEMS ===== */
+/* Template Items */
 .template-item {
     background: var(--panel-muted);
     border-radius: var(--radius-md);
@@ -528,4 +524,194 @@ body {
 
 .template-item:hover {
     background: var(--border);
+}
+
+/* Post Items */
+.post-item-clickable {
+    cursor: pointer;
+}
+
+.post-timestamp {
+    white-space: nowrap;
+}
+
+/* Stat Box */
+.stat-box {
+    background: rgba(102, 126, 234, 0.08);
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    height: 100%;
+}
+
+.stat-box-value {
+    color: var(--ink);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0;
+}
+
+/* Progress Bar */
+.progress-bar-container {
+    height: 8px;
+    background: var(--border);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: #667eea;
+    border-radius: var(--radius-full);
+    transition: width 0.5s ease;
+}
+
+/* Scrollable Containers */
+.scrollable-sm { max-height: 300px; overflow-y: auto; }
+.scrollable-md { max-height: 400px; overflow-y: auto; }
+.scrollable-lg { max-height: 500px; overflow-y: auto; }
+
+/* Dividers */
+.divider-text {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: var(--ink-muted);
+    font-size: 0.875rem;
+}
+
+.divider-text::before,
+.divider-text::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--border-light);
+}
+
+/* ============================================
+   11. TABLES
+   ============================================ */
+.table-actions-col {
+    width: 160px;
+    text-align: end;
+}
+
+.table-description-col {
+    min-width: 160px;
+}
+
+/* ============================================
+   12. ANIMATIONS & EFFECTS
+   ============================================ */
+
+/* Keyframes */
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Animation Classes */
+.animate-slide-in {
+    animation: slideIn 0.3s ease;
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.3s ease;
+}
+
+/* Hover Effects */
+.hover-scale {
+    transition: transform var(--transition-fast);
+}
+
+.hover-scale:hover {
+    transform: scale(1.05);
+}
+
+.hover-lift {
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.hover-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+/* ============================================
+   13. UTILITIES
+   ============================================ */
+
+/* Text */
+.text-muted-light { color: var(--ink-muted); }
+.text-accent-red { color: var(--accent-red); }
+
+/* Avatar Text */
+.avatar-text-sm { font-size: 0.875rem; }
+.avatar-text-xs { font-size: 0.8rem; }
+
+/* Backgrounds */
+.bg-muted { background: var(--panel-muted); }
+.bg-light-gray { background: #f8f9fa; }
+.bg-gradient-purple { background: var(--gradient-purple); }
+.bg-gradient-green { background: var(--gradient-green); }
+.bg-gradient-red { background: var(--gradient-red); }
+.bg-gradient-blue { background: var(--gradient-blue); }
+.bg-gradient-dark { background: var(--gradient-dark); }
+
+/* Borders */
+.border-accent {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Opacity */
+.opacity-75 { opacity: 0.75; }
+.opacity-90 { opacity: 0.9; }
+
+/* Loading States */
+.loading-container { min-height: 50vh; }
+.loading-min-height { min-height: 50vh; }
+
+/* ============================================
+   14. PAGE-SPECIFIC STYLES
+   ============================================ */
+
+/* Account Page */
+.avatar-circle {
+    width: 80px;
+    height: 80px;
+    background: var(--gradient-purple);
+    font-size: 1.5rem;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Info Page - Team Avatars */
+.team-avatar {
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+}
+
+.team-avatar-0 { background: var(--gradient-purple); }
+.team-avatar-1 { background: var(--gradient-green); }
+.team-avatar-2 { background: var(--gradient-red); }
+.team-avatar-3 { background: var(--gradient-blue); }
+
+/* Auth Pages */
+.auth-container-narrow {
+    max-width: 400px;
+    width: 100%;
+}
+
+/* Toast Notifications */
+.toast-wrapper {
+    z-index: 9999;
+}
+
+.toast-container {
+    min-width: 300px;
+    max-width: 400px;
 }

@@ -202,8 +202,9 @@ export default function PostDetailPage() {
     const renderDiscussion = (node: Discussion, depth = 0) => {
         const canEdit = currentRole === "admin" || node.authorId === currentUserId;
         const isReplying = discussionReplying === node._id;
+        const indentClass = depth > 0 ? `card-nested-indent-${Math.min(depth, 5)}` : "";
         return (
-            <Card key={node._id} className="border-0 bg-light mb-2" style={{marginLeft: depth ? depth * 12 : 0}}>
+            <Card key={node._id} className={`card-nested ${indentClass}`}>
                 <CardBody className="p-2">
                     <div className="d-flex align-items-center gap-2 small text-secondary mb-1">
                         <span>{node.author?.username || node.author?.email || node.authorId}</span>
@@ -247,7 +248,7 @@ export default function PostDetailPage() {
 
     if (loading) {
         return (
-            <div className="d-flex justify-content-center align-items-center" style={{minHeight: "50vh"}}>
+            <div className="d-flex justify-content-center align-items-center loading-min-height">
                 <div className="text-center">
                     <div className="spinner-border text-primary mb-2" role="status" />
                     <div className="text-secondary">Loading post…</div>
@@ -268,7 +269,7 @@ export default function PostDetailPage() {
     return (
         <Row className="g-2 mx-0">
             <Col lg={3} className="px-1">
-                <Card className="mb-2">
+                <Card className="card-base mb-2">
                     <CardBody className="py-2 px-2">
                         <div className="fw-semibold mb-1">Recency</div>
                         <ListGroup>
@@ -293,7 +294,7 @@ export default function PostDetailPage() {
             </Col>
 
             <Col lg={9} className="px-1">
-                <Card className="mb-2">
+                <Card className="card-base mb-2">
                     <CardBody className="p-3">
                         <div className="d-flex align-items-center gap-2 mb-2 flex-wrap">
                             <Badge bg={post.urgency === "high" ? "danger" : post.urgency === "medium" ? "warning" : "secondary"}>
@@ -373,7 +374,7 @@ export default function PostDetailPage() {
                     </CardBody>
                 </Card>
 
-                <Card className="mb-2">
+                <Card className="card-base mb-2">
                     <CardBody className="p-3">
                         <div className="d-flex align-items-center justify-content-between mb-2 flex-wrap gap-2">
                             <div className="fw-semibold">Answers</div>
@@ -462,7 +463,7 @@ export default function PostDetailPage() {
 
                         <Stack gap={2}>
                             {answers.map((ans) => (
-                                <Card key={ans._id} className="border-0 bg-light">
+                                <Card key={ans._id} className="card-nested">
                                     <CardBody className="p-2">
                                         <div className="d-flex align-items-center gap-2 small text-secondary mb-1">
                                             <span>{ans.author?.username || ans.author?.email || ans.authorId}</span>
@@ -496,7 +497,7 @@ export default function PostDetailPage() {
                     </CardBody>
                 </Card>
 
-                <Card className="mb-2">
+                <Card className="card-base mb-2">
                     <CardBody className="p-3">
                         <div className="fw-semibold mb-2">Follow-up discussion</div>
                         <div className="border rounded p-2 mb-2">

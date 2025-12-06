@@ -9,8 +9,7 @@ export default function SideNav() {
 
     return (
         <aside
-            className="d-none d-md-flex flex-column position-fixed top-0 bottom-0 z-3 align-items-center py-4 bg-gradient-dark"
-            style={{width: "var(--nav-width)", background: "var(--gradient-sidenav)"}}>
+            className="d-none d-md-flex flex-column position-fixed top-0 bottom-0 z-3 align-items-center py-4 sidenav-container">
 
             <Link href="https://www.northeastern.edu/" target="_blank" className="mb-4">
                 <div className="icon-circle icon-circle-xl icon-bg-glass">
@@ -18,22 +17,16 @@ export default function SideNav() {
                 </div>
             </Link>
 
-            <div className="mb-4" style={{width: 40, height: 2, background: "rgba(255,255,255,0.2)", borderRadius: 1}}/>
+            <div className="mb-4 sidenav-divider"/>
 
             <nav className="d-flex flex-column gap-2 w-100 px-2">
                 {NAV_ITEMS.map((item) => {
                     const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
                     return (
                         <Link key={item.href} href={item.href} className="text-decoration-none">
-                            <div
-                                className={`d-flex flex-column align-items-center py-3 rounded-3 nav-item-hover ${isActive ? "bg-gradient-red" : ""}`}>
-                                <item.icon
-                                    style={{fontSize: "1.5rem", color: isActive ? "#fff" : "rgba(255,255,255,0.7)"}}/>
-                                <span className="mt-1" style={{
-                                    fontSize: "0.7rem",
-                                    fontWeight: isActive ? 600 : 400,
-                                    color: isActive ? "#fff" : "rgba(255,255,255,0.7)"
-                                }}>
+                            <div className={`d-flex flex-column align-items-center py-3 rounded-3 nav-item-hover ${isActive ? "bg-gradient-red" : ""}`}>
+                                <item.icon className={`sidenav-icon ${isActive ? "sidenav-icon-active" : "sidenav-icon-inactive"}`}/>
+                                <span className={`mt-1 sidenav-label ${isActive ? "sidenav-label-active" : "sidenav-label-inactive"}`}>
                                     {item.label}
                                 </span>
                             </div>
@@ -43,7 +36,7 @@ export default function SideNav() {
             </nav>
 
             <div className="mt-auto">
-                <div className="icon-circle icon-circle-md icon-bg-glass hover-scale" style={{cursor: "pointer"}}>
+                <div className="icon-circle icon-circle-md icon-bg-glass hover-scale post-item-clickable">
                     ⚙️
                 </div>
             </div>

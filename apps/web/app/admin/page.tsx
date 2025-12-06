@@ -60,7 +60,7 @@ export default function AdminPage() {
 
     return (
         <div className="mb-4">
-            <Card className="mb-3">
+            <Card className="mb-3 card-base">
                 <Card.Body>
                     <div className="pill mb-2">Operations</div>
                     <h1 className="h4 fw-bold">Admin console</h1>
@@ -82,7 +82,7 @@ export default function AdminPage() {
                 </Col>
             </Row>
 
-            <Card>
+            <Card className="card-base">
                 <Card.Body>
                     <Stack
                         direction="horizontal"
@@ -173,7 +173,7 @@ export default function AdminPage() {
 
 function AdminStat({label, value}: { label: string; value: string }) {
     return (
-        <Card>
+        <Card className="card-base">
             <Card.Body>
                 <div className="text-secondary small text-uppercase">{label}</div>
                 <div className="fs-3 fw-bold">{value}</div>

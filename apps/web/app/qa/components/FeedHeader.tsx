@@ -16,8 +16,7 @@ export default function FeedHeader({folders, posts}: FeedHeaderProps) {
                     {hotPosts.length > 0 ? hotPosts.map((post) => (
                         <ListGroupItem
                             key={post._id}
-                            className="py-2"
-                            style={{cursor: "pointer"}}
+                            className="py-2 post-item-clickable"
                             onClick={() => router.push(`/qa/${post._id}`)}
                         >
                             <Stack direction="horizontal" gap={2} className="align-items-start justify-content-between flex-wrap mb-1">

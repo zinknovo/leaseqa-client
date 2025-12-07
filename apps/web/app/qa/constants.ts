@@ -33,13 +33,20 @@ export const SECTION_OPTIONS = [
     {value: "harassment", label: "Landlord Harassment"},
 ];
 
-export const INITIAL_COMPOSE_STATE = {
-    summary: "",
-    details: "",
-    folders: [] as string[],
-    postType: "question" as "question" | "note",
-    audience: "everyone" as "everyone" | "admin",
-    files: [] as File[],
+export type ComposeState = {
+    summary: string;
+    details: string;
+    folders: string[];
+    postType: "question" | "note";
+    audience: "everyone" | "admin";
+    files: File[];
 };
 
-export type ComposeState = typeof INITIAL_COMPOSE_STATE;
+export const INITIAL_COMPOSE_STATE: ComposeState = {
+    summary: "",
+    details: "",
+    folders: [],
+    postType: "question",
+    audience: "everyone",
+    files: [],
+};

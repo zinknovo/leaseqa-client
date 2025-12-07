@@ -6,7 +6,7 @@ import {Col, Row} from "react-bootstrap";
 import {FaPlus, FaSearch} from "react-icons/fa";
 
 import {Folder, Post} from "./types";
-import {SCENARIO_OPTIONS} from "./constants";
+import {ComposeState, INITIAL_COMPOSE_STATE, SCENARIO_KEYWORDS} from "./constants";
 import * as client from "./client";
 
 import ScenarioFilter from "./components/ScenarioFilter";
@@ -14,18 +14,6 @@ import PostSidebar from "./components/PostSidebar";
 import FeedHeader from "./components/FeedHeader";
 import ComposeForm from "./components/ComposeForm";
 import PostDetail from "./components/PostDetail";
-
-const SCENARIO_KEYWORDS: Record<string, string[]> = {
-    all: [],
-    deposit: ["deposit", "escrow", "security deposit", "return deposit"],
-    eviction: ["eviction", "notice", "nonpayment", "14-day", "quit"],
-    repairs: ["repair", "maintenance", "mold", "leak", "habitability"],
-    utilities: ["utility", "heat", "electric", "water", "gas"],
-    leasebreak: ["break lease", "terminate", "early termination"],
-    sublease: ["sublease", "roommate", "assign", "co-tenant"],
-    fees: ["late fee", "rent", "payment plan", "fee"],
-    harassment: ["harass", "retaliation", "lockout", "privacy"],
-};
 
 export default function QAPage() {
     const router = useRouter();
@@ -40,20 +28,11 @@ export default function QAPage() {
     const [selectedId, setSelectedId] = useState<string | null>(null);
     const [search, setSearch] = useState("");
     const [loading, setLoading] = useState(true);
-    const [sidebarOpen, setSidebarOpen] = useState(true);
+    const [sidebarOpen] = useState(true);
     const [showCompose, setShowCompose] = useState(false);
     const [posting, setPosting] = useState(false);
     const [postError, setPostError] = useState("");
-
-    const [composeState, setComposeState] = useState({
-        summary: "",
-        details: "",
-        folders: [] as string[],
-        postType: "question" as "question" | "note",
-        audience: "everyone" as "everyone" | "admin",
-        files: [] as File[],
-    });
-
+    const [composeState, setComposeState] = useState<ComposeState>(INITIAL_COMPOSE_STATE);
     const [bucketOpen, setBucketOpen] = useState<Record<string, boolean>>({
         thisWeek: true,
         lastWeek: true,
@@ -105,7 +84,7 @@ export default function QAPage() {
 
     const groupedPosts = useMemo(() => {
         const now = new Date();
-        const buckets: Record<string, {label: string; items: Post[]}> = {
+        const buckets: Record<string, { label: string; items: Post[] }> = {
             thisWeek: {label: "This week", items: []},
             lastWeek: {label: "Last week", items: []},
             thisMonth: {label: "Earlier this month", items: []},
@@ -127,33 +106,13 @@ export default function QAPage() {
         return buckets;
     }, [filteredPosts]);
 
-    const toggleBucket = (key: string) => {
-        setBucketOpen(prev => ({...prev, [key]: !prev[key]}));
-    };
-
     const handleSelectPost = (post: Post) => {
         setSelectedId(post._id);
         router.push(`/qa/${post._id}`);
     };
 
-    const handleNewPost = () => {
-        setShowCompose(true);
-        setSelectedId(null);
-    };
-
-    const updateCompose = (updates: Partial<typeof composeState>) => {
-        setComposeState(prev => ({...prev, ...updates}));
-    };
-
     const resetCompose = () => {
-        setComposeState({
-            summary: "",
-            details: "",
-            folders: [],
-            postType: "question",
-            audience: "everyone",
-            files: [],
-        });
+        setComposeState(INITIAL_COMPOSE_STATE);
         setShowCompose(false);
         setPostError("");
     };
@@ -180,11 +139,7 @@ export default function QAPage() {
             });
             const newPost = (resp as any)?.data || resp;
             if (newPost?._id && composeState.files.length) {
-                try {
-                    await client.uploadPostAttachments(newPost._id, composeState.files);
-                } catch (err) {
-                    console.error("Upload attachments failed", err);
-                }
+                await client.uploadPostAttachments(newPost._id, composeState.files).catch(console.error);
             }
             await loadData();
             if (newPost?._id) setSelectedId(newPost._id);
@@ -223,7 +178,10 @@ export default function QAPage() {
                         onChange={(e) => setSearch(e.target.value)}
                     />
                 </div>
-                <button className="qa-toolbar-btn primary" onClick={handleNewPost}>
+                <button className="qa-toolbar-btn primary" onClick={() => {
+                    setShowCompose(true);
+                    setSelectedId(null);
+                }}>
                     <FaPlus size={12}/>
                     <span>New Post</span>
                 </button>
@@ -237,7 +195,7 @@ export default function QAPage() {
                             bucketOpen={bucketOpen}
                             selectedId={selectedId}
                             currentRouteId={currentRouteId}
-                            onToggleBucket={toggleBucket}
+                            onToggleBucket={(key) => setBucketOpen(prev => ({...prev, [key]: !prev[key]}))}
                             onSelectPost={handleSelectPost}
                         />
                     </Col>
@@ -258,7 +216,7 @@ export default function QAPage() {
                             composeState={composeState}
                             posting={posting}
                             postError={postError}
-                            onUpdate={updateCompose}
+                            onUpdate={(updates) => setComposeState(prev => ({...prev, ...updates}))}
                             onSubmit={handleSubmitPost}
                             onCancel={resetCompose}
                         />

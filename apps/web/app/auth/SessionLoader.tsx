@@ -3,7 +3,7 @@
 import React, {useEffect} from "react";
 import {useDispatch} from "react-redux";
 import {setSession, signOut} from "@/app/store";
-import {fetchSession} from "../lib/api";
+import * as client from "./client";
 
 export default function SessionLoader({children}: { children: React.ReactNode }) {
     const dispatch = useDispatch();
@@ -11,7 +11,7 @@ export default function SessionLoader({children}: { children: React.ReactNode })
     useEffect(() => {
         const loadSession = async () => {
             try {
-                const user = await fetchSession();
+                const user = await client.fetchSession();
                 if (user && typeof user === "object") {
                     dispatch(setSession(user));
                 }

@@ -3,7 +3,7 @@
 import {useEffect, useState} from "react";
 import {Button, Col, Row, Stack} from "react-bootstrap";
 import {Stat} from "./qa/types";
-import {fetchStats} from "./lib/api";
+import * as client from "./client";
 import HeroCard from "@/components/ui/HeroCard";
 import AccentCard from "@/components/ui/AccentCard";
 import IconCircle from "@/components/ui/IconCircle";
@@ -17,14 +17,13 @@ export default function LandingPage() {
 
     const loadStats = async () => {
         try {
-            const response = await fetchStats();
-            // Assuming response is directly the data object, not wrapped in { data: ... }
+            const response = await client.fetchStats();
             if (response) {
                 setStats([
-                    {label: "Admin Posts", value: response.adminPosts || 0},
-                    {label: "Open questions", value: response.unansweredPosts || 0},
-                    {label: "Attorney replies", value: response.lawyerResponses || 0},
-                    {label: "AI reviews this week", value: response.totalPosts || 0},
+                    {label: "Admin Posts", value: response.data.adminPosts || 0},
+                    {label: "Open questions", value: response.data.unansweredPosts || 0},
+                    {label: "Attorney replies", value: response.data.lawyerResponses || 0},
+                    {label: "AI reviews this week", value: response.data.totalPosts || 0},
                 ]);
             }
         } catch (error) {

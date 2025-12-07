@@ -36,9 +36,6 @@ export default function SideNav() {
             </nav>
 
             <div className="mt-auto">
-                <div className="icon-circle icon-circle-md icon-bg-glass hover-scale post-item-clickable">
-                    ⚙️
-                </div>
             </div>
         </aside>
     );

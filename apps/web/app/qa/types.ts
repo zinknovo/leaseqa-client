@@ -17,7 +17,7 @@ export type Post = {
     _id: string;
     summary: string;
     details: string;
-    postType: "question" | "announcement" | "note" | "poll";
+    postType: "question" | "note" | "announcement";
     visibility: "class" | "private";
     audience?: "everyone" | "admin";
     folders: string[];
@@ -27,6 +27,7 @@ export type Post = {
     fromAIReviewId: string | null;
     urgency: "low" | "medium" | "high";
     viewCount: number;
+    isPinned: boolean;
     isResolved: boolean;
     createdAt: string;
     updatedAt: string;

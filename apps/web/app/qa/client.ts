@@ -19,18 +19,18 @@ export async function createFolder(payload: {
     return response.data;
 }
 
-export async function updateFolder(folderId: string, payload: {
+export async function updateFolder(_id: string, payload: {
     name?: string;
     displayName?: string;
     description?: string;
     color?: string
 }) {
-    const response = await axiosWithCredentials.put(`${API_BASE}/folders/${folderId}`, payload);
+    const response = await axiosWithCredentials.put(`${API_BASE}/folders/${_id}`, payload);
     return response.data;
 }
 
-export async function deleteFolder(folderId: string) {
-    const response = await axiosWithCredentials.delete(`${API_BASE}/folders/${folderId}`);
+export async function deleteFolder(_id: string) {
+    const response = await axiosWithCredentials.delete(`${API_BASE}/folders/${_id}`);
     return response.data;
 }
 

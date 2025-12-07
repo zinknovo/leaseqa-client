@@ -2,7 +2,7 @@ export type ComposeState = {
     summary: string;
     details: string;
     folders: string[];
-    postType: "question" | "note";
+    postType: "question" | "note" | "announcement";
     audience: "everyone" | "admin";
     urgency: "low" | "medium" | "high";
     files: File[];

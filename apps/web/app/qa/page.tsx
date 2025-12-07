@@ -12,6 +12,7 @@ import ScenarioFilter from "./components/ScenarioFilter";
 import QAToolbar from "./components/QAToolbar";
 import RecencySidebar from "./components/RecencySidebar";
 import FeedHeader from "./components/FeedHeader";
+import AnnouncementSection from "./components/AnnouncementSection";
 import ComposeForm from "./components/ComposeForm";
 import PostDetail from "./components/PostDetail";
 
@@ -165,12 +166,10 @@ export default function QAPage() {
 
                 <Col lg={sidebarOpen ? 9 : 12} className="px-1">
                     {!showCompose && (
-                        <FeedHeader
-                            folders={folders}
-                            posts={posts}
-                            activeFolder={scenario === "all" ? null : scenario}
-                            onSelectFolderAction={() => {}}
-                        />
+                        <>
+                            <AnnouncementSection posts={posts} folders={folders}/>
+                            <FeedHeader folders={folders} posts={posts}/>
+                        </>
                     )}
 
                     {showCompose ? (

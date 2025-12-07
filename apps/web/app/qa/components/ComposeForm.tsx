@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import {FaPaperclip, FaTimes} from "react-icons/fa";
 import {ComposeState} from "../constants";
 import {Folder} from "../types";
+import React from "react";
 
 const ReactQuill = dynamic(() => import("react-quill-new"), {ssr: false});
 
@@ -18,14 +19,14 @@ type ComposeFormProps = {
 };
 
 export default function ComposeForm({
-    composeState,
-    folders,
-    posting,
-    postError,
-    onUpdate,
-    onSubmit,
-    onCancel,
-}: ComposeFormProps) {
+                                        composeState,
+                                        folders,
+                                        posting,
+                                        postError,
+                                        onUpdate,
+                                        onSubmit,
+                                        onCancel,
+                                    }: ComposeFormProps) {
     const handleAddFolder = (value: string) => {
         if (!value || composeState.folders.includes(value)) return;
         onUpdate({folders: [...composeState.folders, value]});
@@ -51,7 +52,8 @@ export default function ComposeForm({
                 <div>
                     <h3 className="compose-form-title">Create a new post</h3>
                     <p className="compose-form-subtitle">
-                        Share a question or experience to help other renters. Replies marked ⚖️ are from verified attorneys.
+                        Share a question or experience to help other renters. Replies marked ⚖️ are from verified
+                        attorneys.
                     </p>
                 </div>
                 <button
@@ -68,7 +70,7 @@ export default function ComposeForm({
                 <div className="compose-form-row">
                     <span className="compose-form-label">Post type</span>
                     <div className="compose-form-options">
-                        {(["question", "note"] as const).map((type) => (
+                        {(["question", "note", "announcement"] as const).map((type) => (
                             <label key={type} className="compose-form-radio">
                                 <input
                                     type="radio"
@@ -76,7 +78,7 @@ export default function ComposeForm({
                                     checked={composeState.postType === type}
                                     onChange={() => onUpdate({postType: type})}
                                 />
-                                <span>{type === "question" ? "Question" : "Note"}</span>
+                                <span>{type.charAt(0).toUpperCase() + type.slice(1)}</span>
                             </label>
                         ))}
                     </div>
@@ -118,7 +120,8 @@ export default function ComposeForm({
 
                 <div className="compose-form-group">
                     <label className="compose-form-label">Sections</label>
-                    <p className="compose-form-hint">Pick at least one section so attorneys and tenants can find the right context.</p>
+                    <p className="compose-form-hint">Pick at least one section so attorneys and tenants can find the
+                        right context.</p>
                     <select
                         className="compose-form-select"
                         value=""
@@ -160,7 +163,8 @@ export default function ComposeForm({
 
                 <div className="compose-form-group">
                     <label className="compose-form-label">Details</label>
-                    <p className="compose-form-hint">Describe the situation, timeline, and any communication you have had.</p>
+                    <p className="compose-form-hint">Describe the situation, timeline, and any communication you have
+                        had.</p>
                     <div className="compose-form-editor">
                         <ReactQuill
                             theme="snow"

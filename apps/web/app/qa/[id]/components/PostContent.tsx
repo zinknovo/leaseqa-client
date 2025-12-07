@@ -30,7 +30,7 @@ export default function PostContent({
                         {post.createdAt ? format(new Date(post.createdAt), "MMM d, yyyy HH:mm") : ""}
                     </span>
                     <span className="post-detail-author">
-                        {post.author?.username || post.author?.email || post.authorId || "Anonymous"}
+                        {post.author?.username || post.author?.email || "Anonymous"}
                     </span>
                     <span className="post-detail-views">
                         <FaEye size={12}/>

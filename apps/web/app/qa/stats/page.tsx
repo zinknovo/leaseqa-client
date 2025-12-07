@@ -55,7 +55,7 @@ export default function StatsPage() {
     return (
         <div className="mb-4">
             <Row className="g-4">
-                <Col lg={8}>
+                <Col lg={5}>
                     <Card className="card-base card-accent-purple">
                         <CardBody className="p-4">
                             <CardHeader
@@ -76,7 +76,7 @@ export default function StatsPage() {
                     </Card>
                 </Col>
 
-                <Col lg={4}>
+                <Col lg={7}>
                     <Card className="card-base card-accent-purple">
                         <CardBody className="p-4">
                             <CardHeader
@@ -86,16 +86,17 @@ export default function StatsPage() {
                                 subtitle="Posts per folder"
                             />
 
-                            <div className="d-grid gap-3">
+                            <Row className="g-3">
                                 {breakdown.map((item) => (
-                                    <ProgressItem
-                                        key={item.label}
-                                        label={item.label}
-                                        value={item.value}
-                                        maxValue={maxBreakdown}
-                                    />
+                                    <Col xs={6} key={item.label}>
+                                        <ProgressItem
+                                            label={item.label}
+                                            value={item.value}
+                                            maxValue={maxBreakdown}
+                                        />
+                                    </Col>
                                 ))}
-                            </div>
+                            </Row>
                         </CardBody>
                     </Card>
                 </Col>

@@ -83,6 +83,23 @@ export default function ComposeForm({
                 </div>
 
                 <div className="compose-form-row">
+                    <span className="compose-form-label">Urgency</span>
+                    <div className="compose-form-options">
+                        {(["low", "medium", "high"] as const).map((level) => (
+                            <label key={level} className={`compose-form-radio urgency-${level}`}>
+                                <input
+                                    type="radio"
+                                    name="urgency"
+                                    checked={composeState.urgency === level}
+                                    onChange={() => onUpdate({urgency: level})}
+                                />
+                                <span>{level.charAt(0).toUpperCase() + level.slice(1)}</span>
+                            </label>
+                        ))}
+                    </div>
+                </div>
+
+                <div className="compose-form-row">
                     <span className="compose-form-label">Post to</span>
                     <div className="compose-form-options">
                         {(["everyone", "admin"] as const).map((aud) => (

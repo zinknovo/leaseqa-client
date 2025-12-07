@@ -51,6 +51,7 @@ export async function createPost(payload: {
     postType?: string;
     visibility?: string;
     audience?: string;
+    urgency?: string;
 }) {
     const response = await axiosWithCredentials.post(`${API_BASE}/posts`, payload);
     return response.data;

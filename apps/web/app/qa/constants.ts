@@ -4,6 +4,7 @@ export type ComposeState = {
     folders: string[];
     postType: "question" | "note";
     audience: "everyone" | "admin";
+    urgency: "low" | "medium" | "high";
     files: File[];
 };
 
@@ -13,5 +14,6 @@ export const INITIAL_COMPOSE_STATE: ComposeState = {
     folders: [],
     postType: "question",
     audience: "everyone",
+    urgency: "low",
     files: [],
 };

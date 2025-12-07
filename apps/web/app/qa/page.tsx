@@ -108,6 +108,7 @@ export default function QAPage() {
                 folders: composeState.folders.length ? composeState.folders : ["uncategorized"],
                 postType: composeState.postType,
                 audience: composeState.audience,
+                urgency: composeState.urgency,
                 visibility: "class",
             });
             const newPost = (resp as any)?.data || resp;

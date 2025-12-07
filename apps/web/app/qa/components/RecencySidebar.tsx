@@ -48,6 +48,7 @@ export default function RecencySidebar({
     };
 
     const getAuthor = (p: Post) => p.author?.username || p.author?.email || "Anonymous";
+    const getAuthorInitial = (p: Post) => getAuthor(p).charAt(0).toUpperCase();
     const getRole = (p: Post) => p.author?.role || "tenant";
     const getFolder = (p: Post) => {
         const key = p.folders?.[0];
@@ -74,39 +75,33 @@ export default function RecencySidebar({
                             <div className="post-sidebar-items">
                                 {bucket.items.map((p) => {
                                     const isActive = p._id === currentPostId;
+                                    const role = getRole(p);
                                     return (
                                         <div
                                             key={p._id}
                                             className={`post-sidebar-item ${isActive ? "active" : ""}`}
                                             onClick={() => onSelectPost(p._id)}
                                         >
-                                            <div className="post-sidebar-item-title mb-1">{p.summary}</div>
-                                            <div className="d-flex gap-1 flex-wrap mb-2" style={{fontSize: "0.65rem"}}>
-                                                <span className="badge rounded-pill bg-light text-secondary border text-uppercase">
-                                                    {getRole(p)}
-                                                </span>
-                                                <span className="badge rounded-pill bg-light text-secondary border text-uppercase">
+                                            <div className="post-sidebar-item-title">{p.summary}</div>
+                                            <div className="post-sidebar-item-badges">
+                                                <span className={`role-tag-${role}`}>{role}</span>
+                                                <span className="post-sidebar-badge">
                                                     {p.createdAt ? format(new Date(p.createdAt), "MMM d") : ""}
                                                 </span>
                                                 {getFolder(p) && (
-                                                    <span className="badge rounded-pill bg-light text-secondary border text-capitalize">
-                                                        {getFolder(p)}
-                                                    </span>
+                                                    <span className="post-sidebar-badge">{getFolder(p)}</span>
                                                 )}
                                             </div>
-                                            <div
-                                                className="post-sidebar-item-snippet"
-                                                style={{
-                                                    display: "-webkit-box",
-                                                    WebkitLineClamp: 2,
-                                                    WebkitBoxOrient: "vertical",
-                                                    overflow: "hidden",
-                                                }}
-                                            >
+                                            <div className="post-sidebar-item-snippet">
                                                 {makeSnippet(p.details || "")}
                                             </div>
-                                            <div className="post-sidebar-item-meta text-secondary small text-truncate mt-1">
-                                                {getAuthor(p)}
+                                            <div className="post-sidebar-item-author">
+                                                <span className="icon-circle icon-circle-xs icon-bg-purple">
+                                                    {getAuthorInitial(p)}
+                                                </span>
+                                                <span className="post-sidebar-item-author-name">
+                                                    {getAuthor(p)}
+                                                </span>
                                             </div>
                                         </div>
                                     );

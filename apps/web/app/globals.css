@@ -310,6 +310,7 @@ body {
 }
 
 /* Icon Circle Sizes */
+.icon-circle-xs { width: 20px; height: 20px; font-size: 0.65rem; }
 .icon-circle-sm { width: 32px; height: 32px; }
 .icon-circle-md,
 .resource-icon { width: 40px; height: 40px; }
@@ -390,6 +391,32 @@ body {
 .role-tag {
     background: var(--panel-muted);
     color: var(--ink-muted);
+}
+
+/* Role Tags - Shared across app */
+.role-tag-tenant,
+.role-tag-lawyer,
+.role-tag-admin {
+    font-size: 0.65rem;
+    font-weight: 600;
+    padding: 0.15rem 0.5rem;
+    border-radius: 10px;
+    text-transform: uppercase;
+}
+
+.role-tag-tenant {
+    background: #e0e7ff;
+    color: #4338ca;
+}
+
+.role-tag-lawyer {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.role-tag-admin {
+    background: #fef3c7;
+    color: #b45309;
 }
 
 .scenario-chip {
@@ -918,13 +945,48 @@ body {
     font-weight: 600;
     font-size: 0.875rem;
     color: var(--text-dark);
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.35rem;
+}
+
+.post-sidebar-item-badges {
+    display: flex;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.5rem;
+}
+
+.post-sidebar-badge {
+    font-size: 0.65rem;
+    font-weight: 500;
+    padding: 0.15rem 0.5rem;
+    border-radius: 10px;
+    background: var(--light-gray);
+    color: var(--text-muted);
+    border: 1px solid var(--qa-border);
+    text-transform: capitalize;
 }
 
 .post-sidebar-item-snippet {
     font-size: 0.75rem;
     color: var(--text-muted);
     line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.post-sidebar-item-author {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.post-sidebar-item-author-name {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-dark);
 }
 
 .post-sidebar-item-date {
@@ -1044,8 +1106,9 @@ body {
 
 .compose-form-header {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
+    gap: 1rem;
     padding: 1rem 1.25rem;
     border-bottom: 1px solid var(--qa-border);
     background: var(--light-gray);
@@ -1056,6 +1119,19 @@ body {
     font-weight: 600;
     margin: 0;
     color: var(--text-dark);
+}
+
+.compose-form-subtitle {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin: 0.25rem 0 0 0;
+    font-weight: 400;
+}
+
+.compose-form-hint {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin: 0;
 }
 
 .compose-form-close {
@@ -1280,9 +1356,53 @@ body {
 
 .post-detail-header {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     margin-bottom: 1rem;
+    gap: 1rem;
+}
+
+.post-detail-author-section {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.post-detail-author-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.post-detail-author-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.post-detail-author-name {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-dark);
+}
+
+.post-detail-meta-row {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.post-detail-meta-dot {
+    color: var(--text-muted);
+}
+
+.post-detail-header-right {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-shrink: 0;
 }
 
 .post-detail-meta {

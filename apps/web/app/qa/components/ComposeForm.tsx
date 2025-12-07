@@ -48,7 +48,12 @@ export default function ComposeForm({
     return (
         <div className="compose-form">
             <div className="compose-form-header">
-                <h3 className="compose-form-title">Create a new post</h3>
+                <div>
+                    <h3 className="compose-form-title">Create a new post</h3>
+                    <p className="compose-form-subtitle">
+                        Share a question or experience to help other renters. Replies marked ⚖️ are from verified attorneys.
+                    </p>
+                </div>
                 <button
                     type="button"
                     className="compose-form-close"
@@ -96,6 +101,7 @@ export default function ComposeForm({
 
                 <div className="compose-form-group">
                     <label className="compose-form-label">Sections</label>
+                    <p className="compose-form-hint">Pick at least one section so attorneys and tenants can find the right context.</p>
                     <select
                         className="compose-form-select"
                         value=""
@@ -128,7 +134,7 @@ export default function ComposeForm({
                     <input
                         type="text"
                         className="compose-form-input"
-                        placeholder="Brief summary of your post"
+                        placeholder='One-line summary, e.g., "Is a three-month deposit legal in MA?"'
                         value={composeState.summary}
                         onChange={(e) => onUpdate({summary: e.target.value.slice(0, 100)})}
                         maxLength={100}
@@ -136,7 +142,8 @@ export default function ComposeForm({
                 </div>
 
                 <div className="compose-form-group">
-                    <label className="compose-form-label">Content</label>
+                    <label className="compose-form-label">Details</label>
+                    <p className="compose-form-hint">Describe the situation, timeline, and any communication you have had.</p>
                     <div className="compose-form-editor">
                         <ReactQuill
                             theme="snow"

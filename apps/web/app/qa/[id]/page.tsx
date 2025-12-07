@@ -40,7 +40,7 @@ export default function PostDetailPage() {
         setResolvedStatus,
         refetch
     } = usePostDetail(postId);
-    
+
     const postEdit = usePostEdit(post);
     const answerState = useAnswers();
     const discussionState = useDiscussions();

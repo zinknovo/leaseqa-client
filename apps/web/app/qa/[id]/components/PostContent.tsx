@@ -18,35 +18,49 @@ export default function PostContent({
     onSummaryChange,
     onDetailsChange,
 }: PostContentProps) {
+    const authorName = post.author?.username || post.author?.email || "Anonymous";
+    const authorInitial = authorName.charAt(0).toUpperCase();
+    const authorRole = post.author?.role || "tenant";
+
     return (
         <div className="post-detail-card">
             <div className="post-detail-header">
-                <div className="post-detail-meta">
+                <div className="post-detail-author-section">
+                    <div className="icon-circle icon-circle-md icon-bg-purple">
+                        {authorInitial}
+                    </div>
+                    <div className="post-detail-author-info">
+                        <div className="post-detail-author-row">
+                            <span className="post-detail-author-name">{authorName}</span>
+                            <span className={`role-tag-${authorRole}`}>{authorRole}</span>
+                        </div>
+                        <div className="post-detail-meta-row">
+                            <span>{post.createdAt ? format(new Date(post.createdAt), "MMM d, yyyy 'at' h:mm a") : ""}</span>
+                            <span className="post-detail-meta-dot">·</span>
+                            <span>{post.folders?.join(", ")}</span>
+                            <span className="post-detail-meta-dot">·</span>
+                            <span className="post-detail-views">
+                                <FaEye size={11}/>
+                                {post.viewCount || 0}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div className="post-detail-header-right">
                     <span className={`post-urgency-badge ${post.urgency || "low"}`}>
                         {post.urgency || "low"}
                     </span>
-                    <span className="post-detail-folders">{post.folders?.join(" · ")}</span>
-                    <span className="post-detail-date">
-                        {post.createdAt ? format(new Date(post.createdAt), "MMM d, yyyy HH:mm") : ""}
-                    </span>
-                    <span className="post-detail-author">
-                        {post.author?.username || post.author?.email || "Anonymous"}
-                    </span>
-                    <span className="post-detail-views">
-                        <FaEye size={12}/>
-                        {post.viewCount || 0}
-                    </span>
+                    {canEdit && !isEditing && (
+                        <div className="post-detail-actions">
+                            <button className="post-action-btn" onClick={onEdit}>
+                                <FaEdit size={14}/>
+                            </button>
+                            <button className="post-action-btn danger" onClick={onDelete}>
+                                <FaTrash size={14}/>
+                            </button>
+                        </div>
+                    )}
                 </div>
-                {canEdit && !isEditing && (
-                    <div className="post-detail-actions">
-                        <button className="post-action-btn" onClick={onEdit}>
-                            <FaEdit size={14}/>
-                        </button>
-                        <button className="post-action-btn danger" onClick={onDelete}>
-                            <FaTrash size={14}/>
-                        </button>
-                    </div>
-                )}
             </div>
 
             {isEditing ? (

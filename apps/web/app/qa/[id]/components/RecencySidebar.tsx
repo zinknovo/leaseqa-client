@@ -15,18 +15,32 @@ type RecencySidebarProps = {
 };
 
 export default function RecencySidebar({posts, currentPostId, onSelectPost}: RecencySidebarProps) {
-    if (!posts.length) return null;
+    const now = new Date();
+    const thisWeekPosts = posts
+        .filter((p) => {
+            if (!p.createdAt) return false;
+            const created = new Date(p.createdAt);
+            const diffDays = Math.floor((now.getTime() - created.getTime()) / (1000 * 60 * 60 * 24));
+            return diffDays <= 6;
+        })
+        .sort((a, b) => {
+            const dateA = new Date(a.createdAt || 0).getTime();
+            const dateB = new Date(b.createdAt || 0).getTime();
+            return dateB - dateA;
+        });
+
+    if (!thisWeekPosts.length) return null;
 
     return (
         <div className="post-sidebar">
             <div className="post-sidebar-group">
                 <div className="post-sidebar-header">
                     <FaChevronDown size={10}/>
-                    <span>Recent Posts</span>
-                    <span className="post-sidebar-count">{posts.length}</span>
+                    <span>This Week</span>
+                    <span className="post-sidebar-count">{thisWeekPosts.length}</span>
                 </div>
                 <div className="post-sidebar-items">
-                    {posts.slice(0, 15).map((p) => {
+                    {thisWeekPosts.slice(0, 15).map((p) => {
                         const isActive = p._id === currentPostId;
                         return (
                             <div

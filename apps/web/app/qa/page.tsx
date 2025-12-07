@@ -154,7 +154,7 @@ export default function QAPage() {
             <div className="d-flex justify-content-center align-items-center loading-min-height">
                 <div className="text-center">
                     <div className="spinner-border text-primary mb-3" role="status"/>
-                    <div className="text-secondary">Loading...</div>
+                    <div className="text-secondary">Loading Posts...</div>
                 </div>
             </div>
         );

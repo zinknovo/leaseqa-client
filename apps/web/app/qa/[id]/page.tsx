@@ -5,8 +5,6 @@ import {Button, Col, Row} from "react-bootstrap";
 import {useSelector} from "react-redux";
 import {RootState} from "@/app/store";
 import * as client from "../client";
-import "react-quill-new/dist/quill.snow.css";
-
 import {AnswersSection, DiscussionsSection, PostContent, RecencySidebar} from "./components";
 import {usePostDetail, usePostEdit, useAnswers, useDiscussions} from "./hooks";
 
@@ -34,13 +32,13 @@ export default function PostDetailPage() {
     const handleSavePost = async () => {
         await client.updatePost(postId, {summary: postEdit.editSummary, details: postEdit.editDetails});
         postEdit.setIsEditing(false);
-        refetch();
+        await refetch();
     };
 
     const handleStatusChange = async (status: "open" | "resolved") => {
         setResolvedStatus(status);
         await client.updatePost(postId, {status});
-        refetch();
+        await refetch();
     };
 
     const handleSubmitAnswer = async () => {
@@ -60,7 +58,7 @@ export default function PostDetailPage() {
                 await client.uploadPostAttachments(postId, answerState.answerFiles).catch(console.error);
             }
             answerState.clearAnswer();
-            refetch();
+            await refetch();
         } catch (err: any) {
             setError(err.message || "Failed to submit answer");
         }
@@ -70,12 +68,12 @@ export default function PostDetailPage() {
         if (!answerState.answerEditContent.trim()) return;
         await client.updateAnswer(id, {content: answerState.answerEditContent});
         answerState.cancelEditAnswer();
-        refetch();
+        await refetch();
     };
 
     const handleDeleteAnswer = async (id: string) => {
         await client.deleteAnswer(id);
-        refetch();
+        await refetch();
     };
 
     const handleSubmitDiscussion = async (parentId: string | null) => {
@@ -87,7 +85,7 @@ export default function PostDetailPage() {
         discussionState.setDiscussionReplying(null);
         discussionState.setShowFollowBox(false);
         discussionState.setFollowFocused(false);
-        refetch();
+        await refetch();
     };
 
     const handleUpdateDiscussion = async (id: string) => {
@@ -96,12 +94,12 @@ export default function PostDetailPage() {
         await client.updateDiscussion(id, {content});
         discussionState.clearDraft(id);
         discussionState.setDiscussionEditing(null);
-        refetch();
+        await refetch();
     };
 
     const handleDeleteDiscussion = async (id: string) => {
         await client.deleteDiscussion(id);
-        refetch();
+        await refetch();
     };
 
     if (loading) {

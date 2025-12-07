@@ -1,6 +1,7 @@
 import {FaEdit, FaTrash, FaReply} from "react-icons/fa";
 import {format} from "date-fns";
 import dynamic from "next/dynamic";
+import "react-quill-new/dist/quill.snow.css";
 
 const ReactQuill = dynamic(() => import("react-quill-new"), {ssr: false});
 

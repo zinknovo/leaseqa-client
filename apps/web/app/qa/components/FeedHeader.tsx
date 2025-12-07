@@ -35,7 +35,6 @@ export default function FeedHeader({folders, posts}: FeedHeaderProps) {
                         key={post._id}
                         className="feed-header-post"
                         onClick={() => handlePostClick(post._id)}
-                        style={{cursor: "pointer"}}
                     >
                         <div className="feed-header-post-top">
                             <span className="feed-header-post-title">{post.summary}</span>

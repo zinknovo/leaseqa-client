@@ -6,7 +6,7 @@ import {Col, Row} from "react-bootstrap";
 import {FaPlus, FaSearch} from "react-icons/fa";
 
 import {Folder, Post} from "./types";
-import {ComposeState, INITIAL_COMPOSE_STATE, SCENARIO_KEYWORDS} from "./constants";
+import {ComposeState, INITIAL_COMPOSE_STATE} from "./constants";
 import * as client from "./client";
 
 import ScenarioFilter from "./components/ScenarioFilter";
@@ -24,7 +24,6 @@ export default function QAPage() {
 
     const [folders, setFolders] = useState<Folder[]>([]);
     const [posts, setPosts] = useState<Post[]>([]);
-    const [activeFolder, setActiveFolder] = useState<string | null>(null);
     const [selectedId, setSelectedId] = useState<string | null>(null);
     const [search, setSearch] = useState("");
     const [loading, setLoading] = useState(true);
@@ -35,9 +34,9 @@ export default function QAPage() {
     const [composeState, setComposeState] = useState<ComposeState>(INITIAL_COMPOSE_STATE);
     const [bucketOpen, setBucketOpen] = useState<Record<string, boolean>>({
         thisWeek: true,
-        lastWeek: true,
-        thisMonth: true,
-        earlier: true,
+        lastWeek: false,
+        thisMonth: false,
+        earlier: false,
     });
 
     useEffect(() => {
@@ -52,11 +51,7 @@ export default function QAPage() {
         try {
             setLoading(true);
             const foldersResponse = await client.fetchFolders();
-            const foldersData = foldersResponse.data || [];
-            setFolders(foldersData);
-            if (foldersData.length > 0) {
-                setActiveFolder(foldersData[0].name);
-            }
+            setFolders(foldersResponse.data || []);
             const postsResponse = await client.fetchPosts({});
             setPosts(postsResponse.data || []);
         } catch (error) {
@@ -68,23 +63,24 @@ export default function QAPage() {
 
     const filteredPosts = useMemo(() => {
         return posts.filter(post => {
-            if (activeFolder && !post.folders.includes(activeFolder)) return false;
             if (search) {
                 const q = search.toLowerCase();
-                return post.summary.toLowerCase().includes(q) || post.details.toLowerCase().includes(q);
+                if (!post.summary.toLowerCase().includes(q) && !post.details.toLowerCase().includes(q)) {
+                    return false;
+                }
             }
             if (scenario && scenario !== "all") {
-                const needles = SCENARIO_KEYWORDS[scenario] || [];
-                const haystack = `${post.summary} ${post.details}`.toLowerCase();
-                return needles.some((word) => haystack.includes(word.toLowerCase()));
+                if (!post.folders.includes(scenario)) {
+                    return false;
+                }
             }
             return true;
         });
-    }, [posts, activeFolder, search, scenario]);
+    }, [posts, search, scenario]);
 
     const groupedPosts = useMemo(() => {
         const now = new Date();
-        const buckets: Record<string, { label: string; items: Post[] }> = {
+        const buckets: Record<string, {label: string; items: Post[]}> = {
             thisWeek: {label: "This week", items: []},
             lastWeek: {label: "Last week", items: []},
             thisMonth: {label: "Earlier this month", items: []},
@@ -132,7 +128,7 @@ export default function QAPage() {
             const resp = await client.createPost({
                 summary: composeState.summary,
                 details: composeState.details,
-                folders: composeState.folders.length ? composeState.folders : (activeFolder ? [activeFolder] : []),
+                folders: composeState.folders.length ? composeState.folders : ["uncategorized"],
                 postType: composeState.postType,
                 audience: composeState.audience,
                 visibility: "class",
@@ -206,8 +202,8 @@ export default function QAPage() {
                         <FeedHeader
                             folders={folders}
                             posts={posts}
-                            activeFolder={activeFolder}
-                            onSelectFolderAction={setActiveFolder}
+                            activeFolder={scenario === "all" ? null : scenario}
+                            onSelectFolderAction={() => {}}
                         />
                     )}
 

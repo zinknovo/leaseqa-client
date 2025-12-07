@@ -8,12 +8,22 @@ export async function fetchFolders() {
     return response.data;
 }
 
-export async function createFolder(payload: {name: string; displayName: string; description?: string; color?: string}) {
+export async function createFolder(payload: {
+    name: string;
+    displayName: string;
+    description?: string;
+    color?: string
+}) {
     const response = await axiosWithCredentials.post(`${API_BASE}/folders`, payload);
     return response.data;
 }
 
-export async function updateFolder(folderId: string, payload: {name?: string; displayName?: string; description?: string; color?: string}) {
+export async function updateFolder(folderId: string, payload: {
+    name?: string;
+    displayName?: string;
+    description?: string;
+    color?: string
+}) {
     const response = await axiosWithCredentials.put(`${API_BASE}/folders/${folderId}`, payload);
     return response.data;
 }
@@ -23,7 +33,7 @@ export async function deleteFolder(folderId: string) {
     return response.data;
 }
 
-export async function fetchPosts(params: {folder?: string; search?: string}) {
+export async function fetchPosts(params: { folder?: string; search?: string }) {
     const response = await axiosWithCredentials.get(`${API_BASE}/posts`, {params});
     return response.data;
 }
@@ -64,7 +74,7 @@ export async function uploadPostAttachments(postId: string, files: File[]) {
     return response.data;
 }
 
-export async function createAnswer(payload: {postId: string; content: string; answerType: string}) {
+export async function createAnswer(payload: { postId: string; content: string; answerType: string }) {
     const response = await axiosWithCredentials.post(`${API_BASE}/answers`, payload);
     return response.data;
 }
@@ -79,7 +89,7 @@ export async function deleteAnswer(answerId: string) {
     return response.data;
 }
 
-export async function createDiscussion(payload: {postId: string; parentId?: string | null; content: string}) {
+export async function createDiscussion(payload: { postId: string; parentId?: string | null; content: string }) {
     const response = await axiosWithCredentials.post(`${API_BASE}/discussions`, payload);
     return response.data;
 }

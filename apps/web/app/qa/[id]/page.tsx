@@ -1,6 +1,5 @@
 "use client";
 
-import {useEffect, useState} from "react";
 import {useParams, useRouter} from "next/navigation";
 import {Button, Col, Row} from "react-bootstrap";
 import {useSelector} from "react-redux";
@@ -8,46 +7,8 @@ import {RootState} from "@/app/store";
 import * as client from "../client";
 import "react-quill-new/dist/quill.snow.css";
 
-import {RecencySidebar, PostContent, AnswersSection, DiscussionsSection} from "./components";
-
-type PostDetailData = {
-    _id: string;
-    summary: string;
-    details: string;
-    folders: string[];
-    authorId: string;
-    viewCount?: number;
-    createdAt?: string;
-    urgency?: string;
-    status?: string;
-    attachments?: {filename: string; url: string; size?: number}[];
-    answers?: Answer[];
-    discussions?: Discussion[];
-    author?: any;
-};
-
-type Answer = {
-    _id: string;
-    postId: string;
-    authorId: string;
-    answerType: string;
-    content: string;
-    createdAt: string;
-    isAccepted?: boolean;
-    author?: any;
-};
-
-type Discussion = {
-    _id: string;
-    postId: string;
-    parentId?: string | null;
-    authorId: string;
-    content: string;
-    isResolved?: boolean;
-    createdAt: string;
-    replies?: Discussion[];
-    author?: any;
-};
+import {AnswersSection, DiscussionsSection, PostContent, RecencySidebar} from "./components";
+import {useAnswers, useDiscussions, usePostDetail, usePostEdit} from "./hooks";
 
 export default function PostDetailPage() {
     const params = useParams();
@@ -57,66 +18,24 @@ export default function PostDetailPage() {
     const currentUserId = session.user?.id || (session.user as any)?._id;
     const currentRole = session.user?.role;
 
-    const [post, setPost] = useState<PostDetailData | null>(null);
-    const [allPosts, setAllPosts] = useState<PostDetailData[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
-
-    const [isEditingPost, setIsEditingPost] = useState(false);
-    const [editSummary, setEditSummary] = useState("");
-    const [editDetails, setEditDetails] = useState("");
-
-    const [answers, setAnswers] = useState<Answer[]>([]);
-    const [resolvedStatus, setResolvedStatus] = useState<"open" | "resolved">("open");
-    const [showAnswerBox, setShowAnswerBox] = useState(false);
-    const [answerContent, setAnswerContent] = useState("");
-    const [answerFocused, setAnswerFocused] = useState(false);
-    const [answerFiles, setAnswerFiles] = useState<File[]>([]);
-    const [answerEditing, setAnswerEditing] = useState<string | null>(null);
-    const [answerEditContent, setAnswerEditContent] = useState("");
-
-    const [discussions, setDiscussions] = useState<Discussion[]>([]);
-    const [showFollowBox, setShowFollowBox] = useState(false);
-    const [followFocused, setFollowFocused] = useState(false);
-    const [discussionDrafts, setDiscussionDrafts] = useState<Record<string, string>>({});
-    const [discussionReplying, setDiscussionReplying] = useState<string | null>(null);
+    const {
+        post,
+        allPosts,
+        loading,
+        error,
+        setError,
+        answers,
+        discussions,
+        resolvedStatus,
+        setResolvedStatus,
+        refetch
+    } = usePostDetail(postId);
+    const postEdit = usePostEdit(post);
+    const answerState = useAnswers();
+    const discussionState = useDiscussions();
 
     const isAuthor = post && currentUserId && post.authorId?.toString() === currentUserId;
     const canEditPost = isAuthor || currentRole === "admin";
-
-    const fetchPost = async () => {
-        try {
-            setLoading(true);
-            const res = await client.fetchPostById(postId);
-            const data = (res as any)?.data || (res as any);
-            setPost(data);
-            setAnswers(data.answers || []);
-            setDiscussions(data.discussions || []);
-            setResolvedStatus(data.status === "resolved" ? "resolved" : "open");
-            setEditSummary(data.summary || "");
-            setEditDetails(data.details || "");
-        } catch (err: any) {
-            setError(err.message || "Failed to load post");
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const fetchRecency = async () => {
-        try {
-            const res = await client.fetchPosts({});
-            setAllPosts((res as any)?.data || res || []);
-        } catch (err) {
-            console.error("Failed to load recency posts", err);
-        }
-    };
-
-    useEffect(() => {
-        if (postId) {
-            fetchPost();
-            fetchRecency();
-        }
-    }, [postId]);
 
     const handleDeletePost = async () => {
         await client.deletePost(postId);
@@ -124,122 +43,76 @@ export default function PostDetailPage() {
     };
 
     const handleSavePost = async () => {
-        await client.updatePost(postId, {summary: editSummary, details: editDetails});
-        setIsEditingPost(false);
-        fetchPost();
-    };
-
-    const handleCancelEditPost = () => {
-        setIsEditingPost(false);
-        setEditSummary(post?.summary || "");
-        setEditDetails(post?.details || "");
+        await client.updatePost(postId, {summary: postEdit.editSummary, details: postEdit.editDetails});
+        postEdit.setIsEditing(false);
+        refetch();
     };
 
     const handleStatusChange = async (status: "open" | "resolved") => {
         setResolvedStatus(status);
         await client.updatePost(postId, {status});
-        fetchPost();
+        refetch();
     };
 
     const handleSubmitAnswer = async () => {
         setError("");
-        if (!answerContent.trim()) {
+        if (!answerState.answerContent.trim()) {
             setError("Answer content is required");
             return;
         }
         try {
             const resp = await client.createAnswer({
                 postId,
-                content: answerContent,
+                content: answerState.answerContent,
                 answerType: currentRole === "lawyer" ? "lawyer_opinion" : "community_answer",
             });
             const newAnswer = (resp as any)?.data || resp;
-            if (newAnswer?._id && answerFiles.length) {
-                await client.uploadPostAttachments(postId, answerFiles).catch(console.error);
+            if (newAnswer?._id && answerState.answerFiles.length) {
+                await client.uploadPostAttachments(postId, answerState.answerFiles).catch(console.error);
             }
-            setAnswerContent("");
-            setAnswerFiles([]);
-            setShowAnswerBox(false);
-            setAnswerFocused(false);
-            fetchPost();
+            answerState.clearAnswer();
+            refetch();
         } catch (err: any) {
             setError(err.message || "Failed to submit answer");
         }
     };
 
-    const handleClearAnswer = () => {
-        setAnswerContent("");
-        setAnswerFiles([]);
-        setShowAnswerBox(false);
-        setAnswerFocused(false);
-    };
-
-    const handleEditAnswer = (id: string, content: string) => {
-        setAnswerEditing(id);
-        setAnswerEditContent(content);
-    };
-
     const handleSaveAnswerEdit = async (id: string) => {
-        if (!answerEditContent.trim()) return;
-        await client.updateAnswer(id, {content: answerEditContent});
-        setAnswerEditing(null);
-        setAnswerEditContent("");
-        fetchPost();
-    };
-
-    const handleCancelAnswerEdit = () => {
-        setAnswerEditing(null);
-        setAnswerEditContent("");
+        if (!answerState.answerEditContent.trim()) return;
+        await client.updateAnswer(id, {content: answerState.answerEditContent});
+        answerState.cancelEditAnswer();
+        refetch();
     };
 
     const handleDeleteAnswer = async (id: string) => {
         await client.deleteAnswer(id);
-        fetchPost();
-    };
-
-    const handleDraftChange = (key: string, val: string) => {
-        setDiscussionDrafts((prev) => ({...prev, [key]: val}));
+        refetch();
     };
 
     const handleSubmitDiscussion = async (parentId: string | null) => {
         const key = parentId || "root";
-        const content = discussionDrafts[key] || "";
+        const content = discussionState.discussionDrafts[key] || "";
         if (!content.trim()) return;
         await client.createDiscussion({postId, parentId, content});
-        setDiscussionDrafts((prev) => ({...prev, [key]: ""}));
-        setDiscussionReplying(null);
-        setShowFollowBox(false);
-        setFollowFocused(false);
-        fetchPost();
+        discussionState.setDiscussionDrafts((prev) => ({...prev, [key]: ""}));
+        discussionState.setDiscussionReplying(null);
+        discussionState.setShowFollowBox(false);
+        discussionState.setFollowFocused(false);
+        refetch();
     };
 
     const handleUpdateDiscussion = async (id: string) => {
-        const content = discussionDrafts[id] || "";
+        const content = discussionState.discussionDrafts[id] || "";
         if (!content.trim()) return;
         await client.updateDiscussion(id, {content});
-        setDiscussionDrafts((prev) => ({...prev, [id]: ""}));
-        setDiscussionReplying(null);
-        fetchPost();
+        discussionState.setDiscussionDrafts((prev) => ({...prev, [id]: ""}));
+        discussionState.setDiscussionReplying(null);
+        refetch();
     };
 
     const handleDeleteDiscussion = async (id: string) => {
         await client.deleteDiscussion(id);
-        fetchPost();
-    };
-
-    const handleReplyDiscussion = (id: string) => {
-        setDiscussionReplying(id);
-    };
-
-    const handleEditDiscussion = (id: string, content: string) => {
-        setDiscussionReplying(id);
-        setDiscussionDrafts((prev) => ({...prev, [id]: content}));
-    };
-
-    const handleClearFollow = () => {
-        setDiscussionDrafts((prev) => ({...prev, root: ""}));
-        setShowFollowBox(false);
-        setFollowFocused(false);
+        refetch();
     };
 
     if (loading) {
@@ -276,15 +149,15 @@ export default function PostDetailPage() {
                 <PostContent
                     post={post}
                     canEdit={canEditPost || false}
-                    isEditing={isEditingPost}
-                    editSummary={editSummary}
-                    editDetails={editDetails}
-                    onEdit={() => setIsEditingPost(true)}
+                    isEditing={postEdit.isEditing}
+                    editSummary={postEdit.editSummary}
+                    editDetails={postEdit.editDetails}
+                    onEdit={postEdit.startEdit}
                     onDelete={handleDeletePost}
                     onSave={handleSavePost}
-                    onCancel={handleCancelEditPost}
-                    onSummaryChange={setEditSummary}
-                    onDetailsChange={setEditDetails}
+                    onCancel={postEdit.cancelEdit}
+                    onSummaryChange={postEdit.setEditSummary}
+                    onDetailsChange={postEdit.setEditDetails}
                 />
 
                 <AnswersSection
@@ -293,24 +166,24 @@ export default function PostDetailPage() {
                     currentUserId={currentUserId}
                     currentRole={currentRole || null}
                     resolvedStatus={resolvedStatus}
-                    showAnswerBox={showAnswerBox}
-                    answerContent={answerContent}
-                    answerFocused={answerFocused}
-                    answerFiles={answerFiles}
-                    answerEditing={answerEditing}
-                    answerEditContent={answerEditContent}
+                    showAnswerBox={answerState.showAnswerBox}
+                    answerContent={answerState.answerContent}
+                    answerFocused={answerState.answerFocused}
+                    answerFiles={answerState.answerFiles}
+                    answerEditing={answerState.answerEditing}
+                    answerEditContent={answerState.answerEditContent}
                     error={error}
                     onStatusChange={handleStatusChange}
-                    onShowAnswerBox={() => setShowAnswerBox(true)}
-                    onAnswerContentChange={setAnswerContent}
-                    onAnswerFocus={() => setAnswerFocused(true)}
-                    onAnswerFilesChange={setAnswerFiles}
+                    onShowAnswerBox={() => answerState.setShowAnswerBox(true)}
+                    onAnswerContentChange={answerState.setAnswerContent}
+                    onAnswerFocus={() => answerState.setAnswerFocused(true)}
+                    onAnswerFilesChange={answerState.setAnswerFiles}
                     onSubmitAnswer={handleSubmitAnswer}
-                    onClearAnswer={handleClearAnswer}
-                    onEditAnswer={handleEditAnswer}
-                    onEditContentChange={setAnswerEditContent}
+                    onClearAnswer={answerState.clearAnswer}
+                    onEditAnswer={answerState.startEditAnswer}
+                    onEditContentChange={answerState.setAnswerEditContent}
                     onSaveEdit={handleSaveAnswerEdit}
-                    onCancelEdit={handleCancelAnswerEdit}
+                    onCancelEdit={answerState.cancelEditAnswer}
                     onDeleteAnswer={handleDeleteAnswer}
                 />
 
@@ -318,20 +191,20 @@ export default function PostDetailPage() {
                     discussions={discussions}
                     currentUserId={currentUserId}
                     currentRole={currentRole || null}
-                    showFollowBox={showFollowBox}
-                    followFocused={followFocused}
-                    discussionDrafts={discussionDrafts}
-                    discussionReplying={discussionReplying}
-                    onShowFollowBox={() => setShowFollowBox(true)}
-                    onFollowFocus={() => setFollowFocused(true)}
-                    onDraftChange={handleDraftChange}
+                    showFollowBox={discussionState.showFollowBox}
+                    followFocused={discussionState.followFocused}
+                    discussionDrafts={discussionState.discussionDrafts}
+                    discussionReplying={discussionState.discussionReplying}
+                    onShowFollowBox={() => discussionState.setShowFollowBox(true)}
+                    onFollowFocus={() => discussionState.setFollowFocused(true)}
+                    onDraftChange={discussionState.updateDraft}
                     onSubmit={handleSubmitDiscussion}
                     onUpdate={handleUpdateDiscussion}
                     onDelete={handleDeleteDiscussion}
-                    onReply={handleReplyDiscussion}
-                    onEdit={handleEditDiscussion}
-                    onCancelReply={() => setDiscussionReplying(null)}
-                    onClearFollow={handleClearFollow}
+                    onReply={discussionState.startReply}
+                    onEdit={discussionState.startEdit}
+                    onCancelReply={discussionState.cancelReply}
+                    onClearFollow={discussionState.clearFollow}
                 />
             </Col>
         </Row>

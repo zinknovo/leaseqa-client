@@ -1,11 +1,11 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import {FaTimes, FaPaperclip} from "react-icons/fa";
+import {FaPaperclip, FaTimes} from "react-icons/fa";
 import {ComposeState, SECTION_OPTIONS} from "../constants";
+import "react-quill-new/dist/quill.snow.css";
 
 const ReactQuill = dynamic(() => import("react-quill-new"), {ssr: false});
-import "react-quill-new/dist/quill.snow.css";
 
 type ComposeFormProps = {
     composeState: ComposeState;
@@ -17,13 +17,13 @@ type ComposeFormProps = {
 };
 
 export default function ComposeForm({
-    composeState,
-    posting,
-    postError,
-    onUpdate,
-    onSubmit,
-    onCancel,
-}: ComposeFormProps) {
+                                        composeState,
+                                        posting,
+                                        postError,
+                                        onUpdate,
+                                        onSubmit,
+                                        onCancel,
+                                    }: ComposeFormProps) {
     const handleAddFolder = (value: string) => {
         if (!value || composeState.folders.includes(value)) return;
         onUpdate({folders: [...composeState.folders, value]});

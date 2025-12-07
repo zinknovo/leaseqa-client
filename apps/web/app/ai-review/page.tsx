@@ -9,6 +9,8 @@ import ToastNotification, {ToastData} from "@/components/ui/ToastNotification";
 import AccentCard from "@/components/ui/AccentCard";
 import IconCircle from "@/components/ui/IconCircle";
 import * as client from "./client";
+import {useSelector} from "react-redux";
+import {RootState} from "@/app/store";
 
 export default function AIReviewPage() {
     const [state, setState] = useState<ReviewState>({status: "idle"});
@@ -17,10 +19,14 @@ export default function AIReviewPage() {
     const [loading, setLoading] = useState(false);
     const [toast, setToast] = useState<ToastData>({show: false, message: "", type: "error"});
     const contractTextRef = useRef<HTMLTextAreaElement>(null);
+    const session = useSelector((state: RootState) => state.session);
+    const isAuthenticated = session.status === "authenticated";
 
     useEffect(() => {
-        loadReviews();
-    }, []);
+        if (isAuthenticated) {
+            loadReviews();
+        }
+    }, [isAuthenticated]);
 
     const loadReviews = async () => {
         try {
@@ -154,47 +160,49 @@ export default function AIReviewPage() {
                     )}
                 </Col>
 
-                <Col lg={4}>
-                    <AccentCard>
-                        <div className="d-flex align-items-center gap-3 mb-4">
-                            <IconCircle size="md" variant="muted"><FaHistory size={16}/></IconCircle>
-                            <div>
-                                <div className="fw-bold">History</div>
-                                <div className="text-muted-light small">Your past reviews</div>
+                {isAuthenticated && (
+                    <Col lg={4}>
+                        <AccentCard>
+                            <div className="d-flex align-items-center gap-3 mb-4">
+                                <IconCircle size="md" variant="muted"><FaHistory size={16}/></IconCircle>
+                                <div>
+                                    <div className="fw-bold">History</div>
+                                    <div className="text-muted-light small">Your past reviews</div>
+                                </div>
                             </div>
-                        </div>
 
-                        {loading ? (
-                            <div className="text-center py-4">
-                                <Spinner size="sm" className="me-2"/>
-                                <span className="text-muted-light small">Loading...</span>
-                            </div>
-                        ) : reviews.length > 0 ? (
-                            <div className="scrollable-md">
-                                <ListGroup className="border-0">
-                                    {reviews.map((review) => (
-                                        <ListGroupItem key={review._id} className="list-item-muted">
-                                            <div className="d-flex justify-content-between align-items-center">
-                                                <div>
-                                                    <div
-                                                        className="fw-semibold small">{review.contractType || "Lease review"}</div>
-                                                    <div
-                                                        className="text-muted-light small">{new Date(review.createdAt).toLocaleDateString()}</div>
+                            {loading ? (
+                                <div className="text-center py-4">
+                                    <Spinner size="sm" className="me-2"/>
+                                    <span className="text-muted-light small">Loading...</span>
+                                </div>
+                            ) : reviews.length > 0 ? (
+                                <div className="scrollable-md">
+                                    <ListGroup className="border-0">
+                                        {reviews.map((review) => (
+                                            <ListGroupItem key={review._id} className="list-item-muted">
+                                                <div className="d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <div
+                                                            className="fw-semibold small">{review.contractType || "Lease review"}</div>
+                                                        <div
+                                                            className="text-muted-light small">{new Date(review.createdAt).toLocaleDateString()}</div>
+                                                    </div>
+                                                    <Badge bg="success" className="rounded-pill">✓</Badge>
                                                 </div>
-                                                <Badge bg="success" className="rounded-pill">✓</Badge>
-                                            </div>
-                                        </ListGroupItem>
-                                    ))}
-                                </ListGroup>
-                            </div>
-                        ) : (
-                            <div className="text-center py-4 rounded-3 bg-muted">
-                                <FaCloudUploadAlt size={30} className="text-muted-light mb-2"/>
-                                <div className="text-muted-light small">No reviews yet. Submit one above!</div>
-                            </div>
-                        )}
-                    </AccentCard>
-                </Col>
+                                            </ListGroupItem>
+                                        ))}
+                                    </ListGroup>
+                                </div>
+                            ) : (
+                                <div className="text-center py-4 rounded-3 bg-muted">
+                                    <FaCloudUploadAlt size={30} className="text-muted-light mb-2"/>
+                                    <div className="text-muted-light small">No reviews yet. Submit one above!</div>
+                                </div>
+                            )}
+                        </AccentCard>
+                    </Col>
+                )}
             </Row>
         </div>
     );

@@ -210,7 +210,7 @@ export default function QAPage() {
 
     return (
         <>
-            <Stack direction="horizontal" className="mb-1 flex-wrap" gap={2}>
+            <Stack direction="horizontal" className="mb-2 flex-wrap align-items-center" gap={2}>
                 <Button
                     size="sm"
                     variant="outline-secondary"
@@ -236,12 +236,12 @@ export default function QAPage() {
                 />
             </Stack>
 
-            <Row className="g-1 mx-0">
+            <Row className="g-3 align-items-start">
                 {sidebarOpen && (
-                    <Col lg={3} className="px-1">
-                        <Card className="mb-1 card-base">
-                            <CardBody className="py-1 px-2">
-                                <div className="small text-secondary mb-1">By recency</div>
+                    <Col lg={3}>
+                        <Card className="mb-3 card-base shadow-sm h-100">
+                            <CardBody className="p-3">
+                                <div className="small text-secondary mb-2 text-uppercase fw-semibold">By recency</div>
                                 <ListGroup>
                                     {Object.entries(recencyBuckets).map(([key, bucket]) => {
                                         if (!bucket.items.length) return null;
@@ -257,11 +257,11 @@ export default function QAPage() {
                                                     <span className="fw-semibold text-dark">{bucket.label}</span>
                                                 </button>
                                                 {open && (
-                                                    <div className="d-grid gap-1">
+                                                    <div className="d-grid gap-2">
                                                         {bucket.items.map((post) => (
                                                             <Card
                                                                 key={post._id}
-                                                                className={`p-1 post-item-clickable card-nested ${selectedId === post._id || currentRouteId === post._id ? "border-primary" : ""}`}
+                                                                className={`p-2 shadow-sm border-0 post-item-clickable card-nested ${selectedId === post._id || currentRouteId === post._id ? "border-primary" : ""}`}
                                                                 onClick={() => {
                                                                     setSelectedId(post._id);
                                                                     router.push(`/qa/${post._id}`);
@@ -291,7 +291,7 @@ export default function QAPage() {
                     </Col>
                 )}
 
-                <Col lg={sidebarOpen ? 9 : 12} className="px-1">
+                <Col lg={sidebarOpen ? 9 : 12}>
                     {!showCompose && (
                         <FeedHeader
                             folders={folders}
@@ -302,8 +302,8 @@ export default function QAPage() {
                     )}
 
                     {showCompose ? (
-                        <Card className="mb-1 card-base">
-                            <CardBody className="p-2">
+                        <Card className="mb-3 card-base shadow-sm">
+                            <CardBody className="p-3">
                                 <div className="d-flex align-items-center justify-content-between mb-2">
                                     <div className="fw-semibold">Create a new post</div>
                                     <Button
@@ -505,10 +505,12 @@ export default function QAPage() {
                             </CardBody>
                         </Card>
                     ) : (
-                        <PostDetail
-                            post={selectedPost}
-                            folders={folders}
-                        />
+                        <Card className="shadow-sm border-0">
+                            <PostDetail
+                                post={selectedPost}
+                                folders={folders}
+                            />
+                        </Card>
                     )}
                 </Col>
             </Row>

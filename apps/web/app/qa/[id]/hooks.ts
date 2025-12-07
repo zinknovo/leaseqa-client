@@ -138,28 +138,49 @@ export function useDiscussions() {
     const [followFocused, setFollowFocused] = useState(false);
     const [discussionDrafts, setDiscussionDrafts] = useState<Record<string, string>>({});
     const [discussionReplying, setDiscussionReplying] = useState<string | null>(null);
+    const [discussionEditing, setDiscussionEditing] = useState<string | null>(null);
 
     const updateDraft = (key: string, val: string) => {
         setDiscussionDrafts((prev) => ({...prev, [key]: val}));
     };
 
+    const clearDraft = (key: string) => {
+        setDiscussionDrafts((prev) => {
+            const next = {...prev};
+            delete next[key];
+            return next;
+        });
+    };
+
     const clearFollow = () => {
-        setDiscussionDrafts((prev) => ({...prev, root: ""}));
+        clearDraft("root");
         setShowFollowBox(false);
         setFollowFocused(false);
     };
 
     const startReply = (id: string) => {
         setDiscussionReplying(id);
+        setDiscussionEditing(null);
     };
 
     const startEdit = (id: string, content: string) => {
-        setDiscussionReplying(id);
+        setDiscussionEditing(id);
+        setDiscussionReplying(null);
         setDiscussionDrafts((prev) => ({...prev, [id]: content}));
     };
 
     const cancelReply = () => {
+        if (discussionReplying) {
+            clearDraft(`reply_${discussionReplying}`);
+        }
         setDiscussionReplying(null);
+    };
+
+    const cancelEdit = () => {
+        if (discussionEditing) {
+            clearDraft(discussionEditing);
+        }
+        setDiscussionEditing(null);
     };
 
     return {
@@ -171,10 +192,14 @@ export function useDiscussions() {
         setDiscussionDrafts,
         discussionReplying,
         setDiscussionReplying,
+        discussionEditing,
+        setDiscussionEditing,
         updateDraft,
+        clearDraft,
         clearFollow,
         startReply,
         startEdit,
         cancelReply,
+        cancelEdit,
     };
 }

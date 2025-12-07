@@ -21,6 +21,7 @@ type DiscussionsSectionProps = {
     followFocused: boolean;
     discussionDrafts: Record<string, string>;
     discussionReplying: string | null;
+    discussionEditing: string | null;
     onShowFollowBox: () => void;
     onFollowFocus: () => void;
     onDraftChange: (key: string, val: string) => void;
@@ -30,6 +31,7 @@ type DiscussionsSectionProps = {
     onReply: (id: string) => void;
     onEdit: (id: string, content: string) => void;
     onCancelReply: () => void;
+    onCancelEdit: () => void;
     onClearFollow: () => void;
 };
 
@@ -41,6 +43,7 @@ export default function DiscussionsSection({
     followFocused,
     discussionDrafts,
     discussionReplying,
+    discussionEditing,
     onShowFollowBox,
     onFollowFocus,
     onDraftChange,
@@ -50,12 +53,15 @@ export default function DiscussionsSection({
     onReply,
     onEdit,
     onCancelReply,
+    onCancelEdit,
     onClearFollow,
 }: DiscussionsSectionProps) {
     const canEdit = (node: Discussion) => currentRole === "admin" || node.authorId === currentUserId;
 
     const renderDiscussion = (node: Discussion, depth = 0) => {
         const isReplying = discussionReplying === node._id;
+        const isEditing = discussionEditing === node._id;
+        const replyKey = `reply_${node._id}`;
 
         return (
             <div key={node._id} className={`post-discussion-item ${depth > 0 ? "post-discussion-reply" : ""}`}>
@@ -77,13 +83,8 @@ export default function DiscussionsSection({
                         </div>
                     )}
                 </div>
-                <div className="post-discussion-content" dangerouslySetInnerHTML={{__html: node.content}}/>
-                <button className="post-discussion-reply-btn" onClick={() => onReply(node._id)}>
-                    <FaReply size={10}/>
-                    <span>Reply</span>
-                </button>
 
-                {isReplying && (
+                {isEditing ? (
                     <div className="post-editor-box">
                         <ReactQuill
                             theme="snow"
@@ -91,11 +92,36 @@ export default function DiscussionsSection({
                             onChange={(val) => onDraftChange(node._id, val)}
                         />
                         <div className="post-editor-actions">
-                            <button
-                                className="post-btn primary"
-                                onClick={() => discussionDrafts[node._id] ? onUpdate(node._id) : onSubmit(node._id)}
-                            >
+                            <button className="post-btn primary" onClick={() => onUpdate(node._id)}>
                                 Save
+                            </button>
+                            <button className="post-btn secondary" onClick={onCancelEdit}>
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                ) : (
+                    <div className="post-discussion-content" dangerouslySetInnerHTML={{__html: node.content}}/>
+                )}
+
+                {!isEditing && (
+                    <button className="post-discussion-reply-btn" onClick={() => onReply(node._id)}>
+                        <FaReply size={10}/>
+                        <span>Reply</span>
+                    </button>
+                )}
+
+                {isReplying && !isEditing && (
+                    <div className="post-editor-box" style={{marginTop: "0.75rem"}}>
+                        <ReactQuill
+                            theme="snow"
+                            value={discussionDrafts[replyKey] || ""}
+                            onChange={(val) => onDraftChange(replyKey, val)}
+                            placeholder="Write a reply..."
+                        />
+                        <div className="post-editor-actions">
+                            <button className="post-btn primary" onClick={() => onSubmit(node._id)}>
+                                Reply
                             </button>
                             <button className="post-btn secondary" onClick={onCancelReply}>
                                 Cancel
@@ -104,7 +130,11 @@ export default function DiscussionsSection({
                     </div>
                 )}
 
-                {node.replies && node.replies.map((r) => renderDiscussion(r, depth + 1))}
+                {node.replies && node.replies.length > 0 && (
+                    <div className="post-discussion-replies">
+                        {node.replies.map((r) => renderDiscussion(r, depth + 1))}
+                    </div>
+                )}
             </div>
         );
     };
@@ -126,6 +156,7 @@ export default function DiscussionsSection({
                         value={discussionDrafts["root"] || ""}
                         onFocus={onFollowFocus}
                         onChange={(val) => onDraftChange("root", val)}
+                        placeholder="Start a discussion..."
                     />
                     <div className="post-editor-actions">
                         <button className="post-btn primary" onClick={() => onSubmit(null)}>

@@ -7,6 +7,7 @@ import "react-quill-new/dist/quill.snow.css";
 
 const ReactQuill = dynamic(() => import("react-quill-new"), {ssr: false});
 
+//TODO: resolve this type error
 type ComposeFormProps = {
     composeState: ComposeState;
     posting: boolean;

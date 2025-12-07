@@ -8,7 +8,7 @@ import * as client from "../client";
 import "react-quill-new/dist/quill.snow.css";
 
 import {AnswersSection, DiscussionsSection, PostContent, RecencySidebar} from "./components";
-import {useAnswers, useDiscussions, usePostDetail, usePostEdit} from "./hooks";
+import {usePostDetail, usePostEdit, useAnswers, useDiscussions} from "./hooks";
 
 export default function PostDetailPage() {
     const params = useParams();
@@ -18,18 +18,7 @@ export default function PostDetailPage() {
     const currentUserId = session.user?.id || (session.user as any)?._id;
     const currentRole = session.user?.role;
 
-    const {
-        post,
-        allPosts,
-        loading,
-        error,
-        setError,
-        answers,
-        discussions,
-        resolvedStatus,
-        setResolvedStatus,
-        refetch
-    } = usePostDetail(postId);
+    const {post, allPosts, loading, error, setError, answers, discussions, resolvedStatus, setResolvedStatus, refetch} = usePostDetail(postId);
     const postEdit = usePostEdit(post);
     const answerState = useAnswers();
     const discussionState = useDiscussions();
@@ -90,11 +79,11 @@ export default function PostDetailPage() {
     };
 
     const handleSubmitDiscussion = async (parentId: string | null) => {
-        const key = parentId || "root";
+        const key = parentId ? `reply_${parentId}` : "root";
         const content = discussionState.discussionDrafts[key] || "";
         if (!content.trim()) return;
         await client.createDiscussion({postId, parentId, content});
-        discussionState.setDiscussionDrafts((prev) => ({...prev, [key]: ""}));
+        discussionState.clearDraft(key);
         discussionState.setDiscussionReplying(null);
         discussionState.setShowFollowBox(false);
         discussionState.setFollowFocused(false);
@@ -105,8 +94,8 @@ export default function PostDetailPage() {
         const content = discussionState.discussionDrafts[id] || "";
         if (!content.trim()) return;
         await client.updateDiscussion(id, {content});
-        discussionState.setDiscussionDrafts((prev) => ({...prev, [id]: ""}));
-        discussionState.setDiscussionReplying(null);
+        discussionState.clearDraft(id);
+        discussionState.setDiscussionEditing(null);
         refetch();
     };
 
@@ -195,6 +184,7 @@ export default function PostDetailPage() {
                     followFocused={discussionState.followFocused}
                     discussionDrafts={discussionState.discussionDrafts}
                     discussionReplying={discussionState.discussionReplying}
+                    discussionEditing={discussionState.discussionEditing}
                     onShowFollowBox={() => discussionState.setShowFollowBox(true)}
                     onFollowFocus={() => discussionState.setFollowFocused(true)}
                     onDraftChange={discussionState.updateDraft}
@@ -204,6 +194,7 @@ export default function PostDetailPage() {
                     onReply={discussionState.startReply}
                     onEdit={discussionState.startEdit}
                     onCancelReply={discussionState.cancelReply}
+                    onCancelEdit={discussionState.cancelEdit}
                     onClearFollow={discussionState.clearFollow}
                 />
             </Col>

@@ -42,6 +42,11 @@ export default function PinPostsSection({posts, folders}: PinPostsProps) {
                                         {getFolderDisplayName(folders, f)}
                                     </span>
                                 ))}
+                                {post.urgency && (
+                                    <span className={`feed-section-urgency-badge ${post.urgency}`}>
+                                        {post.urgency.toUpperCase()}
+                                    </span>
+                                )}
                             </div>
                         </div>
                         <div className="feed-section-post-snippet">

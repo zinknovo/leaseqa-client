@@ -31,17 +31,25 @@ export default function AnnouncementSection({posts, folders}: AnnouncementProps)
                 {announcementPosts.map((post) => (
                     <div
                         key={post._id}
-                        className="feed-section-post"
+                        className={`feed-section-post ${post.isResolved ? "resolved" : ""}`}
                         onClick={() => handlePostClick(post._id)}
                     >
                         <div className="feed-section-post-top">
-                            <span className="feed-section-post-title">{post.summary}</span>
+                            <span className="feed-section-post-title">
+                                {post.isResolved && <span className="resolved-badge">✓</span>}
+                                {post.summary}
+                            </span>
                             <div className="feed-section-post-tags">
                                 {post.folders.map(f => (
                                     <span key={f} className="feed-section-folder-badge">
                                         {getFolderDisplayName(folders, f)}
                                     </span>
                                 ))}
+                                {post.urgency && (
+                                    <span className={`feed-section-urgency-badge ${post.urgency}`}>
+                                        {post.urgency.toUpperCase()}
+                                    </span>
+                                )}
                             </div>
                         </div>
                         <div className="feed-section-post-snippet">

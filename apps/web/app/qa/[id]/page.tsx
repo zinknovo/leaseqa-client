@@ -20,6 +20,7 @@ export default function PostDetailPage() {
     const currentUserId = session.user?.id || (session.user as any)?._id;
     const currentRole = session.user?.role;
 
+    const [showResolved, setShowResolved] = useState(false);
     const [bucketOpen, setBucketOpen] = useState<Record<string, boolean>>({
         thisWeek: true,
         lastWeek: false,
@@ -54,6 +55,10 @@ export default function PostDetailPage() {
             return acc;
         }, {});
     }, [folders]);
+
+    const filteredPosts = useMemo(() => {
+        return allPosts.filter(p => showResolved || !p.isResolved);
+    }, [allPosts, showResolved]);
 
     const handleDeletePost = async () => {
         await client.deletePost(postId);
@@ -156,12 +161,15 @@ export default function PostDetailPage() {
     return (
         <>
             <ScenarioFilter/>
-            <QAToolbar/>
+            <QAToolbar
+                showResolved={showResolved}
+                onToggleResolved={() => setShowResolved(prev => !prev)}
+            />
 
             <Row className="g-3 mx-0">
                 <Col lg={3} className="px-1">
                     <RecencySidebar
-                        posts={allPosts}
+                        posts={filteredPosts}
                         currentPostId={postId}
                         onSelectPost={(id) => router.push(`/qa/${id}`)}
                         folderDisplayMap={folderDisplayMap}

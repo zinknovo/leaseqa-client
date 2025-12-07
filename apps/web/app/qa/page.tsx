@@ -15,7 +15,7 @@ import FeedHeader from "./components/FeedHeader";
 import AnnouncementSection from "./components/AnnouncementSection";
 import ComposeForm from "./components/ComposeForm";
 import PostDetail from "./components/PostDetail";
-import PinPostsSection from "@/app/qa/components/PinPostsSection";
+import PinPostsSection from "./components/PinPostsSection";
 
 export default function QAPage() {
     const router = useRouter();
@@ -34,6 +34,7 @@ export default function QAPage() {
     const [posting, setPosting] = useState(false);
     const [postError, setPostError] = useState("");
     const [composeState, setComposeState] = useState<ComposeState>(INITIAL_COMPOSE_STATE);
+    const [showResolved, setShowResolved] = useState(false);
     const [bucketOpen, setBucketOpen] = useState<Record<string, boolean>>({
         thisWeek: true,
         lastWeek: false,
@@ -66,6 +67,9 @@ export default function QAPage() {
 
     const filteredPosts = useMemo(() => {
         return posts.filter(post => {
+            if (!showResolved && post.isResolved) {
+                return false;
+            }
             if (search) {
                 const q = search.toLowerCase();
                 if (!post.summary.toLowerCase().includes(q) && !post.details.toLowerCase().includes(q)) {
@@ -79,7 +83,7 @@ export default function QAPage() {
             }
             return true;
         });
-    }, [posts, search, scenario]);
+    }, [posts, search, scenario, showResolved]);
 
     const handleSelectPost = (id: string) => {
         setSelectedId(id);
@@ -149,7 +153,12 @@ export default function QAPage() {
     return (
         <>
             <ScenarioFilter/>
-            <QAToolbar initialSearch={searchParam} onSearchChange={setSearch}/>
+            <QAToolbar
+                initialSearch={searchParam}
+                onSearchChange={setSearch}
+                showResolved={showResolved}
+                onToggleResolved={() => setShowResolved(prev => !prev)}
+            />
 
             <Row className="g-3 mx-0">
                 {sidebarOpen && (
@@ -168,9 +177,9 @@ export default function QAPage() {
                 <Col lg={sidebarOpen ? 9 : 12} className="px-1">
                     {!showCompose && (
                         <>
-                            <PinPostsSection posts={posts} folders={folders}/>
-                            <AnnouncementSection posts={posts} folders={folders}/>
-                            <FeedHeader folders={folders} posts={posts}/>
+                            <PinPostsSection posts={filteredPosts} folders={folders}/>
+                            <AnnouncementSection posts={filteredPosts} folders={folders}/>
+                            <FeedHeader folders={folders} posts={filteredPosts}/>
                         </>
                     )}
 

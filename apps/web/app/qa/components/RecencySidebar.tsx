@@ -79,10 +79,13 @@ export default function RecencySidebar({
                                     return (
                                         <div
                                             key={p._id}
-                                            className={`post-sidebar-item ${isActive ? "active" : ""}`}
+                                            className={`post-sidebar-item ${isActive ? "active" : ""} ${p.isResolved ? "resolved" : ""}`}
                                             onClick={() => onSelectPost(p._id)}
                                         >
-                                            <div className="post-sidebar-item-title">{p.summary}</div>
+                                            <div className="post-sidebar-item-title">
+                                                {p.isResolved && <span className="resolved-badge">✓</span>}
+                                                {p.summary}
+                                            </div>
                                             <div className="post-sidebar-item-badges">
                                                 <span className={`role-tag-${role}`}>{role}</span>
                                                 <span className="post-sidebar-badge">

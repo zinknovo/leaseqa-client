@@ -2,14 +2,21 @@
 
 import {useState} from "react";
 import {useRouter} from "next/navigation";
-import {FaPlus, FaSearch} from "react-icons/fa";
+import {FaCheck, FaPlus, FaSearch} from "react-icons/fa";
 
 type QAToolbarProps = {
     initialSearch?: string;
     onSearchChange?: (value: string) => void;
+    showResolved: boolean;
+    onToggleResolved: () => void;
 };
 
-export default function QAToolbar({initialSearch = "", onSearchChange}: QAToolbarProps) {
+export default function QAToolbar({
+    initialSearch = "",
+    onSearchChange,
+    showResolved,
+    onToggleResolved,
+}: QAToolbarProps) {
     const router = useRouter();
     const [search, setSearch] = useState(initialSearch);
 
@@ -36,6 +43,13 @@ export default function QAToolbar({initialSearch = "", onSearchChange}: QAToolba
                     onKeyDown={handleKeyDown}
                 />
             </div>
+            <button
+                className={`qa-toolbar-btn ${showResolved ? "active" : "secondary"}`}
+                onClick={onToggleResolved}
+            >
+                <FaCheck size={12}/>
+                <span>Resolved</span>
+            </button>
             <button
                 className="qa-toolbar-btn primary"
                 onClick={() => router.push("/qa?compose=1")}

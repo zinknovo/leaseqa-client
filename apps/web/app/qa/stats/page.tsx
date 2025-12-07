@@ -87,7 +87,7 @@ export default function StatsPage() {
                             />
 
                             <div className="d-grid gap-3">
-                                {breakdown.slice(0, 6).map((item) => (
+                                {breakdown.map((item) => (
                                     <ProgressItem
                                         key={item.label}
                                         label={item.label}

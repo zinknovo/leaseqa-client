@@ -17,8 +17,3 @@ export async function register(data: {email: string; password: string; username?
     const response = await axiosWithCredentials.post(`${API_BASE}/auth/register`, data);
     return response.data;
 }
-
-export async function logout() {
-    const response = await axiosWithCredentials.post(`${API_BASE}/auth/logout`);
-    return response.data;
-}

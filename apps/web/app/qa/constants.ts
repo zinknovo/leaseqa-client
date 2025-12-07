@@ -10,18 +10,6 @@ export const SCENARIO_KEYWORDS: Record<string, string[]> = {
     harassment: ["harass", "retaliation", "lockout", "privacy"],
 };
 
-export const SCENARIO_OPTIONS = [
-    {value: "all", label: "All"},
-    {value: "deposit", label: "Security Deposit"},
-    {value: "eviction", label: "Eviction / Notice"},
-    {value: "repairs", label: "Repairs & Habitability"},
-    {value: "utilities", label: "Utilities / Heat"},
-    {value: "leasebreak", label: "Breaking a Lease"},
-    {value: "sublease", label: "Sublease / Roommates"},
-    {value: "fees", label: "Late Fees / Rent"},
-    {value: "harassment", label: "Landlord Harassment"},
-];
-
 export const SECTION_OPTIONS = [
     {value: "deposit", label: "Security Deposit"},
     {value: "eviction", label: "Eviction / Notice"},

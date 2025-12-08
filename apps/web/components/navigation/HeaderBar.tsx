@@ -39,6 +39,7 @@ export default function HeaderBar() {
         try {
             await client.logout();
         } finally {
+            localStorage.removeItem("guest_session");
             dispatch(signOut());
             navigate("/");
         }

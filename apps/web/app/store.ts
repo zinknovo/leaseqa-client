@@ -11,7 +11,7 @@ type User = {
 };
 
 type SessionState = {
-    status: "authenticated" | "unauthenticated" | "guest";
+    status: "loading" | "authenticated" | "unauthenticated" | "guest";
     user: User | null;
 };
 
@@ -27,7 +27,7 @@ type AIHistoryState = {
 };
 
 const initialSessionState: SessionState = {
-    status: "unauthenticated",
+    status: "loading",
     user: null,
 };
 

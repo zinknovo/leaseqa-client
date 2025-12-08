@@ -47,14 +47,10 @@ function QAPageInner() {
     useEffect(() => {
         if (session.status === "unauthenticated") {
             router.replace("/auth/login");
-        }
-    }, [session.status, router]);
-
-    useEffect(() => {
-        if (session.status !== "unauthenticated") {
+        } else if (session.status === "authenticated" || session.status === "guest") {
             loadData();
         }
-    }, [session.status]);
+    }, [session.status, router]);
 
     useEffect(() => {
         setSearch(searchParam);
@@ -153,12 +149,14 @@ function QAPageInner() {
         }, {});
     }, [folders]);
 
-    if (session.status === "unauthenticated") {
+    if (session.status === "loading" || session.status === "unauthenticated") {
         return (
             <div className="d-flex justify-content-center align-items-center loading-min-height">
                 <div className="text-center">
                     <div className="spinner-border text-primary mb-3" role="status"/>
-                    <div className="text-secondary">Redirecting to login...</div>
+                    <div className="text-secondary">
+                        {session.status === "loading" ? "Loading..." : "Redirecting to login..."}
+                    </div>
                 </div>
             </div>
         );

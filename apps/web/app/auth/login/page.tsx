@@ -28,6 +28,7 @@ export default function LoginPage() {
 
         try {
             const user = await client.login(formData);
+            localStorage.removeItem("guest_session");
             dispatch(setSession(user.data || user));
             router.push("/account");
         } catch (err: any) {
@@ -41,6 +42,7 @@ export default function LoginPage() {
     };
 
     const handleGuestLogin = () => {
+        localStorage.setItem("guest_session", "true");
         dispatch(setGuestSession());
         router.push("/qa");
     };

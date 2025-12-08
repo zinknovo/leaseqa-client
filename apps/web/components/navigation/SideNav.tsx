@@ -24,9 +24,12 @@ export default function SideNav() {
                     const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
                     return (
                         <Link key={item.href} href={item.href} className="text-decoration-none">
-                            <div className={`d-flex flex-column align-items-center py-3 rounded-3 nav-item-hover ${isActive ? "bg-gradient-red" : ""}`}>
-                                <item.icon className={`sidenav-icon ${isActive ? "sidenav-icon-active" : "sidenav-icon-inactive"}`}/>
-                                <span className={`mt-1 sidenav-label ${isActive ? "sidenav-label-active" : "sidenav-label-inactive"}`}>
+                            <div
+                                className={`d-flex flex-column align-items-center py-3 rounded-3 nav-item-hover ${isActive ? "bg-gradient-red" : ""}`}>
+                                <item.icon
+                                    className={`sidenav-icon ${isActive ? "sidenav-icon-active" : "sidenav-icon-inactive"}`}/>
+                                <span
+                                    className={`mt-1 sidenav-label ${isActive ? "sidenav-label-active" : "sidenav-label-inactive"}`}>
                                     {item.label}
                                 </span>
                             </div>

@@ -3,6 +3,7 @@
 const team = [
     {name: "Xintao Hu", role: "Product", focus: "Tenant experience & rubric alignment", emoji: "📋"},
     {name: "Dan Jackson", role: "Legal support", focus: "Policy review, attorney replies", emoji: "⚖️"},
+    //TODO: change to Tsung-Yueh (Eric) Lai
     {name: "Eric Lai", role: "Full-stack", focus: "Next.js + Express + Mongo", emoji: "🛠️"},
 ];
 
@@ -26,9 +27,11 @@ export default function InfoPage() {
             <div className="row g-4 mb-4">
                 {team.map((member, index) => (
                     <div className="col-md-6 col-lg-4" key={member.name}>
-                        <div className={`card card-base card-accent-${accentColors[index % accentColors.length]} h-100`}>
+                        <div
+                            className={`card card-base card-accent-${accentColors[index % accentColors.length]} h-100`}>
                             <div className="card-body p-4">
-                                <div className={`icon-circle icon-circle-lg icon-bg-${accentColors[index % accentColors.length]} mb-3`}>
+                                <div
+                                    className={`icon-circle icon-circle-lg icon-bg-${accentColors[index % accentColors.length]} mb-3`}>
                                     <span className="emoji-icon-lg">{member.emoji}</span>
                                 </div>
                                 <div className="fw-bold mb-1">{member.name}</div>

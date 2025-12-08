@@ -2,7 +2,7 @@
 
 import React, {useEffect, useState} from "react";
 import {useDispatch} from "react-redux";
-import {setSession, signOut, setGuestSession} from "@/app/store";
+import {setGuestSession, setSession, signOut} from "@/app/store";
 import * as client from "./client";
 
 export default function SessionLoader({children}: { children: React.ReactNode }) {

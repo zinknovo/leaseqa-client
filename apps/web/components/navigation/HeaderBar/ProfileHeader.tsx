@@ -1,5 +1,5 @@
 import {Badge} from "react-bootstrap";
-import {FaShieldAlt, FaEye} from "react-icons/fa";
+import {FaEye, FaShieldAlt} from "react-icons/fa";
 
 import {RootState} from "@/app/store";
 
@@ -25,7 +25,8 @@ export default function ProfileHeader({user, initials, isAuthenticated, isGuest 
     return (
         <div className="px-3 py-2">
             <div className="d-flex align-items-start gap-2">
-                <div className={`icon-circle icon-circle-sm ${isGuest ? "icon-bg-muted" : "icon-bg-purple"} profile-avatar-sm`}>
+                <div
+                    className={`icon-circle icon-circle-sm ${isGuest ? "icon-bg-muted" : "icon-bg-purple"} profile-avatar-sm`}>
                     <span className="fw-semibold avatar-text-xs">{initials}</span>
                 </div>
                 <div>

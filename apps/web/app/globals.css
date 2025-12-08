@@ -18,6 +18,8 @@
    14. Page-Specific Styles
    ============================================ */
 
+/*TODO: organize the codes*/
+
 /* ============================================
    1. CSS VARIABLES
    ============================================ */
@@ -134,11 +136,25 @@ body {
     margin-bottom: 0.5rem;
 }
 
-.card-nested-indent-1 { margin-left: 12px; }
-.card-nested-indent-2 { margin-left: 24px; }
-.card-nested-indent-3 { margin-left: 36px; }
-.card-nested-indent-4 { margin-left: 48px; }
-.card-nested-indent-5 { margin-left: 60px; }
+.card-nested-indent-1 {
+    margin-left: 12px;
+}
+
+.card-nested-indent-2 {
+    margin-left: 24px;
+}
+
+.card-nested-indent-3 {
+    margin-left: 36px;
+}
+
+.card-nested-indent-4 {
+    margin-left: 48px;
+}
+
+.card-nested-indent-5 {
+    margin-left: 60px;
+}
 
 /* Nav Card */
 .card.card-nav {
@@ -150,10 +166,21 @@ body {
 }
 
 /* Accent Cards */
-.card.card-accent-purple { border-top: 4px solid var(--accent-purple); }
-.card.card-accent-green { border-top: 4px solid var(--accent-green); }
-.card.card-accent-blue { border-top: 4px solid var(--accent-blue); }
-.card.card-accent-red { border-top: 4px solid var(--accent-red); }
+.card.card-accent-purple {
+    border-top: 4px solid var(--accent-purple);
+}
+
+.card.card-accent-green {
+    border-top: 4px solid var(--accent-green);
+}
+
+.card.card-accent-blue {
+    border-top: 4px solid var(--accent-blue);
+}
+
+.card.card-accent-red {
+    border-top: 4px solid var(--accent-red);
+}
 
 /* Hero Card */
 .card.card-hero {
@@ -237,9 +264,17 @@ body {
     color: white;
 }
 
-.btn-gradient-purple { background: var(--gradient-purple); }
-.btn-gradient-green { background: var(--gradient-green); }
-.btn-gradient-red { background: var(--gradient-red); }
+.btn-gradient-purple {
+    background: var(--gradient-purple);
+}
+
+.btn-gradient-green {
+    background: var(--gradient-green);
+}
+
+.btn-gradient-red {
+    background: var(--gradient-red);
+}
 
 /* ============================================
    6. FORMS & INPUTS
@@ -310,13 +345,37 @@ body {
 }
 
 /* Icon Circle Sizes */
-.icon-circle-xs { width: 20px; height: 20px; font-size: 0.65rem; }
-.icon-circle-sm { width: 32px; height: 32px; }
+.icon-circle-xs {
+    width: 20px;
+    height: 20px;
+    font-size: 0.65rem;
+}
+
+.icon-circle-sm {
+    width: 32px;
+    height: 32px;
+}
+
 .icon-circle-md,
-.resource-icon { width: 40px; height: 40px; }
-.icon-circle-lg { width: 48px; height: 48px; }
-.icon-circle-xl { width: 56px; height: 56px; }
-.icon-circle-2xl { width: 80px; height: 80px; }
+.resource-icon {
+    width: 40px;
+    height: 40px;
+}
+
+.icon-circle-lg {
+    width: 48px;
+    height: 48px;
+}
+
+.icon-circle-xl {
+    width: 56px;
+    height: 56px;
+}
+
+.icon-circle-2xl {
+    width: 80px;
+    height: 80px;
+}
 
 /* Profile Avatar (with min-width to prevent shrinking) */
 .profile-avatar-sm {
@@ -330,11 +389,31 @@ body {
 }
 
 /* Icon Circle Backgrounds */
-.icon-bg-purple { background: var(--gradient-purple); color: white; }
-.icon-bg-green { background: var(--gradient-green); color: white; }
-.icon-bg-red { background: var(--gradient-red); color: white; }
-.icon-bg-blue { background: var(--gradient-blue); color: white; }
-.icon-bg-muted { background: var(--panel-muted); color: var(--ink-muted); }
+.icon-bg-purple {
+    background: var(--gradient-purple);
+    color: white;
+}
+
+.icon-bg-green {
+    background: var(--gradient-green);
+    color: white;
+}
+
+.icon-bg-red {
+    background: var(--gradient-red);
+    color: white;
+}
+
+.icon-bg-blue {
+    background: var(--gradient-blue);
+    color: white;
+}
+
+.icon-bg-muted {
+    background: var(--panel-muted);
+    color: var(--ink-muted);
+}
+
 .icon-bg-glass {
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid var(--glass-border);
@@ -351,9 +430,17 @@ body {
     height: 10px;
 }
 
-.tech-dot-dark { background: #000000; }
-.tech-dot-bootstrap { background: #7952b3; }
-.tech-dot-mongo { background: #47a248; }
+.tech-dot-dark {
+    background: #000000;
+}
+
+.tech-dot-bootstrap {
+    background: #7952b3;
+}
+
+.tech-dot-mongo {
+    background: #47a248;
+}
 
 /* ============================================
    8. BADGES & PILLS
@@ -446,17 +533,26 @@ body {
 }
 
 .sidenav-icon-active,
-.sidenav-label-active { color: #fff; }
+.sidenav-label-active {
+    color: #fff;
+}
 
 .sidenav-icon-inactive,
-.sidenav-label-inactive { color: rgba(255, 255, 255, 0.7); }
+.sidenav-label-inactive {
+    color: rgba(255, 255, 255, 0.7);
+}
 
 .sidenav-label {
     font-size: 0.7rem;
 }
 
-.sidenav-label-active { font-weight: 600; }
-.sidenav-label-inactive { font-weight: 400; }
+.sidenav-label-active {
+    font-weight: 600;
+}
+
+.sidenav-label-inactive {
+    font-weight: 400;
+}
 
 /* Header Bar */
 .header-shadow {
@@ -592,9 +688,20 @@ body {
 }
 
 /* Scrollable Containers */
-.scrollable-sm { max-height: 300px; overflow-y: auto; }
-.scrollable-md { max-height: 400px; overflow-y: auto; }
-.scrollable-lg { max-height: 500px; overflow-y: auto; }
+.scrollable-sm {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.scrollable-md {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.scrollable-lg {
+    max-height: 500px;
+    overflow-y: auto;
+}
 
 /* Dividers */
 .divider-text {
@@ -631,18 +738,33 @@ body {
 
 /* Keyframes */
 @keyframes slideIn {
-    from { transform: translateX(100%); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 /* Animation Classes */
-.animate-slide-in { animation: slideIn 0.3s ease; }
-.animate-fade-in { animation: fadeIn 0.3s ease; }
+.animate-slide-in {
+    animation: slideIn 0.3s ease;
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.3s ease;
+}
 
 /* Hover Effects */
 .hover-scale {
@@ -667,22 +789,48 @@ body {
    ============================================ */
 
 /* Text */
-.text-muted-light { color: var(--ink-muted); }
-.text-accent-red { color: var(--accent-red); }
+.text-muted-light {
+    color: var(--ink-muted);
+}
+
+.text-accent-red {
+    color: var(--accent-red);
+}
 
 /* Avatar Text */
-.avatar-text-sm { font-size: 0.875rem; }
-.avatar-text-xs { font-size: 0.8rem; }
+.avatar-text-sm {
+    font-size: 0.875rem;
+}
+
+.avatar-text-xs {
+    font-size: 0.8rem;
+}
 
 /* Backgrounds */
 .bg-muted,
-.bg-light-gray { background: var(--panel-muted); }
+.bg-light-gray {
+    background: var(--panel-muted);
+}
 
-.bg-gradient-purple { background: var(--gradient-purple); }
-.bg-gradient-green { background: var(--gradient-green); }
-.bg-gradient-red { background: var(--gradient-red); }
-.bg-gradient-blue { background: var(--gradient-blue); }
-.bg-gradient-dark { background: var(--gradient-dark); }
+.bg-gradient-purple {
+    background: var(--gradient-purple);
+}
+
+.bg-gradient-green {
+    background: var(--gradient-green);
+}
+
+.bg-gradient-red {
+    background: var(--gradient-red);
+}
+
+.bg-gradient-blue {
+    background: var(--gradient-blue);
+}
+
+.bg-gradient-dark {
+    background: var(--gradient-dark);
+}
 
 /* Borders */
 .border-accent {
@@ -690,12 +838,19 @@ body {
 }
 
 /* Opacity */
-.opacity-75 { opacity: 0.75; }
-.opacity-90 { opacity: 0.9; }
+.opacity-75 {
+    opacity: 0.75;
+}
+
+.opacity-90 {
+    opacity: 0.9;
+}
 
 /* Loading States */
 .loading-container,
-.loading-min-height { min-height: 50vh; }
+.loading-min-height {
+    min-height: 50vh;
+}
 
 /* ============================================
    14. PAGE-SPECIFIC STYLES
@@ -717,10 +872,21 @@ body {
     font-size: 1.5rem;
 }
 
-.team-avatar-0 { background: var(--gradient-purple); }
-.team-avatar-1 { background: var(--gradient-green); }
-.team-avatar-2 { background: var(--gradient-red); }
-.team-avatar-3 { background: var(--gradient-blue); }
+.team-avatar-0 {
+    background: var(--gradient-purple);
+}
+
+.team-avatar-1 {
+    background: var(--gradient-green);
+}
+
+.team-avatar-2 {
+    background: var(--gradient-red);
+}
+
+.team-avatar-3 {
+    background: var(--gradient-blue);
+}
 
 /* Auth Pages */
 .auth-page {
@@ -2579,8 +2745,12 @@ body {
 }
 
 @keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* Users Table */
@@ -2683,11 +2853,11 @@ body {
     .manage-form-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .manage-table-cell.desc {
         display: none;
     }
-    
+
     .manage-table-cell.name {
         flex: 1;
     }

@@ -16,12 +16,12 @@ type CreateSectionFormProps = {
 };
 
 export default function CreateSectionForm({
-    draft,
-    loading,
-    onDraftChange,
-    onSave,
-    onCancel,
-}: CreateSectionFormProps) {
+                                              draft,
+                                              loading,
+                                              onDraftChange,
+                                              onSave,
+                                              onCancel,
+                                          }: CreateSectionFormProps) {
     return (
         <div className="manage-card">
             <div className="manage-card-header">

@@ -1,4 +1,4 @@
-import {FaEdit, FaTrash, FaReply} from "react-icons/fa";
+import {FaEdit, FaReply, FaTrash} from "react-icons/fa";
 import {format} from "date-fns";
 import dynamic from "next/dynamic";
 import {Discussion, DiscussionsSectionProps} from "../../types";
@@ -6,27 +6,27 @@ import {Discussion, DiscussionsSectionProps} from "../../types";
 const ReactQuill = dynamic(() => import("react-quill-new"), {ssr: false});
 
 export default function DiscussionsSection({
-    discussions,
-    currentUserId,
-    currentRole,
-    isGuest = false,
-    showFollowBox,
-    followFocused,
-    discussionDrafts,
-    discussionReplying,
-    discussionEditing,
-    onShowFollowBox,
-    onFollowFocus,
-    onDraftChange,
-    onSubmit,
-    onUpdate,
-    onDelete,
-    onReply,
-    onEdit,
-    onCancelReply,
-    onCancelEdit,
-    onClearFollow,
-}: DiscussionsSectionProps) {
+                                               discussions,
+                                               currentUserId,
+                                               currentRole,
+                                               isGuest = false,
+                                               showFollowBox,
+                                               followFocused,
+                                               discussionDrafts,
+                                               discussionReplying,
+                                               discussionEditing,
+                                               onShowFollowBox,
+                                               onFollowFocus,
+                                               onDraftChange,
+                                               onSubmit,
+                                               onUpdate,
+                                               onDelete,
+                                               onReply,
+                                               onEdit,
+                                               onCancelReply,
+                                               onCancelEdit,
+                                               onClearFollow,
+                                           }: DiscussionsSectionProps) {
     const canEdit = (node: Discussion) => !isGuest && (currentRole === "admin" || node.authorId === currentUserId);
 
     const renderDiscussion = (node: Discussion, depth = 0) => {

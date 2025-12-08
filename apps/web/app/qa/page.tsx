@@ -72,7 +72,7 @@ function QAPageInner() {
 
     const filteredPosts = useMemo(() => {
         return posts.filter(post => {
-            // Resolved toggle now means "show resolved only" when on; otherwise show unresolved
+
             if (showResolved && !post.isResolved) return false;
             if (!showResolved && post.isResolved) return false;
 
@@ -125,7 +125,7 @@ function QAPageInner() {
                 audience: composeState.audience,
                 urgency: composeState.urgency,
                 isAnonymous: composeState.isAnonymous,
-                            });
+            });
             const newPost = (resp as any)?.data || resp;
             if (newPost?._id && composeState.files.length) {
                 await client.uploadPostAttachments(newPost._id, composeState.files).catch(console.error);
@@ -180,9 +180,9 @@ function QAPageInner() {
             <ScenarioFilter/>
             <QAToolbar
                 initialSearch={searchParam}
-                onSearchChange={setSearch}
+                onSearchChangeAction={setSearch}
                 showResolved={showResolved}
-                onToggleResolved={() => setShowResolved(prev => !prev)}
+                onToggleResolvedAction={() => setShowResolved(prev => !prev)}
             />
 
             <Row className="g-3 mx-0">
@@ -212,9 +212,9 @@ function QAPageInner() {
                             folders={folders}
                             posting={posting}
                             postError={postError}
-                            onUpdate={(updates) => setComposeState(prev => ({...prev, ...updates}))}
-                            onSubmit={handleSubmitPost}
-                            onCancel={resetCompose}
+                            onUpdateAction={(updates) => setComposeState(prev => ({...prev, ...updates}))}
+                            onSubmitAction={handleSubmitPost}
+                            onCancelAction={resetCompose}
                         />
                     )}
 
@@ -222,8 +222,8 @@ function QAPageInner() {
                         <PostDetailSection
                             postId={postIdParam}
                             folders={folders}
-                            onClose={handleClosePost}
-                            onPostUpdated={loadData}
+                            onCloseAction={handleClosePost}
+                            onPostUpdatedAction={loadData}
                         />
                     )}
                 </Col>

@@ -1,4 +1,4 @@
-import {FaBan, FaCheck, FaShieldAlt, FaTrash, FaUserCheck} from "react-icons/fa";
+import {FaBan, FaCheck, FaTrash, FaUserCheck} from "react-icons/fa";
 import {User} from "../../types";
 
 type UsersTableProps = {
@@ -11,13 +11,13 @@ type UsersTableProps = {
 };
 
 export default function UsersTable({
-    users,
-    currentUserId,
-    onChangeRole,
-    onVerifyLawyer,
-    onToggleBan,
-    onDelete,
-}: UsersTableProps) {
+                                       users,
+                                       currentUserId,
+                                       onChangeRole,
+                                       onVerifyLawyer,
+                                       onToggleBan,
+                                       onDelete,
+                                   }: UsersTableProps) {
     return (
         <div className="manage-card">
             <div className="manage-card-header">

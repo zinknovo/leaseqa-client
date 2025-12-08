@@ -10,7 +10,7 @@ import SessionLoader from "@/app/auth/SessionLoader";
 
 const client = new QueryClient();
 
-export function Providers({children}: {children: ReactNode}) {
+export function Providers({children}: { children: ReactNode }) {
     return (
         <ReduxProvider store={store}>
             <QueryClientProvider client={client}>

@@ -19,18 +19,18 @@ type EditPostFormProps = {
 };
 
 export default function EditPostForm({
-    folders,
-    editSummary,
-    editDetails,
-    editUrgency,
-    editFolders,
-    onSummaryChange,
-    onDetailsChange,
-    onUrgencyChange,
-    onFoldersChange,
-    onSave,
-    onCancel,
-}: EditPostFormProps) {
+                                         folders,
+                                         editSummary,
+                                         editDetails,
+                                         editUrgency,
+                                         editFolders,
+                                         onSummaryChange,
+                                         onDetailsChange,
+                                         onUrgencyChange,
+                                         onFoldersChange,
+                                         onSave,
+                                         onCancel,
+                                     }: EditPostFormProps) {
     const handleFolderAdd = (folderName: string) => {
         if (folderName && !editFolders.includes(folderName)) {
             onFoldersChange([...editFolders, folderName]);

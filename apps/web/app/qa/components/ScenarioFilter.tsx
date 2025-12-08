@@ -11,15 +11,16 @@ export default function ScenarioFilter() {
     const activeScenario = searchParams.get("scenario") || "all";
     const [folders, setFolders] = useState<Folder[]>([]);
 
+    const loadFolders = async () => {
+        try {
+            const response = await client.fetchFolders();
+            setFolders(response.data || []);
+        } catch (error) {
+            console.error("Failed to load folders:", error);
+        }
+    };
+
     useEffect(() => {
-        const loadFolders = async () => {
-            try {
-                const response = await client.fetchFolders();
-                setFolders(response.data || []);
-            } catch (error) {
-                console.error("Failed to load folders:", error);
-            }
-        };
         loadFolders();
     }, []);
 

@@ -8,11 +8,11 @@ type ManageAlertsProps = {
 };
 
 export default function ManageAlerts({
-    error,
-    success,
-    onClearError,
-    onClearSuccess,
-}: ManageAlertsProps) {
+                                         error,
+                                         success,
+                                         onClearError,
+                                         onClearSuccess,
+                                     }: ManageAlertsProps) {
     if (!error && !success) return null;
 
     return (

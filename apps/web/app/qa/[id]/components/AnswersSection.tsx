@@ -1,35 +1,36 @@
 import {useRef} from "react";
-import {FaEdit, FaTrash, FaPaperclip} from "react-icons/fa";
+import {FaEdit, FaPaperclip, FaTrash} from "react-icons/fa";
 import {format} from "date-fns";
 import dynamic from "next/dynamic";
 import {Answer, AnswersSectionProps} from "../../types";
 
 const ReactQuill = dynamic(() => import("react-quill-new"), {ssr: false});
 
+//TODO: remove unused elements
 export default function AnswersSection({
-    answers,
-    currentUserId,
-    currentRole,
-    isGuest = false,
-    showAnswerBox,
-    answerContent,
-    answerFocused,
-    answerFiles,
-    answerEditing,
-    answerEditContent,
-    error,
-    onShowAnswerBox,
-    onAnswerContentChange,
-    onAnswerFocus,
-    onAnswerFilesChange,
-    onSubmitAnswer,
-    onClearAnswer,
-    onEditAnswer,
-    onEditContentChange,
-    onSaveEdit,
-    onCancelEdit,
-    onDeleteAnswer,
-}: AnswersSectionProps) {
+                                           answers,
+                                           currentUserId,
+                                           currentRole,
+                                           isGuest = false,
+                                           showAnswerBox,
+                                           answerContent,
+                                           answerFocused,
+                                           answerFiles,
+                                           answerEditing,
+                                           answerEditContent,
+                                           error,
+                                           onShowAnswerBox,
+                                           onAnswerContentChange,
+                                           onAnswerFocus,
+                                           onAnswerFilesChange,
+                                           onSubmitAnswer,
+                                           onClearAnswer,
+                                           onEditAnswer,
+                                           onEditContentChange,
+                                           onSaveEdit,
+                                           onCancelEdit,
+                                           onDeleteAnswer,
+                                       }: AnswersSectionProps) {
     const fileInputRef = useRef<HTMLInputElement | null>(null);
 
     const canEditAnswer = (ans: Answer) => !isGuest && (currentRole === "admin" || ans.authorId === currentUserId);

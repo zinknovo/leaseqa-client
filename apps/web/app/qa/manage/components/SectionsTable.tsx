@@ -13,15 +13,15 @@ type SectionsTableProps = {
 };
 
 export default function SectionsTable({
-    folders,
-    editingId,
-    drafts,
-    onEdit,
-    onDraftChange,
-    onSave,
-    onCancelEdit,
-    onDelete,
-}: SectionsTableProps) {
+                                          folders,
+                                          editingId,
+                                          drafts,
+                                          onEdit,
+                                          onDraftChange,
+                                          onSave,
+                                          onCancelEdit,
+                                          onDelete,
+                                      }: SectionsTableProps) {
     return (
         <div className="manage-card">
             <div className="manage-card-header">

@@ -3,7 +3,7 @@
 import {useEffect, useRef, useState} from "react";
 import {useRouter} from "next/navigation";
 import {Badge, Button, Col, Form, ListGroup, ListGroupItem, Row, Spinner, Stack} from "react-bootstrap";
-import {FaCloudUploadAlt, FaHistory, FaRegClock, FaRobot} from "react-icons/fa";
+import {FaCloudUploadAlt, FaRegClock, FaRobot} from "react-icons/fa";
 import {AIReview, ReviewState} from "./types";
 import RiskCard from "../../components/ui/RiskCard";
 import ToastNotification, {ToastData} from "@/components/ui/ToastNotification";
@@ -101,7 +101,7 @@ export default function AIReviewPage() {
             <ToastNotification toast={toast} onClose={() => setToast({...toast, show: false})}/>
             <Row className="g-4">
                 <Col lg={8}>
-                    <AccentCard>
+                    <AccentCard accent="purple" className="mb-4">
                         <div className="d-flex align-items-center gap-3 mb-4">
                             <IconCircle size="lg" variant="purple">
                                 <FaRobot size={20}/>
@@ -181,7 +181,7 @@ export default function AIReviewPage() {
                 </Col>
 
                 <Col lg={4}>
-                    <AccentCard>
+                    <AccentCard accent="green" className="mb-4">
                         <div className="d-flex align-items-center gap-3 mb-4">
                             <IconCircle size="md" variant="muted"><FaRegClock size={16}/></IconCircle>
                             <div>
@@ -224,7 +224,8 @@ export default function AIReviewPage() {
                             <div className="text-center py-4 rounded-3 bg-muted">
                                 <div className="text-muted-light small">Sign in to view your review history.</div>
                                 <div className="mt-2">
-                                    <Button href="/auth/login" variant="primary" size="sm" className="btn-pill">Sign in</Button>
+                                    <Button href="/auth/login" variant="primary" size="sm" className="btn-pill">Sign
+                                        in</Button>
                                 </div>
                             </div>
                         )}

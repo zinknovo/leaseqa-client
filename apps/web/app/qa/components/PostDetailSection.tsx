@@ -1,22 +1,22 @@
 "use client";
 
-import {useEffect, useState, useCallback} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {Button} from "react-bootstrap";
 import {useSelector} from "react-redux";
 import {RootState} from "@/app/store";
 import * as client from "../client";
-import {PostContent, AnswersSection, DiscussionsSection} from "../[id]/components/index";
+import {AnswersSection, DiscussionsSection, PostContent} from "../[id]/components/index";
 import {Folder} from "../types";
-import {PostDetailData, Answer, Discussion} from "../[id]/types";
+import {Answer, Discussion, PostDetailData} from "../[id]/types";
 
 type PostDetailSectionProps = {
     postId: string;
     folders: Folder[];
-    onClose: () => void;
-    onPostUpdated?: () => void;
+    onCloseAction: () => void;
+    onPostUpdatedAction?: () => void;
 };
 
-export default function PostDetailSection({postId, folders, onClose, onPostUpdated}: PostDetailSectionProps) {
+export default function PostDetailSection({postId, folders, onCloseAction, onPostUpdatedAction}: PostDetailSectionProps) {
     const session = useSelector((state: RootState) => state.session);
     const currentUserId = session.user?.id || (session.user as any)?._id;
     const currentRole = session.user?.role;
@@ -78,9 +78,10 @@ export default function PostDetailSection({postId, folders, onClose, onPostUpdat
 
     const handleDeletePost = async () => {
         await client.deletePost(postId);
-        onClose();
+        onCloseAction();
     };
 
+    //TODO: whether need to add other elements
     const handleSavePost = async () => {
         await client.updatePost(postId, {
             summary: editSummary,
@@ -111,12 +112,13 @@ export default function PostDetailSection({postId, folders, onClose, onPostUpdat
         try {
             await client.togglePinPost(postId, !post.isPinned);
             await fetchPost();
-            onPostUpdated?.();
+            onPostUpdatedAction?.();
         } catch (err: any) {
             console.error("Failed to toggle pin:", err);
         }
     };
 
+    //TODO: admin answer?
     const handleSubmitAnswer = async () => {
         setError("");
         if (!answerContent.trim()) {
@@ -209,7 +211,7 @@ export default function PostDetailSection({postId, folders, onClose, onPostUpdat
         return (
             <div className="text-center py-5">
                 <p className="text-danger">Post not found.</p>
-                <Button variant="link" onClick={onClose}>Back to QA</Button>
+                <Button variant="link" onClick={onCloseAction}>Back to QA</Button>
             </div>
         );
     }

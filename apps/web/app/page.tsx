@@ -8,9 +8,11 @@ import HeroCard from "@/components/ui/HeroCard";
 import AccentCard from "@/components/ui/AccentCard";
 import IconCircle from "@/components/ui/IconCircle";
 
+//TODO: change function name
 export default function LandingPage() {
     const [stats, setStats] = useState<Stat[]>([]);
 
+    //TODO: consider adding new loading interface to wait for its loading
     useEffect(() => {
         loadStats();
     }, []);
@@ -23,6 +25,7 @@ export default function LandingPage() {
                     {label: "Admin Posts", value: response.data.adminPosts || 0},
                     {label: "Open questions", value: response.data.unansweredPosts || 0},
                     {label: "Attorney replies", value: response.data.lawyerResponses || 0},
+                    //TODO: change to total post or ai review posts
                     {label: "AI reviews this week", value: response.data.totalPosts || 0},
                 ]);
             }

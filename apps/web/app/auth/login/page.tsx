@@ -4,7 +4,7 @@ import React, {useState} from "react";
 import Link from "next/link";
 import {useRouter} from "next/navigation";
 import {useDispatch} from "react-redux";
-import {setSession, setGuestSession} from "@/app/store";
+import {setGuestSession, setSession} from "@/app/store";
 import {Alert, Button, Card, CardBody, Form} from "react-bootstrap";
 import * as client from "../client";
 

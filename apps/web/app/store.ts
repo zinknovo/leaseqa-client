@@ -66,7 +66,7 @@ const sessionSlice = createSlice({
             state.status = "unauthenticated";
             state.user = null;
         },
-        signInAsDemo(state, action: PayloadAction<{name: string; email: string; role?: Role}>) {
+        signInAsDemo(state, action: PayloadAction<{ name: string; email: string; role?: Role }>) {
             state.status = "authenticated";
             state.user = {
                 id: `demo-${Date.now()}`,

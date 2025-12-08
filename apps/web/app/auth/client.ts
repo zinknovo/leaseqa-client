@@ -9,12 +9,12 @@ export async function fetchSession() {
     return response.data;
 }
 
-export async function login(credentials: {email: string; password: string}) {
+export async function login(credentials: { email: string; password: string }) {
     const response = await axiosWithCredentials.post(`${API_BASE}/auth/login`, credentials);
     return response.data;
 }
 
-export async function register(data: {email: string; password: string; username?: string; role?: string}) {
+export async function register(data: { email: string; password: string; username?: string; role?: string }) {
     const response = await axiosWithCredentials.post(`${API_BASE}/auth/register`, data);
     return response.data;
 }

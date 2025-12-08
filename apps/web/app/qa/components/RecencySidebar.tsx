@@ -4,16 +4,16 @@ import {useMemo} from "react";
 import {Post, RecencySidebarProps} from "../types";
 
 export default function RecencySidebar({
-    posts,
-    currentPostId,
-    onSelectPost,
-    folderDisplayMap = {},
-    bucketOpen,
-    onToggleBucket,
-}: RecencySidebarProps) {
+                                           posts,
+                                           currentPostId,
+                                           onSelectPost,
+                                           folderDisplayMap = {},
+                                           bucketOpen,
+                                           onToggleBucket,
+                                       }: RecencySidebarProps) {
     const grouped = useMemo(() => {
         const now = new Date();
-        const buckets: Record<string, {label: string; items: Post[]}> = {
+        const buckets: Record<string, { label: string; items: Post[] }> = {
             thisWeek: {label: "This week", items: []},
             lastWeek: {label: "Last week", items: []},
             thisMonth: {label: "Earlier this month", items: []},
@@ -43,12 +43,13 @@ export default function RecencySidebar({
 
     const makeSnippet = (text: string) => {
         if (!text) return "";
-        const clean = text.replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
-        return clean;
+        return text.replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
     };
 
+    //TODO: shouldn't have unknown
     const getAuthor = (p: Post) => p.isAnonymous ? "Anonymous" : (p.author?.username || p.author?.email || "Unknown");
     const getAuthorInitial = (p: Post) => p.isAnonymous ? "?" : getAuthor(p).charAt(0).toUpperCase();
+    //TODO: only show one folder?
     const getFolder = (p: Post) => {
         const key = p.folders?.[0];
         return key ? folderDisplayMap[key] || key : "";
@@ -72,35 +73,36 @@ export default function RecencySidebar({
                         </button>
                         {isOpen && (
                             <div className="post-sidebar-items">
-                                {bucket.items.map((p) => {
-                                    const isActive = p._id === currentPostId;
+                                {bucket.items.map((post) => {
+                                    const isActive = post._id === currentPostId;
                                     return (
                                         <div
-                                            key={p._id}
-                                            className={`post-sidebar-item ${isActive ? "active" : ""} ${p.isResolved ? "resolved" : ""}`}
-                                            onClick={() => onSelectPost(p._id)}
+                                            key={post._id}
+                                            className={`post-sidebar-item ${isActive ? "active" : ""} ${post.isResolved ? "resolved" : ""}`}
+                                            onClick={() => onSelectPost(post._id)}
                                         >
                                             <div className="post-sidebar-item-title">
-                                                {p.isResolved && <span className="resolved-badge">✓</span>}
-                                                {p.summary}
+                                                {post.isResolved && <span className="resolved-badge">✓</span>}
+                                                {post.summary}
                                             </div>
                                             <div className="post-sidebar-item-badges">
                                                 <span className="post-sidebar-badge">
-                                                    {p.createdAt ? format(new Date(p.createdAt), "MMM d") : ""}
+                                                    {post.createdAt ? format(new Date(post.createdAt), "MMM d") : ""}
                                                 </span>
-                                                {getFolder(p) && (
-                                                    <span className="post-sidebar-badge">{getFolder(p)}</span>
+                                                {getFolder(post) && (
+                                                    <span className="post-sidebar-badge">{getFolder(post)}</span>
                                                 )}
                                             </div>
                                             <div className="post-sidebar-item-snippet">
-                                                {makeSnippet(p.details || "")}
+                                                {makeSnippet(post.details || "")}
                                             </div>
                                             <div className="post-sidebar-item-author">
-                                                <span className={`icon-circle icon-circle-xs ${p.isAnonymous ? "icon-bg-muted" : "icon-bg-purple"}`}>
-                                                    {getAuthorInitial(p)}
+                                                <span
+                                                    className={`icon-circle icon-circle-xs ${post.isAnonymous ? "icon-bg-muted" : "icon-bg-purple"}`}>
+                                                    {getAuthorInitial(post)}
                                                 </span>
                                                 <span className="post-sidebar-item-author-name">
-                                                    {getAuthor(p)}
+                                                    {getAuthor(post)}
                                                 </span>
                                             </div>
                                         </div>

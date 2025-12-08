@@ -1,30 +1,30 @@
-import {FaEdit, FaTrash, FaEye, FaMapPin} from "react-icons/fa";
+import {FaEdit, FaEye, FaMapPin, FaTrash} from "react-icons/fa";
 import {format} from "date-fns";
 import {PostContentProps} from "../../types";
 import EditPostForm from "./EditPostForm";
 
 export default function PostContent({
-    post,
-    folders,
-    canEdit,
-    isEditing,
-    editSummary,
-    editDetails,
-    editUrgency,
-    editFolders,
-    resolvedStatus,
-    isAdmin,
-    onStatusChange,
-    onEdit,
-    onDelete,
-    onSave,
-    onCancel,
-    onSummaryChange,
-    onDetailsChange,
-    onUrgencyChange,
-    onFoldersChange,
-    onTogglePin,
-}: PostContentProps) {
+                                        post,
+                                        folders,
+                                        canEdit,
+                                        isEditing,
+                                        editSummary,
+                                        editDetails,
+                                        editUrgency,
+                                        editFolders,
+                                        resolvedStatus,
+                                        isAdmin,
+                                        onStatusChange,
+                                        onEdit,
+                                        onDelete,
+                                        onSave,
+                                        onCancel,
+                                        onSummaryChange,
+                                        onDetailsChange,
+                                        onUrgencyChange,
+                                        onFoldersChange,
+                                        onTogglePin,
+                                    }: PostContentProps) {
     const isAnonymous = (post as any).isAnonymous;
     const authorName = isAnonymous ? "Anonymous" : (post.author?.username || post.author?.email || "Unknown");
     const authorInitial = isAnonymous ? "?" : authorName.charAt(0).toUpperCase();

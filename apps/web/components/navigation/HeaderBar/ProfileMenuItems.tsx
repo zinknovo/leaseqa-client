@@ -7,7 +7,12 @@ type ProfileMenuItemsProps = {
     onSignOut: () => void;
 };
 
-export default function ProfileMenuItems({isAuthenticated, isGuest = false, navigate, onSignOut}: ProfileMenuItemsProps) {
+export default function ProfileMenuItems({
+                                             isAuthenticated,
+                                             isGuest = false,
+                                             navigate,
+                                             onSignOut
+                                         }: ProfileMenuItemsProps) {
     if (!isAuthenticated && !isGuest) {
         return (
             <>
@@ -21,7 +26,7 @@ export default function ProfileMenuItems({isAuthenticated, isGuest = false, navi
         return (
             <>
                 <Dropdown.Item onClick={() => navigate("/account")}>View Profile</Dropdown.Item>
-                <Dropdown.Divider />
+                <Dropdown.Divider/>
                 <Dropdown.Item onClick={() => navigate("/auth/login")}>Sign In for Full Access</Dropdown.Item>
                 <Dropdown.Item onClick={() => navigate("/auth/register")}>Create Account</Dropdown.Item>
             </>

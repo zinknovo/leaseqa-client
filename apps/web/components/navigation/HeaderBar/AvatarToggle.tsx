@@ -15,7 +15,7 @@ const AvatarToggle = forwardRef<HTMLButtonElement, AvatarToggleProps>(
         const avatarContent = hasUser ? (
             <span className="fw-semibold avatar-text-sm">{initials}</span>
         ) : (
-            <FaUser className="text-secondary" size={18} aria-hidden />
+            <FaUser className="text-secondary" size={18} aria-hidden/>
         );
 
         return (

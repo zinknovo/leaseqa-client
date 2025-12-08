@@ -9,7 +9,7 @@ export async function logout() {
     return response.data;
 }
 
-export async function updateCurrentUser(payload: {username?: string; email?: string}) {
+export async function updateCurrentUser(payload: { username?: string; email?: string }) {
     const response = await axiosWithCredentials.patch(`${API_BASE}/users/me`, payload);
     return response.data;
 }

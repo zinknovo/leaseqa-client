@@ -1,7 +1,7 @@
 "use client";
 
-import { Card, CardBody, Col, Row } from "react-bootstrap";
-import { FaBalanceScale, FaBook, FaFileAlt, FaGavel, FaHandsHelping, FaHome } from "react-icons/fa";
+import {Card, CardBody, Col, Row} from "react-bootstrap";
+import {FaBalanceScale, FaBook, FaFileAlt, FaGavel, FaHandsHelping, FaHome} from "react-icons/fa";
 import CardHeader from "@/components/ui/CardHeader";
 import ResourceItem from "@/components/ui/ResourceItem";
 import TemplateItem from "@/components/ui/TemplateItem";
@@ -56,7 +56,7 @@ export default function ResourcesPage() {
                     <Card className="card-base card-accent-green">
                         <CardBody className="p-4">
                             <CardHeader
-                                icon={<FaBook className="text-white" size={20} />}
+                                icon={<FaBook className="text-white" size={20}/>}
                                 iconVariant="green"
                                 title="Legal Guides & Assistance"
                                 subtitle="Official resources for MA renters"
@@ -81,7 +81,7 @@ export default function ResourcesPage() {
                     <Card className="card-base card-accent-purple">
                         <CardBody className="p-4">
                             <CardHeader
-                                icon={<FaFileAlt className="text-white" size={16} />}
+                                icon={<FaFileAlt className="text-white" size={16}/>}
                                 iconVariant="purple"
                                 title="Templates"
                                 subtitle="Ready-to-use documents"

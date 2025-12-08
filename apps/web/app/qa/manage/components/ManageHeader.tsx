@@ -8,11 +8,11 @@ type ManageHeaderProps = {
 };
 
 export default function ManageHeader({
-    loading,
-    showCreateForm,
-    onRefresh,
-    onShowCreate,
-}: ManageHeaderProps) {
+                                         loading,
+                                         showCreateForm,
+                                         onRefresh,
+                                         onShowCreate,
+                                     }: ManageHeaderProps) {
     return (
         <div className="manage-header">
             <div className="manage-header-content">

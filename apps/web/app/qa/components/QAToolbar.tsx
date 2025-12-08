@@ -1,6 +1,6 @@
 "use client";
 
-import {useState} from "react";
+import React, {useState} from "react";
 import {useRouter} from "next/navigation";
 import {useSelector} from "react-redux";
 import {FaCheck, FaPlus, FaSearch} from "react-icons/fa";
@@ -8,17 +8,17 @@ import {RootState} from "@/app/store";
 
 type QAToolbarProps = {
     initialSearch?: string;
-    onSearchChange?: (value: string) => void;
+    onSearchChangeAction?: (value: string) => void;
     showResolved: boolean;
-    onToggleResolved: () => void;
+    onToggleResolvedAction: () => void;
 };
 
 export default function QAToolbar({
-    initialSearch = "",
-    onSearchChange,
-    showResolved,
-    onToggleResolved,
-}: QAToolbarProps) {
+                                      initialSearch = "",
+                                      onSearchChangeAction,
+                                      showResolved,
+                                      onToggleResolvedAction,
+                                  }: QAToolbarProps) {
     const router = useRouter();
     const session = useSelector((state: RootState) => state.session);
     const isGuest = session.status === "guest";
@@ -26,7 +26,7 @@ export default function QAToolbar({
 
     const handleChange = (value: string) => {
         setSearch(value);
-        onSearchChange?.(value);
+        onSearchChangeAction?.(value);
     };
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -49,7 +49,7 @@ export default function QAToolbar({
             </div>
             <button
                 className={`qa-toolbar-btn ${showResolved ? "active" : "secondary"}`}
-                onClick={onToggleResolved}
+                onClick={onToggleResolvedAction}
             >
                 <FaCheck size={12}/>
                 <span>Resolved</span>

@@ -2,7 +2,7 @@
 
 import {usePathname, useRouter} from "next/navigation";
 import {useSelector} from "react-redux";
-import {FaComments, FaBook, FaChartBar, FaCog} from "react-icons/fa";
+import {FaBook, FaChartBar, FaCog, FaComments} from "react-icons/fa";
 import {RootState} from "@/app/store";
 
 const TABS = [
